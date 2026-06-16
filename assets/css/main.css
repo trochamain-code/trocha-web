@@ -1,0 +1,2466 @@
+/* ============================================================
+   TROCHA — Custom WordPress Theme
+   Estética foro antiguo / portal urbano / retro internet
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* --- RESET & BASE ------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Special Elite', cursive;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #d4cdc0;
+    background-color: #0a0a0a;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255,255,255,0.008) 2px,
+            rgba(255,255,255,0.008) 4px
+        );
+    min-height: 100vh;
+    overflow-x: hidden;
+    text-shadow: 0 0 2px rgba(196,154,60,0.08), 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.trocha-paper-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(90,60,30,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(90,60,30,0.04) 0%, transparent 50%),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(196,154,60,0.015) 2px,
+            rgba(196,154,60,0.015) 4px
+        );
+}
+
+/* --- NOISE OVERLAY ----------------------------------------- */
+.trocha-noise {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+    animation: trocha-noise-shift 0.5s steps(4) infinite;
+}
+
+@keyframes trocha-noise-shift {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(-2px, 2px); }
+    50%  { transform: translate(2px, -2px); }
+    75%  { transform: translate(-1px, -1px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* --- LINKS ------------------------------------------------- */
+a {
+    color: #c49a3c;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: #d4cdc0;
+}
+a:focus-visible {
+    outline: 2px solid #c49a3c;
+    outline-offset: 2px;
+}
+
+/* --- IMAGES ------------------------------------------------ */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- CONTAINER --------------------------------------------- */
+.trocha-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.trocha-container--narrow {
+    max-width: 900px;
+}
+
+/* --- SECTION ----------------------------------------------- */
+.trocha-section {
+    padding: 6rem 0;
+    border-bottom: 1px solid #2a1f15;
+}
+.trocha-section:last-child {
+    border-bottom: none;
+}
+
+.trocha-section__title {
+    font-family: 'Special Elite', cursive;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    color: #5c3a21;
+    margin-bottom: 3rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.trocha-section__action {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.trocha-page-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 3.5rem;
+    letter-spacing: 0.05em;
+    color: #c49a3c;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.trocha-page-subtitle {
+    text-align: center;
+    color: #8a7a6a;
+    margin-bottom: 3rem;
+    font-size: 0.875rem;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.trocha-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(4px);
+    border-bottom: 2px solid #2a1f15;
+}
+
+.trocha-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+}
+
+.trocha-logo {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.5rem;
+    color: #d4cdc0;
+    letter-spacing: 0.1em;
+    line-height: 1;
+}
+.trocha-logo:hover {
+    color: #c49a3c;
+}
+
+.trocha-tagline {
+    display: none;
+}
+
+.trocha-header__right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* --- NAV --------------------------------------------------- */
+.trocha-nav__list {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+}
+
+.trocha-nav__list li a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.125rem;
+    letter-spacing: 0.1em;
+    color: #8a7a6a;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+.trocha-nav__list li a:hover {
+    color: #c49a3c;
+    border-color: #2a1f15;
+}
+
+/* --- CART (fixed top-right elegant corner) ---------------- */
+.trocha-cart {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100000;
+    perspective: 600px;
+}
+
+.trocha-cart__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: #d4cdc0;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(6px);
+    padding: 0.65rem 1rem 0.65rem 1.25rem;
+    border: 1px solid rgba(196,154,60,0.15);
+    border-right: none;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 0 0 1px rgba(196,154,60,0.04),
+        0 4px 20px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+    transform: rotate(0deg) scale(1);
+}
+.trocha-cart__link::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid rgba(196,154,60,0.08);
+    pointer-events: none;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+}
+.trocha-cart__link:hover {
+    border-color: rgba(196,154,60,0.3);
+    color: #c49a3c;
+    box-shadow:
+        0 0 0 1px rgba(196,154,60,0.1),
+        0 6px 28px rgba(0,0,0,0.6),
+        inset 0 0 20px rgba(196,154,60,0.03);
+    transform: rotate(0deg) scale(1.02);
+}
+
+.trocha-cart__icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    color: #c49a3c;
+}
+
+.trocha-cart__label {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: #d4cdc0;
+    line-height: 1;
+}
+.trocha-cart__link:hover .trocha-cart__label {
+    color: #c49a3c;
+}
+
+.trocha-cart__divider {
+    width: 0;
+    height: 1.2rem;
+    border-right: 1px solid rgba(196,154,60,0.15);
+}
+
+.trocha-cart__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    font-size: 0.75rem;
+    font-family: 'Special Elite', cursive;
+    color: #0a0a0a;
+    background: #c49a3c;
+    border-radius: 0;
+    padding: 0 0.35rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    transition: background 0.3s;
+}
+.trocha-cart__link:hover .trocha-cart__count {
+    background: #d4cdc0;
+}
+
+@media (max-width: 768px) {
+    .trocha-cart {
+        top: 0.75rem;
+        right: 0.75rem;
+    }
+    .trocha-cart__link {
+        padding: 0.5rem 0.75rem 0.5rem 1rem;
+        gap: 0.5rem;
+        clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+    }
+    .trocha-cart__link::before {
+        clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+    }
+    .trocha-cart__label {
+        font-size: 0.65rem;
+    }
+    .trocha-cart__count {
+        min-width: 1.35rem;
+        height: 1.35rem;
+        font-size: 0.65rem;
+    }
+    .trocha-cart__icon {
+        font-size: 0.95rem;
+    }
+    .trocha-cart__divider {
+        height: 1rem;
+    }
+}
+
+/* --- NAV TOGGLE (mobile) ----------------------------------- */
+.trocha-nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+.trocha-nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #d4cdc0;
+    transition: all 0.3s;
+}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.trocha-marquee {
+    overflow: hidden;
+    background: #1a1512;
+    border-bottom: 1px solid #2a1f15;
+    padding: 0.5rem 0;
+}
+.trocha-marquee__inner {
+    display: flex;
+    white-space: nowrap;
+    animation: trocha-marquee 30s linear infinite;
+}
+.trocha-marquee__inner span {
+    font-family: 'Special Elite', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: #5c3a21;
+    padding: 0 2rem;
+}
+
+@keyframes trocha-marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-33.333%); }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.trocha-hero {
+    position: relative;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-bottom: 1px solid #2a1f15;
+    overflow: hidden;
+}
+
+.trocha-hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.1);
+    z-index: 0;
+}
+
+.trocha-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #0a0a0a;
+    z-index: 0;
+}
+
+.trocha-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 40%, rgba(10,10,10,0.6) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.trocha-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(90,107,61,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse at 20% 80%, rgba(196,154,60,0.05) 0%, transparent 50%);
+}
+
+.trocha-hero__content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+}
+
+.trocha-hero__title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(4rem, 15vw, 12rem);
+    letter-spacing: 0.04em;
+    color: #d4cdc0;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.trocha-hero__sub {
+    font-size: 1.25rem;
+    color: #8a7a6a;
+    margin-bottom: 3rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.trocha-hero__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.trocha-hero__scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.25rem;
+    color: #5c3a21;
+    animation: trocha-bounce 2s ease-in-out infinite;
+}
+
+@keyframes trocha-bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.trocha-btn {
+    display: inline-block;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.125rem;
+    letter-spacing: 0.05em;
+    padding: 0.875rem 2rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 2px solid #2a1f15;
+    background: transparent;
+    color: #d4cdc0;
+    transition: all 0.25s;
+    text-align: center;
+    text-shadow: 0 0 2px rgba(196,154,60,0.1);
+}
+.trocha-btn:hover {
+    background: #c49a3c;
+    color: #0a0a0a;
+    border-color: #c49a3c;
+}
+
+.trocha-btn--primary {
+    background: #2a1f15;
+    color: #d4cdc0;
+    border-color: #2a1f15;
+}
+.trocha-btn--primary:hover {
+    background: #c49a3c;
+    border-color: #c49a3c;
+    color: #0a0a0a;
+}
+
+.trocha-btn--ghost {
+    border-color: #3a2a1a;
+    color: #8a7a6a;
+}
+.trocha-btn--ghost:hover {
+    border-color: #c49a3c;
+    color: #c49a3c;
+    background: transparent;
+}
+
+.trocha-btn--small {
+    font-size: 0.9375rem;
+    padding: 0.6rem 1.25rem;
+}
+
+.trocha-btn--full {
+    width: 100%;
+}
+
+/* ============================================================
+   COLLECTIONS GRID (Home)
+   ============================================================ */
+.trocha-collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.trocha-collection-card {
+    background: #1a1512;
+    border: 1px solid #2a1f15;
+    padding: 2.5rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s;
+}
+.trocha-collection-card:hover {
+    border-color: #c49a3c;
+    transform: translateY(-4px);
+}
+
+.trocha-collection-card__stamp {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: #c49a3c;
+    border: 1px solid #c49a3c;
+    padding: 0.25rem 0.5rem;
+    transform: rotate(5deg);
+}
+
+/* ============================================================
+   CATEGORÍAS PIES (VISTETE POR LOS PIES)
+   ============================================================ */
+.trocha-categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.trocha-categoria-card {
+    background: #1a1512;
+    border: 1px solid #2a1f15;
+    padding: 3rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+}
+.trocha-categoria-card:hover {
+    border-color: #c49a3c;
+    transform: translateY(-4px);
+}
+
+.trocha-categoria-card__stamp {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: #c49a3c;
+    border: 1px solid #c49a3c;
+    padding: 0.2rem 0.5rem;
+    transform: rotate(-3deg);
+}
+
+.trocha-categoria-card__title {
+    font-family: 'Special Elite', cursive;
+    font-size: 3rem;
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+    line-height: 1.1;
+}
+
+.trocha-categoria-card__desc {
+    color: #8a7a6a;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .trocha-categorias-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.trocha-collection-card__title {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+}
+
+.trocha-collection-card__desc {
+    color: #8a7a6a;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   PRODUCT GRID
+   ============================================================ */
+.trocha-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.trocha-product-card {
+    background: #1a1512;
+    border: 1px solid #2a1f15;
+    position: relative;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+.trocha-product-card:hover {
+    border-color: #5c3a21;
+    transform: translateY(-2px);
+}
+
+.trocha-product-card__stamp {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: #0a0a0a;
+    background: #c49a3c;
+    padding: 0.2rem 0.5rem;
+}
+
+.trocha-product-card__image {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #15100c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.trocha-product-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+.trocha-product-card:hover .trocha-product-card__image img {
+    transform: scale(1.05);
+}
+
+.trocha-product-card__body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.trocha-product-card__title {
+    font-family: 'Special Elite', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: #d4cdc0;
+    line-height: 1.2;
+}
+.trocha-product-card__title a {
+    color: inherit;
+}
+.trocha-product-card__title a:hover {
+    color: #c49a3c;
+}
+
+.trocha-product-card__price {
+    font-size: 0.9375rem;
+    color: #c49a3c;
+}
+
+.trocha-add-to-cart-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+.trocha-single-product .trocha-add-to-cart-form {
+    margin-top: 2.5rem;
+}
+
+.trocha-size-select {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.8125rem;
+    background: #0a0a0a;
+    border: 1px solid #2a1f15;
+    color: #d4cdc0;
+    padding: 0.5rem;
+    cursor: pointer;
+    width: 100%;
+}
+.trocha-size-select:focus {
+    border-color: #c49a3c;
+    outline: none;
+}
+
+.trocha-product-card .trocha-btn {
+    margin-top: 0;
+}
+
+/* ============================================================
+   SINGLE PRODUCT
+   ============================================================ */
+.trocha-single-product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.trocha-single-product__gallery {
+    position: sticky;
+    top: 6rem;
+}
+
+.trocha-single-product__meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+    color: #5c3a21;
+}
+
+.trocha-single-product__title {
+    font-family: 'Special Elite', cursive;
+    font-size: 3.5rem;
+    letter-spacing: 0.08em;
+    color: #d4cdc0;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.trocha-single-product__price {
+    font-size: 1.5rem;
+    color: #c49a3c;
+    margin-bottom: 1.5rem;
+}
+
+.trocha-single-product__description {
+    margin-bottom: 2rem;
+    color: #8a7a6a;
+}
+
+/* Quantity + Add to Cart inline */
+.trocha-single-product .quantity {
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+.trocha-single-product .quantity input {
+    font-family: 'Special Elite', cursive;
+    background: #0a0a0a;
+    border: 1px solid #2a1f15;
+    color: #d4cdc0;
+    padding: 0.5rem;
+    width: 4rem;
+    text-align: center;
+}
+.trocha-single-product .quantity input:focus {
+    border-color: #c49a3c;
+    outline: none;
+}
+
+.trocha-single-product .single_add_to_cart_button {
+    font-family: 'Special Elite', cursive;
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+    padding: 0.875rem 2.5rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 2px solid #c49a3c;
+    background: #c49a3c;
+    color: #0a0a0a;
+    transition: all 0.25s;
+    margin-bottom: 1rem;
+}
+.trocha-single-product .single_add_to_cart_button:hover {
+    background: transparent;
+    color: #c49a3c;
+}
+
+/* Tabs */
+.trocha-single-product__tabs {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #2a1f15;
+}
+.trocha-single-product__tabs .woocommerce-tabs {
+    border: 1px solid #2a1f15;
+}
+.trocha-single-product__tabs .woocommerce-tabs ul.tabs {
+    display: flex;
+    list-style: none;
+    border-bottom: 1px solid #2a1f15;
+    background: #15100c;
+}
+.trocha-single-product__tabs .woocommerce-tabs ul.tabs li {
+    margin: 0;
+}
+.trocha-single-product__tabs .woocommerce-tabs ul.tabs li a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Special Elite', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: #5c3a21;
+    border-right: 1px solid #2a1f15;
+}
+.trocha-single-product__tabs .woocommerce-tabs ul.tabs li.active a {
+    color: #c49a3c;
+    background: #0a0a0a;
+}
+.trocha-single-product__tabs .woocommerce-tabs .panel {
+    padding: 1.5rem;
+    color: #8a7a6a;
+    font-size: 0.875rem;
+}
+
+/* ============================================================
+   CART — ORDER SUMMARY (Minimalist)
+   ============================================================ */
+.trocha-order-summary {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.trocha-cart-empty {
+    text-align: center;
+    padding: 4rem 0;
+    color: #5c3a21;
+}
+.trocha-cart-empty p {
+    margin-bottom: 1.5rem;
+}
+
+.trocha-order-summary__items {
+    border-top: 1px solid #1a1512;
+    margin-bottom: 2rem;
+}
+
+.trocha-order-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #1a1512;
+}
+
+.trocha-order-item__image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.trocha-order-item__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.trocha-order-item__name {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.9375rem;
+    color: #d4cdc0;
+    letter-spacing: 0.05em;
+}
+
+.trocha-order-item__meta {
+    font-size: 0.6875rem;
+    color: #5c3a21;
+    letter-spacing: 0.08em;
+}
+
+.trocha-order-item__qty {
+    font-size: 0.6875rem;
+    color: #5c3a21;
+}
+
+.trocha-order-item__price {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.9375rem;
+    color: #c49a3c;
+    white-space: nowrap;
+}
+
+.trocha-order-item__remove-link {
+    font-size: 0.75rem;
+    color: #2a1f15;
+    text-decoration: none;
+}
+.trocha-order-item__remove-link:hover {
+    color: #8b3a3a;
+}
+
+.trocha-order-summary__totals {
+    border-top: 1px solid #2a1f15;
+    padding-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.trocha-order-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8125rem;
+    color: #8a7a6a;
+    padding: 0.35rem 0;
+}
+
+.trocha-order-total-row--final {
+    font-family: 'Special Elite', cursive;
+    font-size: 1.125rem;
+    color: #d4cdc0;
+    border-top: 1px solid #2a1f15;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+}
+
+.trocha-order-summary__trust {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.15em;
+    color: #2a1f15;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.trocha-order-summary__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.trocha-order-summary__back {
+    font-size: 0.75rem;
+    color: #5c3a21;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+}
+.trocha-order-summary__back:hover {
+    color: #c49a3c;
+}
+
+.trocha-btn--lg {
+    font-size: 1.375rem;
+    padding: 1.125rem 2rem;
+}
+
+@media (max-width: 600px) {
+    .trocha-order-item {
+        grid-template-columns: 50px 1fr auto;
+    }
+    .trocha-order-item__remove {
+        grid-column: 3;
+        justify-self: end;
+    }
+    .trocha-order-summary__trust {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+
+/* --- responsive cart styles kept for compatibility ---------- */
+.trocha-cart-table {
+    border-top: 1px solid #2a1f15;
+}
+
+/* ============================================================
+   CHECKOUT
+   ============================================================ */
+.trocha-checkout-section {
+    margin-bottom: 2rem;
+}
+
+.trocha-checkout-section__title {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.875rem;
+    letter-spacing: 0.15em;
+    color: #5c3a21;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #1a1512;
+}
+
+.trocha-checkout-form .form-row {
+    margin-bottom: 1rem;
+}
+.trocha-checkout-form label {
+    display: block;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    color: #8a7a6a;
+    margin-bottom: 0.25rem;
+}
+.trocha-checkout-form input,
+.trocha-checkout-form select,
+.trocha-checkout-form textarea {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.875rem;
+    background: #0a0a0a;
+    border: 1px solid #2a1f15;
+    color: #d4cdc0;
+    padding: 0.625rem 0.75rem;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+.trocha-checkout-form input:focus,
+.trocha-checkout-form select:focus,
+.trocha-checkout-form textarea:focus {
+    border-color: #c49a3c;
+    outline: none;
+}
+
+.trocha-checkout-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.trocha-order-review {
+    border: 1px solid #1a1512;
+    padding: 0;
+}
+
+.trocha-order-review .shop_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.trocha-order-review .shop_table th,
+.trocha-order-review .shop_table td {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #1a1512;
+    font-size: 0.8125rem;
+}
+.trocha-order-review .shop_table th {
+    font-family: 'Special Elite', cursive;
+    letter-spacing: 0.08em;
+    color: #5c3a21;
+    text-align: left;
+    font-weight: normal;
+}
+.trocha-order-review .shop_table td {
+    text-align: right;
+    color: #d4cdc0;
+}
+.trocha-order-review .shop_table tbody .product-name {
+    color: #d4cdc0;
+}
+.trocha-order-review .shop_table tbody .product-quantity {
+    color: #5c3a21;
+}
+.trocha-order-review .shop_table tfoot .order-total th,
+.trocha-order-review .shop_table tfoot .order-total td {
+    font-family: 'Special Elite', cursive;
+    color: #c49a3c;
+    font-size: 1rem;
+}
+
+.trocha-order-review #payment {
+    background: transparent;
+    border: none;
+    margin-top: 1rem;
+}
+.trocha-order-review #payment .payment_methods {
+    list-style: none;
+    padding: 0;
+    border: none;
+}
+.trocha-order-review #payment .payment_methods li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #1a1512;
+    font-size: 0.8125rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+.trocha-order-review #payment .payment_methods li:last-child {
+    border-bottom: none;
+}
+.trocha-order-review #payment .payment_methods li input[type="radio"] {
+    appearance: none;
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 1px solid #5c3a21;
+    border-radius: 50%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.trocha-order-review #payment .payment_methods li input[type="radio"]:checked {
+    border-color: #c49a3c;
+    background: #c49a3c;
+    box-shadow: inset 0 0 0 2px #0a0a0a;
+}
+.trocha-order-review #payment .payment_methods li label {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    color: #8a7a6a;
+    cursor: pointer;
+    display: inline;
+}
+.trocha-order-review #payment .payment_methods li img {
+    display: none;
+}
+.trocha-order-review #payment .payment_box {
+    width: 100%;
+    background: #0a0a0a;
+    border: 1px solid #1a1512;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #5c3a21;
+    line-height: 1.6;
+}
+
+.trocha-order-review .form-row.place-order {
+    padding: 1rem 0 0;
+    margin-top: 1rem;
+    border-top: 1px solid #1a1512;
+}
+
+.trocha-order-review .woocommerce-privacy-policy-text {
+    font-size: 0.6875rem;
+    color: #5c3a21;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+.trocha-order-review .woocommerce-privacy-policy-text a {
+    color: #8a7a6a;
+}
+
+.trocha-order-review #place_order {
+    display: block;
+    width: 100%;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.375rem;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 2px solid #c49a3c;
+    background: #c49a3c;
+    color: #0a0a0a;
+    transition: all 0.25s;
+}
+.trocha-order-review #place_order:hover {
+    background: transparent;
+    color: #c49a3c;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.trocha-about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.trocha-about-header__title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(3rem, 10vw, 7rem);
+    color: #d4cdc0;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+}
+
+.trocha-about-header__stamp {
+    display: inline-block;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.875rem;
+    letter-spacing: 0.2em;
+    color: #c49a3c;
+    border: 2px solid #c49a3c;
+    padding: 0.5rem 1rem;
+    transform: rotate(-3deg);
+}
+
+.trocha-about-content {
+    color: #b0a498;
+    line-height: 1.8;
+}
+
+.trocha-about-content p {
+    margin-bottom: 1.5rem;
+}
+
+.trocha-lead {
+    font-size: 1.25rem;
+    color: #c49a3c;
+    border-left: 3px solid #c49a3c;
+    padding-left: 1.5rem;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+}
+
+.trocha-about-content h2 {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.trocha-separator {
+    text-align: center;
+    color: #5c3a21;
+    font-size: 1.25rem;
+    letter-spacing: 0.5em;
+    margin: 3rem 0;
+}
+
+.trocha-signoff {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #2a1f15;
+    font-size: 1.125rem;
+    color: #c49a3c;
+}
+
+/* ============================================================
+   COLLECTIONS PAGE
+   ============================================================ */
+.trocha-collections-full {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.trocha-collection-full__header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    align-items: center;
+    background: #1a1512;
+    border-left: 4px solid;
+    padding: 2rem;
+}
+
+.trocha-collection-full__seal {
+    font-family: 'Special Elite', cursive;
+    font-size: 3rem;
+    letter-spacing: 0.15em;
+    color: #d4cdc0;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.trocha-collection-full__info h2 {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+    margin-bottom: 0.5rem;
+}
+
+.trocha-collection-full__info p {
+    color: #8a7a6a;
+    margin-bottom: 1.5rem;
+    font-size: 0.9375rem;
+}
+
+/* ============================================================
+   BLOCKQUOTE
+   ============================================================ */
+.trocha-blockquote {
+    text-align: center;
+    padding: 3rem 2rem;
+    border: 1px solid #2a1f15;
+    background: #15100c;
+}
+.trocha-blockquote p {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #d4cdc0;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+.trocha-blockquote cite {
+    font-size: 0.875rem;
+    color: #5c3a21;
+    font-style: normal;
+}
+
+/* ============================================================
+   404
+   ============================================================ */
+.trocha-section--404 {
+    text-align: center;
+    padding: 8rem 0;
+}
+
+.trocha-404__title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(4rem, 12vw, 8rem);
+    color: #5c3a21;
+    margin-bottom: 1.5rem;
+}
+
+.trocha-404__text {
+    color: #8a7a6a;
+    margin-bottom: 2rem;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.trocha-footer {
+    background: #0a0a0a;
+    border-top: 2px solid #1a1512;
+    padding: 3rem 0 2rem;
+}
+
+.trocha-footer__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.trocha-footer__logo {
+    font-family: 'Special Elite', cursive;
+    font-size: 2rem;
+    letter-spacing: 0.08em;
+    color: #5c3a21;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.trocha-footer__text {
+    color: #5c3a21;
+    font-size: 0.875rem;
+}
+
+.trocha-footer__title {
+    font-family: 'Special Elite', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: #c49a3c;
+    margin-bottom: 1rem;
+}
+
+.trocha-footer__list {
+    list-style: none;
+}
+.trocha-footer__list li {
+    margin-bottom: 0.5rem;
+}
+.trocha-footer__list a {
+    color: #5c3a21;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+}
+.trocha-footer__list a:hover {
+    color: #c49a3c;
+}
+
+.trocha-footer__micro {
+    color: #2a1f15;
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   GLITCH EFFECT
+   ============================================================ */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.glitch::before {
+    color: #8b3a3a;
+    z-index: -1;
+    animation: trocha-glitch-1 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    color: #5a6b3d;
+    z-index: -1;
+    animation: trocha-glitch-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes trocha-glitch-1 {
+    0%   { transform: translate(0); }
+    20%  { transform: translate(-2px, 1px); }
+    40%  { transform: translate(2px, -1px); }
+    60%  { transform: translate(-1px, 2px); }
+    80%  { transform: translate(1px, -2px); }
+    100% { transform: translate(0); }
+}
+
+@keyframes trocha-glitch-2 {
+    0%   { transform: translate(0); }
+    20%  { transform: translate(2px, -1px); }
+    40%  { transform: translate(-2px, 1px); }
+    60%  { transform: translate(1px, -2px); }
+    80%  { transform: translate(-1px, 2px); }
+    100% { transform: translate(0); }
+}
+
+/* ============================================================
+   WOOCOMMERCE MESSAGES
+   ============================================================ */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+    background: #1a1512 !important;
+    border: 1px solid #2a1f15 !important;
+    color: #d4cdc0 !important;
+    padding: 1rem !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 0.875rem !important;
+    border-top: 3px solid #c49a3c !important;
+}
+.woocommerce-message::before,
+.woocommerce-info::before,
+.woocommerce-error::before {
+    color: #c49a3c !important;
+}
+.woocommerce-error {
+    border-top-color: #8b3a3a !important;
+}
+.woocommerce-error::before {
+    color: #8b3a3a !important;
+}
+
+.woocommerce-message a,
+.woocommerce-info a {
+    color: #c49a3c !important;
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.woocommerce-pagination,
+.trocha-pagination {
+    margin-top: 3rem;
+    text-align: center;
+}
+.woocommerce-pagination ul.page-numbers,
+.trocha-pagination .page-numbers {
+    display: inline-flex;
+    gap: 0.25rem;
+    list-style: none;
+}
+.woocommerce-pagination ul.page-numbers li a,
+.woocommerce-pagination ul.page-numbers li span,
+.trocha-pagination a, .trocha-pagination span {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Special Elite', cursive;
+    font-size: 1rem;
+    border: 1px solid #2a1f15;
+    color: #8a7a6a;
+    transition: all 0.2s;
+}
+.woocommerce-pagination ul.page-numbers li a:hover,
+.trocha-pagination a:hover {
+    border-color: #c49a3c;
+    color: #c49a3c;
+}
+.woocommerce-pagination ul.page-numbers li span.current,
+.trocha-pagination .current {
+    border-color: #c49a3c;
+    background: #c49a3c;
+    color: #0a0a0a;
+}
+
+/* ============================================================
+   FILTERS / ORDERING
+   ============================================================ */
+.woocommerce-ordering {
+    margin-bottom: 2rem;
+}
+.woocommerce-ordering select {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.8125rem;
+    background: #0a0a0a;
+    border: 1px solid #2a1f15;
+    color: #d4cdc0;
+    padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.woocommerce-result-count {
+    font-size: 0.8125rem;
+    color: #5c3a21;
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================================
+   CURSOR (desktop only)
+   ============================================================ */
+.trocha-cursor {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #c49a3c;
+    border-radius: 50%;
+    position: fixed;
+    top: -10px;
+    left: -10px;
+    z-index: 9998;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .trocha-cursor {
+        display: block;
+    }
+    body {
+        cursor: none;
+    }
+    a, button, .trocha-btn, .trocha-product-card, .trocha-collection-card {
+        cursor: none;
+    }
+    a:hover ~ .trocha-cursor,
+    button:hover ~ .trocha-cursor {
+        width: 30px;
+        height: 30px;
+        border-color: #d4cdc0;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+    .trocha-single-product {
+        grid-template-columns: 1fr;
+    }
+    .trocha-single-product__gallery {
+        position: static;
+    }
+    .trocha-checkout-fields {
+        grid-template-columns: 1fr;
+    }
+    .trocha-nav__list {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(10, 10, 10, 0.98);
+        border-bottom: 1px solid #2a1f15;
+        padding: 1rem;
+    }
+    .trocha-nav__list.active {
+        display: flex;
+    }
+    .trocha-nav-toggle {
+        display: flex;
+    }
+    .trocha-hero__title {
+        font-size: clamp(3rem, 12vw, 6rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .trocha-section {
+        padding: 3rem 0;
+    }
+    .trocha-page-title {
+        font-size: 2.5rem;
+    }
+    .trocha-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .trocha-collection-full__header {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .trocha-products-grid {
+        grid-template-columns: 1fr;
+    }
+    .trocha-hero__actions {
+        flex-direction: column;
+    }
+    .trocha-btn {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   ELEMENTOR SUPPORT
+   ============================================================ */
+.trocha-elementor-content {
+    padding: 0;
+}
+
+.trocha-elementor-content .elementor-section {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.trocha-elementor-content .elementor-element.elementor-element-ddccf30 {
+    background: #0a0a0a !important;
+    filter: grayscale(1) contrast(1.1);
+}
+
+.trocha-elementor-content .elementor-element.elementor-element-ddccf30::before {
+    display: none !important;
+}
+
+.trocha-elementor-content .elementor-element {
+    color: #d4cdc0;
+    font-family: 'Special Elite', cursive;
+}
+
+.trocha-elementor-content h1,
+.trocha-elementor-content h2,
+.trocha-elementor-content h3,
+.trocha-elementor-content .elementor-heading-title {
+    font-family: 'Special Elite', cursive !important;
+    letter-spacing: 0.05em;
+    color: #d4cdc0 !important;
+}
+
+.trocha-elementor-content p,
+.trocha-elementor-content .elementor-text-editor {
+    color: #8a7a6a;
+    line-height: 1.8;
+}
+
+.trocha-elementor-content a {
+    color: #c49a3c;
+}
+
+.trocha-elementor-content a:hover {
+    color: #d4cdc0;
+}
+
+.trocha-elementor-content .elementor-button {
+    background: #2a1f15 !important;
+    border: 2px solid #2a1f15 !important;
+    color: #d4cdc0 !important;
+    font-family: 'Special Elite', cursive !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 0 !important;
+    transition: all 0.25s;
+}
+
+.trocha-elementor-content .elementor-button:hover {
+    background: #c49a3c !important;
+    border-color: #c49a3c !important;
+    color: #0a0a0a !important;
+}
+
+.elementor-editor-active .trocha-hero,
+.elementor-editor-active .trocha-noise,
+.elementor-editor-active .trocha-cursor {
+    display: none;
+}
+
+/* ============================================================
+   HERO — Imagen difuminada de fondo de marca
+   ============================================================ */
+.trocha-hero--brand-bg {
+    position: relative;
+}
+.trocha-hero-bg-img {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px) grayscale(0.5);
+    opacity: 0.22;
+    z-index: 0;
+    transform: scale(1.05); /* evita bordes blancos del blur */
+}
+
+/* Eliminar separador largo del banner superior */
+.trocha-top-banner .accent-line {
+    display: none;
+}
+
+/* ============================================================
+   SECCIÓN HISTORIA — 2 columnas + spotlight de producto
+   ============================================================ */
+.trocha-section--brand-story {
+    position: relative;
+    overflow: hidden;
+}
+.trocha-section-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(6px) grayscale(0.7);
+    opacity: 0.07;
+    z-index: 0;
+    transform: scale(1.05);
+}
+.trocha-brand-story-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.trocha-brand-story__text {
+    padding: 2rem 0;
+}
+
+/* Producto con iluminación icónica */
+.trocha-product-spotlight {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 2rem 2rem;
+}
+.trocha-product-spotlight__light {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(ellipse at center, rgba(196,154,60,0.35) 0%, rgba(196,154,60,0.1) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+.trocha-product-spotlight__img-wrap {
+    position: relative;
+    z-index: 1;
+    width: 260px;
+    height: 320px;
+    overflow: hidden;
+    border: 1px solid rgba(196,154,60,0.2);
+    box-shadow:
+        0 0 40px rgba(196,154,60,0.15),
+        0 0 80px rgba(196,154,60,0.06),
+        inset 0 0 30px rgba(0,0,0,0.7);
+}
+.trocha-product-spotlight__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.1) brightness(0.85);
+    transition: transform 0.5s ease;
+}
+.trocha-product-spotlight:hover .trocha-product-spotlight__img {
+    transform: scale(1.04);
+}
+.trocha-product-spotlight__label {
+    position: relative;
+    z-index: 1;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: #c49a3c;
+    border: 1px solid rgba(196,154,60,0.3);
+    padding: 0.25rem 0.75rem;
+    font-family: 'Courier New', monospace;
+}
+.trocha-product-spotlight__name {
+    position: relative;
+    z-index: 1;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(196,154,60,0.4);
+    line-height: 1.2;
+}
+.trocha-product-spotlight__name span {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: #8a7a6a;
+    font-family: 'Courier New', monospace;
+    margin-top: 0.25rem;
+    text-shadow: none;
+}
+
+@media (max-width: 900px) {
+    .trocha-brand-story-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .trocha-product-spotlight {
+        max-width: 320px;
+        margin: 0 auto;
+    }
+}
+
+/* ============================================================
+   SECCIÓN MOOD — Easter egg PRESS PLAY
+   ============================================================ */
+.trocha-section--mood {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.trocha-mood-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+.trocha-mood-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: #5c3a21;
+    font-family: 'Courier New', monospace;
+}
+.trocha-mood-title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    letter-spacing: 0.06em;
+    color: #d4cdc0;
+    line-height: 1.15;
+    text-transform: uppercase;
+}
+.trocha-mood-phrases {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: #5c3a21;
+    font-family: 'Courier New', monospace;
+}
+.trocha-mood-phrases .sep {
+    color: #2a1f15;
+}
+
+/* Easter egg — casi invisible */
+.trocha-play-egg {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: #c49a3c;
+    opacity: 0.08;
+    transition: opacity 0.5s ease;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+}
+.trocha-play-egg:hover,
+.trocha-section--mood:hover .trocha-play-egg {
+    opacity: 0.7;
+}
+
+/* ============================================================
+   GALERÍA MODAL EMOCIONAL
+   ============================================================ */
+.trocha-gallery-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+.trocha-gallery-modal.is-open {
+    opacity: 1;
+    pointer-events: all;
+}
+.trocha-gallery-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 10;
+    background: none;
+    border: 1px solid rgba(196,154,60,0.3);
+    color: #c49a3c;
+    font-size: 1.2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.trocha-gallery-close:hover {
+    background: rgba(196,154,60,0.1);
+}
+.trocha-gallery-slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.trocha-gallery-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+}
+.trocha-gallery-slide.active {
+    opacity: 1;
+    pointer-events: all;
+}
+.trocha-gallery-slide__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+}
+.trocha-gallery-slide__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+}
+.trocha-gallery-slide__label {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    letter-spacing: 0.08em;
+    color: #d4cdc0;
+    text-transform: uppercase;
+    text-shadow: 0 0 40px rgba(196,154,60,0.3);
+    animation: trocha-gallery-in 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+.trocha-gallery-slide__sub {
+    font-family: 'Courier New', monospace;
+    font-size: clamp(0.75rem, 2vw, 1rem);
+    letter-spacing: 0.2em;
+    color: rgba(196,154,60,0.7);
+    margin-top: 1rem;
+    animation: trocha-gallery-in 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+.trocha-gallery-slide__num {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(196,154,60,0.4);
+    z-index: 1;
+}
+@keyframes trocha-gallery-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* Slide de producto final */
+.trocha-gallery-slide--product {
+    background: #0a0a0a;
+}
+.trocha-gallery-slide__content--product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.trocha-gallery-slide__cta-title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+    text-transform: uppercase;
+}
+.trocha-gallery-product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(196,154,60,0.2);
+    padding: 1.5rem;
+    max-width: 260px;
+    background: rgba(26,21,18,0.8);
+}
+.trocha-gallery-product img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+.trocha-gallery-product__name {
+    font-family: 'Special Elite', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: #d4cdc0;
+    text-align: center;
+}
+.trocha-gallery-product__price {
+    font-size: 0.9rem;
+    color: #c49a3c;
+}
+
+/* ============================================================
+   PÁGINA HISTORIA — Bloques con fondo
+   ============================================================ */
+.trocha-historia-block {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #2a1f15;
+    overflow: hidden;
+}
+.trocha-historia-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(6px) grayscale(0.7);
+    opacity: 0.08;
+    z-index: 0;
+    transform: scale(1.05);
+}
+.trocha-historia-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    text-align: center;
+}
+.trocha-historia-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: #5c3a21;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 1rem;
+}
+.trocha-historia-title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    letter-spacing: 0.08em;
+    color: #d4cdc0;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+.trocha-historia-subtitle {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+.trocha-historia-divider {
+    width: 40px;
+    height: 2px;
+    background: #c49a3c;
+    box-shadow: 0 0 8px #c49a3c;
+    margin: 1rem auto 1.5rem;
+}
+.trocha-historia-text {
+    font-size: 0.9rem;
+    color: #a4a098;
+    line-height: 1.85;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+.trocha-historia-cta {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: #0d0d0d;
+}
+
+.trocha-historia-cta-title {
+    font-family: 'Bebas Neue', 'Impact', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: #d4cdc0;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    text-shadow:
+        0 0 40px rgba(196,154,60,0.2),
+        0 2px 0 rgba(0,0,0,0.8);
+}
+
+/* Products grid hover — minimalista */
+.trocha-product-card__body .trocha-product-card__price,
+.trocha-product-card__body .trocha-btn {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.trocha-product-card:hover .trocha-product-card__price,
+.trocha-product-card:hover .trocha-btn {
+    opacity: 1;
+    transform: none;
+}
+
+/* Related products separator */
+.trocha-related-divider {
+    width: 40px;
+    height: 2px;
+    background: #c49a3c;
+    margin: 4rem auto 3rem;
+    box-shadow: 0 0 6px rgba(196,154,60,0.4);
+}
+
+/* ============================================================
+   CATEGORÍAS PIES — Tres ambientaciones visuales
+   ============================================================ */
+.trocha-categorias-section {
+    padding-top: 3rem;
+}
+.trocha-categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 3rem;
+    min-height: 75vh;
+}
+
+.trocha-categoria-card {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    border: none;
+    background: #000;
+    transition: transform 0.4s ease;
+}
+.trocha-categoria-card:hover {
+    transform: none;
+    z-index: 2;
+}
+.trocha-categoria-card:hover .trocha-cat-bg {
+    transform: scale(1.06);
+    opacity: 0.75;
+}
+.trocha-categoria-card:hover .trocha-cat-overlay {
+    background: rgba(0,0,0,0.35);
+}
+
+/* Background layer */
+.trocha-cat-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    transition: transform 0.6s ease, opacity 0.4s ease;
+    filter: brightness(0.55) saturate(0.8);
+}
+
+/* Dark overlay to make text pop */
+.trocha-cat-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.68);
+    transition: background 0.4s ease;
+}
+.trocha-categoria-card:hover .trocha-cat-overlay {
+    background: rgba(0,0,0,0.5);
+}
+
+/* Inner content */
+.trocha-categoria-card__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding: 2.5rem 2rem 3rem;
+    width: 100%;
+}
+
+.trocha-categoria-card__stamp {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: #c49a3c;
+    border: 1px solid rgba(196,154,60,0.5);
+    padding: 0.2rem 0.75rem;
+    transform: rotate(-2deg);
+    text-shadow: 0 0 10px rgba(196,154,60,0.5);
+}
+
+.trocha-categoria-card__title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(3rem, 5vw, 5rem);
+    letter-spacing: 0.08em;
+    color: #fff;
+    line-height: 1;
+    text-shadow:
+        0 2px 20px rgba(0,0,0,0.9),
+        0 0 60px rgba(0,0,0,0.7);
+    margin: 0;
+}
+
+.trocha-categoria-card__desc {
+    color: rgba(212,205,192,0.8);
+    font-size: 0.8rem;
+    line-height: 1.65;
+    font-family: 'Courier New', monospace;
+    max-width: 220px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+}
+
+.trocha-cat-cta {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: #c49a3c;
+    margin-top: 0.5rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    text-shadow: 0 0 10px rgba(196,154,60,0.5);
+}
+.trocha-categoria-card:hover .trocha-cat-cta {
+    opacity: 1;
+    transform: none;
+}
+
+/* ---- FRÍO: sala médica años 60, azul-amarillento, patrón inclinado ---- */
+.trocha-cat-bg--frio {
+    background-color: #0a0e1a;
+    background-image: url('../img/cat-frio.jpg');
+    background-size: cover;
+    background-position: center;
+}
+/* Efecto estante/baldosa médica con líneas horizontales */
+.trocha-categoria-card--frio::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 59px,
+            rgba(160,200,255,0.05) 59px,
+            rgba(160,200,255,0.05) 60px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 59px,
+            rgba(160,200,255,0.04) 59px,
+            rgba(160,200,255,0.04) 60px
+        );
+    pointer-events: none;
+}
+.trocha-categoria-card--frio .trocha-categoria-card__title {
+    color: #c8deff;
+    text-shadow:
+        0 0 30px rgba(100,160,255,0.4),
+        0 2px 20px rgba(0,0,0,0.9);
+}
+.trocha-categoria-card--frio .trocha-categoria-card__stamp {
+    color: #7aadee;
+    border-color: rgba(120,180,255,0.4);
+    text-shadow: 0 0 10px rgba(100,160,255,0.5);
+}
+.trocha-categoria-card--frio .trocha-cat-cta {
+    color: #7aadee;
+}
+
+/* ---- CALOR: desierto industrial, grafiti urbano ---- */
+.trocha-cat-bg--calor {
+    background-color: #0e0a05;
+    background-image: url('../img/cat-calor-v3.jpg');
+    background-size: cover;
+    background-position: center center;
+    filter: brightness(1) saturate(0.8);
+    opacity: 0.6;
+}
+/* Bloques de pared industriales */
+.trocha-categoria-card--calor::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 39px,
+            rgba(255,120,30,0.04) 39px,
+            rgba(255,120,30,0.04) 40px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 79px,
+            rgba(255,120,30,0.03) 79px,
+            rgba(255,120,30,0.03) 80px
+        );
+    pointer-events: none;
+}
+.trocha-categoria-card--calor .trocha-categoria-card__title {
+    color: #ffe8c0;
+    text-shadow:
+        0 0 30px rgba(255,140,20,0.35),
+        0 2px 20px rgba(0,0,0,0.9);
+}
+.trocha-categoria-card--calor .trocha-categoria-card__stamp {
+    color: #ff9a3c;
+    border-color: rgba(255,140,30,0.5);
+    text-shadow: 0 0 10px rgba(255,120,0,0.5);
+}
+.trocha-categoria-card--calor .trocha-cat-cta {
+    color: #ff9a3c;
+}
+
+/* ---- ESTILO: pecho gangster años 80 Los Ángeles, líneas largas y afiladas ---- */
+.trocha-cat-bg--estilo {
+    background-color: #050508;
+    background-image: url('../img/cat-estilo.jpg');
+    background-size: cover;
+    background-position: center;
+}
+/* Líneas afiladas verticales — estilo pluma chicano */
+.trocha-categoria-card--estilo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+        repeating-linear-gradient(
+            -75deg,
+            transparent,
+            transparent 14px,
+            rgba(180,160,255,0.018) 14px,
+            rgba(180,160,255,0.018) 15px
+        );
+    pointer-events: none;
+}
+.trocha-categoria-card--estilo .trocha-categoria-card__title {
+    color: #e8e0ff;
+    text-shadow:
+        0 0 30px rgba(140,100,255,0.3),
+        0 2px 20px rgba(0,0,0,0.9),
+        0 0 2px rgba(255,255,255,0.3);
+    letter-spacing: 0.12em;
+}
+.trocha-categoria-card--estilo .trocha-categoria-card__stamp {
+    color: #b8a0ff;
+    border-color: rgba(160,120,255,0.4);
+    text-shadow: 0 0 10px rgba(140,100,255,0.5);
+}
+.trocha-categoria-card--estilo .trocha-cat-cta {
+    color: #b8a0ff;
+}
+
+/* Separador vertical entre tarjetas */
+.trocha-categoria-card + .trocha-categoria-card {
+    border-left: 1px solid rgba(255,255,255,0.04);
+}
+
+@media (max-width: 900px) {
+    .trocha-categorias-grid {
+        grid-template-columns: 1fr;
+    }
+    .trocha-categoria-card {
+        min-height: 50vh;
+    }
+    .trocha-categoria-card + .trocha-categoria-card {
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,0.04);
+    }
+}
+
+

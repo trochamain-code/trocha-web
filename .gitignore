@@ -1,0 +1,18 @@
+# Node
+node_modules/
+
+# Cache y logs
+*.log
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+
+# Build artifacts
+*.min.css.map
+*.min.js.map

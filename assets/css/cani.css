@@ -1,0 +1,2798 @@
+/* ============================================================
+   TROCHA — MANHUNT
+   Surveillance / CCTV / Industrial aesthetic
+   Black · Red · Grain · Scanlines · Static
+   ============================================================ */
+
+:root {
+    --dark: #0B0B0D;
+    --dark2: #111114;
+    --light: #1A1A1E;
+    --light2: #222228;
+    --accent: #C4A000;
+    --accent-glow: #E0C000;
+    --text: #C8C8CC;
+    --text-sub: #808088;
+    --text-dim: #505058;
+    --border: #1A1A1E;
+}
+
+/* --- SCANLINES (body overlay) ------------------------------- */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 999998;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.08) 0px,
+        rgba(0,0,0,0.08) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+}
+
+/* --- CUSTOM SCROLLBAR -------------------------------------- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--light2); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+* { scrollbar-width: thin; scrollbar-color: var(--light2) var(--dark); }
+
+/* --- RESET ------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+
+/* --- BODY -------------------------------------------------- */
+html {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    max-width: 100%;
+}
+/* Never let media or embeds force the page wider than the screen */
+img, video, iframe, svg, canvas {
+    max-width: 100%;
+}
+
+/* --- TYPOGRAPHY -------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: Impact, 'Arial Black', 'Franklin Gothic Heavy', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.2;
+}
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.1s;
+}
+a:hover { color: var(--accent-glow); }
+
+/* --- LAYOUT ------------------------------------------------ */
+.trocha-body-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    background: var(--dark2);
+    min-height: 100vh;
+    position: relative;
+}
+.trocha-body-grid--no-sidebar {
+    grid-template-columns: 1fr;
+}
+
+/* ============================================================
+   BANNER — SURVEILLANCE HEADER
+   ============================================================ */
+.trocha-top-banner {
+    background: var(--dark);
+    border-bottom: 2px solid var(--accent);
+    text-align: center;
+    padding: 1rem 1rem 1.1rem;
+    position: relative;
+    overflow: hidden;
+}
+.trocha-top-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 3px,
+        rgba(196,160,0,0.04) 3px,
+        rgba(196,160,0,0.04) 4px
+    );
+    pointer-events: none;
+}
+/* Brand: "La Trocha" name (60% opacity) with logo behind it */
+.trocha-brand {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    margin-bottom: 0.35rem;
+}
+.trocha-brand__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+}
+.trocha-brand__name {
+    position: relative;
+    z-index: 1;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.6;
+    text-indent: 0.35em;
+}
+.trocha-top-banner h1 {
+    position: relative;
+    z-index: 1;
+    font-size: 3.5rem;
+    color: var(--text);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.25rem;
+    text-shadow: 0 0 20px var(--accent), 0 0 60px var(--accent);
+}
+.trocha-top-banner .sub {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+.trocha-top-banner .accent-line {
+    width: 80px;
+    height: 2px;
+    background: var(--accent);
+    margin: 0.75rem auto 0;
+    box-shadow: 0 0 10px var(--accent);
+}
+
+/* REC indicator (CCTV recording dot) */
+.trocha-rec {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.55rem;
+    font-family: 'Courier New', monospace;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: manhunt-flicker 2s step-end infinite;
+}
+.trocha-rec::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    animation: manhunt-pulse 1.5s ease-in-out infinite;
+}
+
+/* --- TOOLBAR ----------------------------------------------- */
+.trocha-toolbar {
+    position: relative;
+    background: #050506;
+    border-bottom: 1px solid var(--border);
+    padding: 0.35rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+    font-family: 'Courier New', monospace;
+}
+/* Full-width menu bar pinned to the very top of every page */
+.trocha-toolbar--top {
+    position: sticky;
+    top: 0;
+    z-index: 100001;
+    width: 100%;
+    border-top: 2px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
+    padding-left: 7rem;  /* room for the back button pinned at far left */
+    padding-right: 9rem; /* room for the cart pinned at far right */
+}
+.trocha-toolbar a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    border-right: 1px solid var(--border);
+    transition: color 0.1s;
+}
+.trocha-toolbar a:last-child { border-right: none; }
+.trocha-toolbar a:hover { color: var(--accent); }
+.trocha-toolbar__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.trocha-toolbar a.trocha-toolbar__home,
+.trocha-toolbar a.trocha-toolbar__back {
+    color: var(--accent) !important;
+    border: 1px solid var(--accent) !important;
+    border-radius: 2px;
+}
+.trocha-toolbar a.trocha-toolbar__home { margin-right: 0.4rem; }
+.trocha-toolbar a.trocha-toolbar__home:hover,
+.trocha-toolbar a.trocha-toolbar__back:hover {
+    background: var(--accent);
+    color: var(--dark) !important;
+}
+/* Back button pinned to the far left of the top menu bar */
+.trocha-toolbar__left {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+/* Cart pinned to the far right of the top menu bar */
+.trocha-toolbar__cart {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+.trocha-toolbar__cart .trocha-cart__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--accent) !important;
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    padding: 0.2rem 0.6rem;
+    transition: all 0.1s;
+}
+.trocha-toolbar__cart .trocha-cart__link:hover {
+    background: var(--accent);
+    color: var(--dark) !important;
+}
+.trocha-toolbar__cart .trocha-cart__icon { font-size: 0.85rem; line-height: 1; }
+.trocha-toolbar__cart .trocha-cart__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.25rem;
+    font-size: 0.6rem;
+    color: var(--dark);
+    background: var(--accent);
+    border-radius: 2px;
+}
+.trocha-toolbar__cart .trocha-cart__link:hover .trocha-cart__count {
+    background: var(--dark);
+    color: var(--accent);
+}
+
+/* ============================================================
+   MARQUEE — SURVEILLANCE FEED TEXT
+   ============================================================ */
+.trocha-marquee {
+    grid-column: 1 / -1;
+    background: #050506;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0.4rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.trocha-marquee span {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    padding: 0 2rem;
+    animation: trocha-scroll 45s linear infinite;
+    text-transform: uppercase;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.trocha-sidebar {
+    background: #08080A;
+    border-right: 1px solid var(--border);
+    padding: 1rem;
+    font-size: 0.8rem;
+}
+.trocha-sidebar-box {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    padding: 0.65rem;
+    margin-bottom: 0.65rem;
+    position: relative;
+}
+.trocha-sidebar-box h3 {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.4rem;
+}
+
+/* Counter */
+.trocha-counter {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: var(--accent);
+    background: #050506;
+    border: 1px solid var(--light2);
+    padding: 0.35rem 0.5rem;
+    letter-spacing: 2px;
+    text-align: center;
+}
+.trocha-counter-label {
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Music player */
+.trocha-music-player {
+    background: #050506;
+    border: 1px solid var(--light2);
+    padding: 0.5rem;
+}
+.trocha-music-player .player-title {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    margin-bottom: 0.35rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+.trocha-music-player .player-bar {
+    height: 3px;
+    background: var(--light2);
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+.trocha-music-player .player-bar-inner {
+    height: 100%;
+    width: 60%;
+    background: var(--accent);
+    animation: manhunt-equalizer 1.8s ease-in-out infinite;
+}
+.trocha-music-player .player-toggle {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    text-align: center;
+    font-family: 'Courier New', monospace;
+}
+.trocha-music-player .player-toggle a {
+    color: var(--accent);
+    font-size: 0.6rem;
+}
+
+/* Guestbook mini */
+.trocha-guestbook-mini .gb-entry {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.65rem;
+    color: var(--text-sub);
+    line-height: 1.5;
+}
+.trocha-guestbook-mini .gb-entry:last-child { border-bottom: none; }
+.trocha-guestbook-mini .gb-name { color: var(--accent); }
+.trocha-guestbook-mini .gb-date { color: var(--text-dim); font-size: 0.55rem; }
+.trocha-guestbook-link {
+    font-size: 0.6rem;
+    color: var(--accent);
+    display: block;
+    text-align: center;
+    margin-top: 0.35rem;
+    letter-spacing: 0.1em;
+    font-family: 'Courier New', monospace;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.trocha-main-content {
+    padding: 1.5rem;
+    min-height: 500px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.trocha-hero {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: #050506;
+    border: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+.trocha-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(196,160,0,0.03) 2px,
+        rgba(196,160,0,0.03) 3px
+    );
+    pointer-events: none;
+}
+.trocha-hero .accent-bar {
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    margin: 0 auto 1rem;
+    box-shadow: 0 0 8px var(--accent);
+}
+.trocha-hero h2 {
+    font-size: 2.2rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 30px rgba(196,160,0,0.3);
+}
+.trocha-hero p {
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.6;
+    font-family: 'Courier New', monospace;
+}
+.trocha-hero .hero-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+.trocha-btn {
+    display: inline-block;
+    font-family: Impact, 'Arial Black', 'Franklin Gothic Heavy', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    padding: 0.6rem 1.5rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--light2);
+    transition: all 0.15s;
+    position: relative;
+}
+.trocha-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 15px rgba(196,160,0,0.25);
+}
+.trocha-btn--primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--dark);
+}
+.trocha-btn--primary:hover {
+    background: transparent;
+    color: var(--accent);
+}
+.trocha-btn--small { font-size: 0.7rem; padding: 0.4rem 1rem; }
+.trocha-btn--full { width: 100%; }
+.trocha-btn--lg { font-size: 0.9rem; padding: 0.75rem 2rem; }
+
+/* ============================================================
+   PRODUCTOS
+   ============================================================ */
+.trocha-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+.trocha-product-card {
+    background: #08080A;
+    border: 1px solid var(--border);
+    position: relative;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+.trocha-product-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(196,160,0,0.12);
+}
+
+.trocha-product-card__stamp {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 2;
+    font-family: 'Courier New', monospace;
+    font-size: 0.5rem;
+    color: var(--accent);
+    background: var(--dark);
+    border: 1px solid var(--accent);
+    padding: 0.15rem 0.35rem;
+    letter-spacing: 0.1em;
+}
+.trocha-product-card__image {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.trocha-product-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.trocha-product-card__body {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+}
+.trocha-product-card__title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+}
+.trocha-product-card__title a { color: inherit; }
+.trocha-product-card__title a:hover { color: var(--accent); }
+.trocha-product-card__price {
+    font-size: 0.9rem;
+    color: var(--accent);
+}
+
+/* --- ADD TO CART ------------------------------------------- */
+.trocha-add-to-cart-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+}
+.trocha-size-select {
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    background: #050506;
+    border: 1px solid var(--light2);
+    color: var(--text);
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+    width: 100%;
+    appearance: none;
+}
+.trocha-size-select:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+/* ============================================================
+   SINGLE PRODUCT
+   ============================================================ */
+.trocha-single-product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+.trocha-single-product__gallery {
+    border: 1px solid var(--border);
+    background: var(--dark);
+}
+.trocha-single-product__meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    font-family: 'Courier New', monospace;
+}
+.trocha-single-product__title {
+    font-size: 2rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+.trocha-single-product__price {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+.trocha-single-product__description { color: var(--text-sub); margin-bottom: 1rem; line-height: 1.6; font-size: 0.85rem; }
+
+.trocha-single-product .single_add_to_cart_button {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1rem;
+    padding: 0.65rem 2rem;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--dark);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.15s;
+}
+.trocha-single-product .single_add_to_cart_button:hover {
+    background: transparent;
+    color: var(--accent);
+}
+.trocha-single-product__tabs {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+}
+.trocha-single-product__tabs .woocommerce-tabs ul.tabs {
+    display: flex;
+    list-style: none;
+    border-bottom: 1px solid var(--border);
+}
+.trocha-single-product__tabs .woocommerce-tabs ul.tabs li a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+}
+.trocha-single-product__tabs .woocommerce-tabs ul.tabs li.active a {
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent);
+    margin-bottom: -1px;
+}
+
+/* ============================================================
+   CART / CHECKOUT
+   ============================================================ */
+.trocha-order-summary {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #08080A;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+}
+.trocha-cart-empty {
+    text-align: center;
+    padding: 3rem 0;
+}
+.trocha-order-summary__items {
+    border-top: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+}
+.trocha-order-item {
+    display: grid;
+    grid-template-columns: 50px 1fr auto auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+}
+.trocha-order-item__image img {
+    width: 50px; height: 50px; object-fit: cover;
+}
+.trocha-order-item__info { display: flex; flex-direction: column; gap: 0.1rem; }
+.trocha-order-item__name { font-size: 0.85rem; color: var(--text); }
+.trocha-order-item__meta { font-size: 0.6rem; color: var(--text-dim); font-family: 'Courier New', monospace; }
+.trocha-order-item__qty { font-size: 0.6rem; color: var(--text-dim); font-family: 'Courier New', monospace; }
+.trocha-order-item__price { font-family: Impact, 'Arial Black', sans-serif; font-size: 0.85rem; color: var(--accent); }
+.trocha-order-item__remove-link { font-size: 0.7rem; color: var(--text-dim); }
+.trocha-order-item__remove-link:hover { color: var(--accent); }
+
+.trocha-order-summary__totals {
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+.trocha-order-total-row {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; color: var(--text-sub);
+    padding: 0.3rem 0;
+    font-family: 'Courier New', monospace;
+}
+.trocha-order-total-row--final {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1rem;
+    color: var(--accent);
+    border-top: 1px solid var(--border);
+    margin-top: 0.3rem;
+    padding-top: 0.5rem;
+}
+.trocha-order-summary__trust {
+    display: flex; justify-content: center; gap: 1rem;
+    font-size: 0.5rem; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+    font-family: 'Courier New', monospace;
+}
+.trocha-order-summary__back {
+    font-size: 0.65rem; color: var(--text-dim);
+    font-family: 'Courier New', monospace;
+}
+.trocha-order-summary__back:hover { color: var(--accent); }
+
+/* --- CHECKOUT ---------------------------------------------- */
+.trocha-checkout-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+.trocha-checkout-section__title {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+}
+.trocha-checkout-form input,
+.trocha-checkout-form select,
+.trocha-checkout-form textarea {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    background: #050506;
+    border: 1px solid var(--light2);
+    color: var(--text);
+    padding: 0.45rem 0.6rem;
+    width: 100%;
+}
+.trocha-checkout-form input:focus,
+.trocha-checkout-form select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 8px rgba(196,160,0,0.18); }
+.trocha-checkout-form label {
+    display: block; font-size: 0.7rem;
+    color: var(--text-dim); margin-bottom: 0.2rem;
+}
+.trocha-order-review {
+    border: 1px solid var(--border);
+    background: #08080A;
+}
+.trocha-order-review .shop_table { width: 100%; border-collapse: collapse; }
+.trocha-order-review .shop_table th,
+.trocha-order-review .shop_table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.75rem;
+}
+.trocha-order-review .shop_table th {
+    font-family: 'Courier New', monospace;
+    color: var(--accent);
+    font-weight: normal;
+    text-align: left;
+    letter-spacing: 0.1em;
+}
+.trocha-order-review .shop_table td { color: var(--text-sub); }
+.trocha-order-review .shop_table tfoot .order-total th,
+.trocha-order-review .shop_table tfoot .order-total td { color: var(--accent); }
+
+.trocha-order-review #payment { padding: 0.75rem; }
+.trocha-order-review #place_order {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1.1rem;
+    padding: 0.75rem 2rem;
+    width: 100%;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--dark);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.15s;
+}
+.trocha-order-review #place_order:hover {
+    background: transparent;
+    color: var(--accent);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.trocha-footer {
+    grid-column: 1 / -1;
+    background: #050506;
+    border-top: 2px solid var(--accent);
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+}
+.trocha-footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 15px var(--accent);
+}
+.trocha-footer__inner {
+    max-width: 800px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    text-align: center;
+}
+.trocha-footer__section h4 {
+    font-size: 0.65rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.15em;
+    font-family: 'Courier New', monospace;
+}
+.trocha-footer__list { list-style: none; }
+.trocha-footer__list li { margin-bottom: 0.25rem; }
+.trocha-footer__list a {
+    color: var(--text-dim);
+    font-size: 0.7rem;
+}
+.trocha-footer__list a:hover { color: var(--accent); }
+.trocha-footer__logo {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1.5rem;
+    color: var(--text);
+    display: block;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: color 0.1s;
+}
+.trocha-footer__logo:hover { color: var(--accent); }
+.trocha-footer__text { color: var(--text-dim); font-size: 0.7rem; }
+.trocha-footer__micro { color: var(--text-dim); font-size: 0.6rem; margin-top: 1rem; }
+
+/* ============================================================
+   SECCIONES GENÉRICAS
+   ============================================================ */
+.trocha-section { padding: 4rem 0; border-bottom: 1px solid rgba(196,154,60,0.08); }
+.trocha-section:last-child { border-bottom: none; }
+.trocha-section--brand-story { background: #080c14; }
+.trocha-container { max-width: 100%; margin: 0 auto; padding: 0 1.5rem; }
+.trocha-container--narrow { max-width: 600px; }
+
+.trocha-page-title {
+    font-size: 2rem;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.12em;
+}
+.trocha-page-subtitle {
+    text-align: center;
+    color: var(--text-sub);
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+}
+
+/* --- CATEGORIAS PIES --------------------------------------- */
+.trocha-categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+.trocha-categoria-card {
+    background: #08080A;
+    border: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+}
+.trocha-categoria-card:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(196,160,0,0.18); }
+.trocha-categoria-card__title {
+    font-size: 1.5rem;
+    color: var(--text);
+}
+.trocha-categoria-card__stamp {
+    font-size: 0.55rem;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.2rem 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: 'Courier New', monospace;
+}
+.trocha-categoria-card__desc { font-size: 0.75rem; color: var(--text-sub); line-height: 1.5; font-family: 'Courier New', monospace; }
+
+/* --- STATIC INTERFERENCE ----------------------------------- */
+.trocha-static {
+    position: relative;
+    overflow: hidden;
+}
+.trocha-static::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* --- WOOCOMMERCE MESSAGES ---------------------------------- */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+    background: #08080A !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    padding: 0.75rem !important;
+    margin-bottom: 1rem !important;
+    font-size: 0.75rem !important;
+}
+.woocommerce-message::before,
+.woocommerce-info::before { color: var(--accent) !important; }
+.woocommerce-error::before { color: var(--accent) !important; }
+.woocommerce-message a, .woocommerce-info a { color: var(--accent) !important; }
+
+/* --- PAGINATION -------------------------------------------- */
+.woocommerce-pagination,
+.trocha-pagination { margin-top: 2rem; text-align: center; }
+.woocommerce-pagination ul.page-numbers,
+.trocha-pagination .page-numbers {
+    display: inline-flex; gap: 0.25rem; list-style: none;
+}
+.woocommerce-pagination ul.page-numbers li a,
+.woocommerce-pagination ul.page-numbers li span,
+.trocha-pagination a, .trocha-pagination span {
+    display: block; padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    transition: all 0.15s;
+}
+.woocommerce-pagination ul.page-numbers li a:hover,
+.trocha-pagination a:hover { border-color: var(--accent); color: var(--accent); }
+.woocommerce-pagination ul.page-numbers li span.current,
+.trocha-pagination .current {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--dark);
+}
+
+/* ============================================================
+   ANIMACIONES — MANHUNT
+   ============================================================ */
+@keyframes trocha-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+@keyframes manhunt-equalizer {
+    0%, 100% { width: 25%; }
+    25% { width: 70%; }
+    50% { width: 40%; }
+    75% { width: 85%; }
+}
+@keyframes manhunt-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+@keyframes manhunt-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* VHS tracking / static glitch */
+@keyframes manhunt-glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(1px, -1px); }
+    60% { transform: translate(-1px, -1px); }
+    80% { transform: translate(1px, 1px); }
+    100% { transform: translate(0); }
+}
+.trocha-glitch:hover {
+    animation: manhunt-glitch 0.3s ease-in-out 2;
+}
+
+/* ============================================================
+   ELEMENTOR CONTENT — keep inside the page on every screen
+   ============================================================ */
+.trocha-elementor-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.trocha-elementor-content img,
+.trocha-elementor-content video,
+.trocha-elementor-content iframe { max-width: 100%; height: auto; }
+
+/* ============================================================
+   MOBILE BURGER + DRAWER MENU
+   ============================================================ */
+.trocha-burger {
+    display: none;             /* shown only on mobile via media query */
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 30px;
+    height: 26px;
+    padding: 4px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    cursor: pointer;
+}
+.trocha-burger span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--accent);
+    transition: transform 0.2s, opacity 0.2s;
+}
+.trocha-burger.is-active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.trocha-burger.is-active span:nth-child(2) { opacity: 0; }
+.trocha-burger.is-active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.trocha-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s, visibility 0.25s;
+    z-index: 100100;
+}
+.trocha-drawer-overlay.is-open { opacity: 1; visibility: visible; }
+
+.trocha-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 82%;
+    max-width: 320px;
+    height: 100%;
+    background: #08080A;
+    border-right: 2px solid var(--accent);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.6);
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    z-index: 100101;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.trocha-drawer.is-open { transform: translateX(0); }
+.trocha-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 2px solid var(--accent);
+}
+.trocha-drawer__title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--text);
+}
+.trocha-drawer__close {
+    background: transparent;
+    border: 0;
+    color: var(--accent);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.25rem;
+}
+.trocha-drawer__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    flex: 1;
+}
+.trocha-drawer__list li { border-bottom: 1px solid var(--border); }
+.trocha-drawer__list a {
+    display: block;
+    padding: 0.95rem 1.25rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+    transition: background 0.12s, color 0.12s;
+}
+.trocha-drawer__list a:hover,
+.trocha-drawer__list a:active { background: var(--accent); color: var(--dark); }
+.trocha-drawer__cart {
+    display: block;
+    margin: 1rem 1.25rem;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--dark);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    text-decoration: none;
+}
+.trocha-drawer__cart:hover { background: transparent; color: var(--accent); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+    .trocha-body-grid { grid-template-columns: 1fr; }
+    .trocha-sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+    .trocha-single-product { grid-template-columns: 1fr; }
+    .trocha-categorias-grid { grid-template-columns: 1fr; }
+    .trocha-checkout-fields { grid-template-columns: 1fr; }
+    .trocha-footer__inner { grid-template-columns: 1fr; }
+}
+
+/* --- Phone: hamburger drawer replaces the inline nav --------- */
+@media (max-width: 768px) {
+    /* Hide the inline desktop nav, show the burger */
+    .trocha-toolbar__nav { display: none !important; }
+    .trocha-burger { display: flex; }
+
+    .trocha-toolbar--top {
+        padding-left: 0.6rem;
+        padding-right: 0.6rem;
+        justify-content: space-between;
+    }
+    .trocha-toolbar__left {
+        position: static;
+        transform: none;
+        gap: 0.5rem;
+    }
+    .trocha-toolbar__cart {
+        position: static;
+        transform: none;
+    }
+    .trocha-toolbar__cart .trocha-cart__label { display: none; }
+    .trocha-toolbar__back { font-size: 0.6rem; padding: 0.25rem 0.45rem; }
+
+    /* Banner sizing on phones */
+    .trocha-top-banner h1 { font-size: 2.4rem; letter-spacing: 0.12em; }
+    .trocha-brand__name { font-size: 0.95rem; letter-spacing: 0.25em; }
+    .trocha-top-banner .sub { font-size: 0.62rem; letter-spacing: 0.18em; }
+    .trocha-rec { font-size: 0.5rem; }
+
+    /* --- Stop ALL horizontal overflow on phones ------------- */
+    .trocha-body-grid,
+    .trocha-main-content,
+    .trocha-section,
+    .trocha-container {
+        max-width: 100% !important;
+        width: 100% !important;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+    .trocha-main-content { padding: 1rem; }
+    .trocha-container { padding: 0 0.85rem; }
+    .trocha-page-title { font-size: 1.5rem; word-break: break-word; }
+
+    /* Elementor-built sections must fit the viewport, never use 100vw */
+    .trocha-elementor-content .elementor,
+    .trocha-elementor-content .elementor-section,
+    .trocha-elementor-content .e-con,
+    .trocha-elementor-content .e-con-inner,
+    .trocha-elementor-content .e-con-boxed,
+    .trocha-elementor-content .elementor-container,
+    .trocha-elementor-content .elementor-widget-wrap,
+    .trocha-elementor-content .elementor-column,
+    .trocha-elementor-content .elementor-widget,
+    .trocha-elementor-content [data-element_type="container"] {
+        max-width: 100% !important;
+        width: 100% !important;
+        flex-wrap: wrap !important;
+    }
+    .trocha-elementor-content [style*="100vw"],
+    .trocha-elementor-content [style*="100vw"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        left: 0 !important;
+    }
+    /* Elementor grid/flex children stack on phones */
+    .trocha-elementor-content .e-grid,
+    .trocha-elementor-content .e-flex { flex-direction: column !important; }
+    .trocha-elementor-content .e-child { width: 100% !important; max-width: 100% !important; }
+
+    /* Hero + section text fit */
+    .trocha-hero { padding: 2rem 1rem; width: 100%; max-width: 100%; }
+    .trocha-hero h2 { font-size: 1.4rem; word-break: break-word; }
+    .trocha-hero p { font-size: 0.78rem; }
+    .trocha-hero .hero-actions { flex-direction: column; }
+    .trocha-hero .hero-actions .trocha-btn { width: 100%; }
+
+    /* Marquee: keep it from forcing width */
+    .trocha-marquee { max-width: 100%; overflow: hidden; }
+
+    /* Products grid: 2 columns on phones */
+    .trocha-products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+
+    /* Order summary / checkout full width */
+    .trocha-order-summary { padding: 1rem; max-width: 100%; }
+    .woocommerce-checkout { padding: 0 0.5rem 2rem; max-width: 100%; }
+
+    /* Footer fits */
+    .trocha-footer { padding: 1.5rem 1rem; }
+
+    /* Long words / urls don't push width */
+    .trocha-main-content p,
+    .trocha-main-content h1,
+    .trocha-main-content h2,
+    .trocha-main-content h3 { overflow-wrap: break-word; word-wrap: break-word; }
+}
+
+@media (max-width: 420px) {
+    .trocha-top-banner h1 { font-size: 1.9rem; }
+    .trocha-products-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   WPFORMS — Contact form (dark Manhunt theme)
+   ============================================================ */
+.wpforms-container {
+    max-width: 640px;
+    margin: 0 auto !important;
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem !important;
+}
+.wpforms-container .wpforms-field { padding: 0 0 1.1rem !important; }
+.wpforms-container .wpforms-field-label,
+.wpforms-container .wpforms-field-sublabel {
+    font-family: 'Courier New', monospace !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-sub) !important;
+    font-weight: 400 !important;
+    margin-bottom: 0.35rem !important;
+}
+.wpforms-container .wpforms-required-label,
+.wpforms-container .wpforms-field-label .wpforms-required-label { color: var(--accent) !important; }
+
+.wpforms-container input[type="text"],
+.wpforms-container input[type="email"],
+.wpforms-container input[type="tel"],
+.wpforms-container input[type="url"],
+.wpforms-container textarea,
+.wpforms-container select {
+    width: 100% !important;
+    background: var(--dark) !important;
+    border: 1px solid var(--light2) !important;
+    color: var(--text) !important;
+    font-family: 'Courier New', monospace !important;
+    font-size: 0.85rem !important;
+    padding: 0.6rem 0.7rem !important;
+    border-radius: 3px !important;
+    box-shadow: none !important;
+    transition: border-color 0.12s, box-shadow 0.12s;
+}
+.wpforms-container textarea { min-height: 120px; line-height: 1.5; }
+.wpforms-container input::placeholder,
+.wpforms-container textarea::placeholder { color: var(--text-dim) !important; opacity: 1; }
+.wpforms-container input:focus,
+.wpforms-container textarea:focus,
+.wpforms-container select:focus {
+    border-color: var(--accent) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(196,160,0,0.18) !important;
+}
+
+/* Name field (Nombre / Apellidos) — two equal columns, full row width */
+.wpforms-container .wpforms-field-name fieldset { border: 0; margin: 0; padding: 0; }
+.wpforms-container .wpforms-field-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 0.85rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+}
+.wpforms-container .wpforms-field-row .wpforms-field-row-block,
+.wpforms-container .wpforms-field-row .wpforms-one-half,
+.wpforms-container .wpforms-field-row .wpforms-first {
+    flex: 1 1 50% !important;
+    width: 50% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    box-sizing: border-box;
+}
+.wpforms-container .wpforms-field-row .wpforms-field-row-block input { width: 100% !important; }
+
+/* Hide the redundant sublabels ("Nombre" / "Apellidos") under the inputs —
+   the placeholders already label them, the field label is shown above. */
+.wpforms-container .wpforms-field-name .wpforms-field-sublabel { display: none !important; }
+
+/* Submit button */
+.wpforms-container .wpforms-submit-container { padding-top: 0.25rem !important; }
+.wpforms-container button[type="submit"],
+.wpforms-container .wpforms-submit {
+    font-family: Impact, 'Arial Black', sans-serif !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    background: var(--accent) !important;
+    color: var(--dark) !important;
+    border: 1px solid var(--accent) !important;
+    border-radius: 3px !important;
+    padding: 0.75rem 2rem !important;
+    cursor: pointer !important;
+    transition: all 0.15s !important;
+    width: 100%;
+}
+.wpforms-container button[type="submit"]:hover,
+.wpforms-container .wpforms-submit:hover {
+    background: transparent !important;
+    color: var(--accent) !important;
+    box-shadow: 0 0 16px rgba(196,160,0,0.25) !important;
+}
+
+/* Validation + confirmation messages */
+.wpforms-container label.wpforms-error {
+    color: #d98a8a !important;
+    font-family: 'Courier New', monospace !important;
+    font-size: 0.7rem !important;
+}
+.wpforms-container input.wpforms-error,
+.wpforms-container textarea.wpforms-error { border-color: #8a3a3a !important; }
+.wpforms-confirmation-container-full,
+div.wpforms-confirmation-container-full {
+    background: var(--dark2) !important;
+    border: 1px solid var(--border) !important;
+    border-left: 3px solid var(--accent) !important;
+    color: var(--text) !important;
+    border-radius: 3px;
+    padding: 1rem 1.25rem !important;
+}
+.wpforms-confirmation-container-full p { color: var(--text) !important; margin: 0; }
+
+/* ============================================================
+   UI/UX ENHANCEMENTS — animations, motion, micro-interactions
+   ============================================================ */
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Page-load fade-in (only when JS is active; safe auto-reveal fallback) */
+html.js body {
+    opacity: 0;
+    animation: trocha-page-in 0.6s ease forwards;
+    animation-delay: 0.05s;
+}
+html.js body.trocha-loaded { opacity: 1; animation: none; }
+@keyframes trocha-page-in { to { opacity: 1; } }
+
+/* ---- Scroll reveal --------------------------------------- */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+.reveal.reveal-in {
+    opacity: 1;
+    transform: none;
+}
+
+/* ---- Scroll progress bar --------------------------------- */
+.trocha-scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+    box-shadow: 0 0 10px var(--accent);
+    z-index: 100200;
+    transition: width 0.08s linear;
+}
+
+/* ---- Back-to-top button ---------------------------------- */
+.trocha-to-top {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark2);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s, background 0.15s, color 0.15s;
+    z-index: 100050;
+}
+.trocha-to-top.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+.trocha-to-top:hover {
+    background: var(--accent);
+    color: var(--dark);
+    box-shadow: 0 0 18px rgba(196,160,0,0.4);
+}
+
+/* ---- Button: shine sweep + ripple + press ---------------- */
+.trocha-btn {
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.18s, color 0.18s, background 0.18s, box-shadow 0.18s;
+}
+.trocha-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.5s ease;
+    pointer-events: none;
+}
+.trocha-btn:hover::after { left: 130%; }
+.trocha-btn:hover { transform: translateY(-2px); }
+.trocha-btn:active { transform: translateY(0) scale(0.98); }
+
+.trocha-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    animation: trocha-ripple 0.6s ease-out;
+    pointer-events: none;
+}
+@keyframes trocha-ripple {
+    to { transform: scale(2.6); opacity: 0; }
+}
+
+/* ---- Product cards: lift + image zoom + sheen ------------ */
+.trocha-product-card {
+    transition: transform 0.25s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.25s, box-shadow 0.25s;
+    transform-style: preserve-3d;
+}
+.trocha-product-card:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 22px rgba(196,160,0,0.18);
+}
+.trocha-product-card__image img {
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+}
+.trocha-product-card:hover .trocha-product-card__image img {
+    transform: scale(1.07);
+    filter: brightness(1.08) contrast(1.05);
+}
+.trocha-product-card__stamp { transition: transform 0.25s; }
+
+/* ---- Category cards: lift + accent wash ------------------ */
+.trocha-categoria-card {
+    transition: transform 0.25s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.25s, box-shadow 0.25s;
+}
+.trocha-categoria-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 120% at 50% 0%, rgba(196,160,0,0.10), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+.trocha-categoria-card:hover::after { opacity: 1; }
+.trocha-categoria-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.5), 0 0 24px rgba(196,160,0,0.18);
+}
+.trocha-categoria-card__title { transition: transform 0.25s, color 0.25s; }
+.trocha-categoria-card:hover .trocha-categoria-card__title { color: var(--accent); transform: scale(1.04); }
+
+/* ---- Animated link underline (nav + footer) -------------- */
+.trocha-toolbar__nav a:not(.trocha-toolbar__home),
+.trocha-footer__list a {
+    position: relative;
+}
+.trocha-toolbar__nav a:not(.trocha-toolbar__home)::after,
+.trocha-footer__list a::after {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: -2px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+.trocha-footer__list a::after { left: 0; right: 0; }
+.trocha-toolbar__nav a:not(.trocha-toolbar__home):hover::after,
+.trocha-footer__list a:hover::after { transform: scaleX(1); }
+
+/* ---- Header shrink on scroll ----------------------------- */
+.trocha-toolbar--top {
+    transition: padding 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.trocha-toolbar--top.is-scrolled {
+    padding-top: 0.18rem;
+    padding-bottom: 0.18rem;
+    background: rgba(5,5,6,0.96);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+}
+
+/* ---- Hero entrance --------------------------------------- */
+.trocha-hero .accent-bar { transition: width 0.6s ease; }
+.trocha-hero.reveal-in h2 { animation: trocha-rise 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+.trocha-hero.reveal-in p { animation: trocha-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.12s both; }
+.trocha-hero.reveal-in .hero-actions { animation: trocha-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.24s both; }
+@keyframes trocha-rise {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ---- Section title: growing accent underline ------------- */
+.trocha-page-title { position: relative; }
+.trocha-page-title::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    margin: 0.5rem auto 0;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    transition: width 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s;
+}
+.trocha-page-title.reveal-in::after,
+.reveal-in .trocha-page-title::after { width: 54px; }
+
+/* ---- Cart bump on add ------------------------------------ */
+.cart-bump { animation: trocha-bump 0.5s ease; }
+@keyframes trocha-bump {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.18); }
+    60% { transform: scale(0.94); }
+    100% { transform: scale(1); }
+}
+.trocha-cart__link { transition: transform 0.18s, border-color 0.18s, color 0.18s, box-shadow 0.18s; }
+.trocha-cart__count { transition: transform 0.2s; }
+
+/* ---- Toast notification ---------------------------------- */
+.trocha-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translate(-50%, 24px);
+    background: var(--dark2);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-left: 4px solid var(--accent);
+    padding: 0.7rem 1.2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100300;
+    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.trocha-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---- Drawer: staggered link reveal ----------------------- */
+.trocha-drawer.is-open .trocha-drawer__list li {
+    animation: trocha-drawer-in 0.4s cubic-bezier(0.16,1,0.3,1) both;
+}
+.trocha-drawer.is-open .trocha-drawer__list li:nth-child(1) { animation-delay: 0.05s; }
+.trocha-drawer.is-open .trocha-drawer__list li:nth-child(2) { animation-delay: 0.10s; }
+.trocha-drawer.is-open .trocha-drawer__list li:nth-child(3) { animation-delay: 0.15s; }
+.trocha-drawer.is-open .trocha-drawer__list li:nth-child(4) { animation-delay: 0.20s; }
+.trocha-drawer.is-open .trocha-drawer__list li:nth-child(5) { animation-delay: 0.25s; }
+.trocha-drawer.is-open .trocha-drawer__list li:nth-child(6) { animation-delay: 0.30s; }
+.trocha-drawer.is-open .trocha-drawer__list li:nth-child(7) { animation-delay: 0.35s; }
+@keyframes trocha-drawer-in {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: none; }
+}
+.trocha-drawer { transition: transform 0.32s cubic-bezier(0.16,1,0.3,1); }
+
+/* ---- Inputs: focus glow lift ----------------------------- */
+.wpforms-container input:focus,
+.wpforms-container textarea:focus,
+.woocommerce-checkout .input-text:focus,
+.woocommerce-checkout textarea:focus,
+.trocha-size-select:focus {
+    transform: translateY(-1px);
+}
+
+/* ---- Generic link hover brightening ---------------------- */
+a { transition: color 0.15s ease; }
+
+/* ============================================================
+   ACCESSIBILITY — respect reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    body { opacity: 1 !important; }
+    .trocha-marquee span { animation: none !important; }
+}
+
+/* ============================================================
+   CATEGORY CARD BACKGROUNDS (frio / calor / estilo)
+   The page template renders <div class="trocha-cat-bg trocha-cat-bg--*">
+   inside each card. cani.css previously had no rules for these, so the
+   backgrounds appeared black. These rules restore the cover images.
+   ============================================================ */
+.trocha-categoria-card {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background image layer */
+.trocha-cat-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 1;
+    transition: transform 0.6s ease, opacity 0.4s ease;
+    filter: brightness(0.92) saturate(1);
+    z-index: 0;
+}
+.trocha-categoria-card:hover .trocha-cat-bg {
+    transform: scale(1.06);
+    filter: brightness(1.05) saturate(1.05);
+}
+
+/* Light overlay/gradient so the title/text stays readable
+   while the background image remains clearly visible. */
+.trocha-cat-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.75) 100%);
+    transition: background 0.5s ease;
+    z-index: 0;
+}
+.trocha-categoria-card:hover .trocha-cat-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* Keep the text content above the background layers */
+.trocha-categoria-card__inner {
+    position: relative;
+    z-index: 1;
+}
+
+/* The three category background images */
+.trocha-cat-bg--frio {
+    background-color: #0a0e1a;
+    background-image: url('../img/cat-frio.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(1.4) saturate(1.2) contrast(1.1);
+    opacity: 0.90;
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+.trocha-cat-bg--calor {
+    background-color: #0e0a05;
+    background-image: url('../img/cat-calor-v3.jpg');
+    background-size: cover;
+    background-position: center center;
+    filter: brightness(0.70) saturate(0.8);
+    opacity: 0.75;
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+.trocha-cat-bg--estilo {
+    background-color: #050508;
+    background-image: url('../img/cat-estilo-v2.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.70) saturate(0.8);
+    opacity: 0.75;
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+/* Hover: +15% brillo en la imagen de fondo */
+.trocha-categoria-card:hover .trocha-cat-bg--frio,
+.trocha-categoria-card:hover .trocha-cat-bg--calor,
+.trocha-categoria-card:hover .trocha-cat-bg--estilo {
+    filter: brightness(1.0) saturate(0.9);
+    transform: scale(1.06);
+}
+
+/* ============================================================
+   POLISH LAYER — elevate the streetwear identity (collections)
+   Keeps the dark/gold gritty look; adds craft details:
+   corner brackets, scanline sweep, index numbers, refined type.
+   ============================================================ */
+
+/* Roomier, more deliberate grid */
+.trocha-categorias-grid {
+    gap: 1.5rem;
+}
+
+/* Card frame: taller, sharper, layered */
+.trocha-categoria-card {
+    padding: 2.6rem 1.6rem 2.2rem;
+    min-height: 290px;
+    justify-content: center;
+    border-color: #232329;
+    background: #070709;
+    transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
+}
+.trocha-categoria-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.6), 0 0 28px rgba(196,160,0,0.22);
+}
+
+/* Corner brackets — stamped/registered streetwear detail */
+.trocha-categoria-card__inner::before,
+.trocha-categoria-card__inner::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--accent);
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+.trocha-categoria-card__inner::before {
+    top: 12px; left: 12px;
+    border-right: none; border-bottom: none;
+    transform: translate(6px, 6px);
+}
+.trocha-categoria-card__inner::after {
+    bottom: 12px; right: 12px;
+    border-left: none; border-top: none;
+    transform: translate(-6px, -6px);
+}
+.trocha-categoria-card:hover .trocha-categoria-card__inner::before,
+.trocha-categoria-card:hover .trocha-categoria-card__inner::after {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* Index number ( 01 / 02 / 03 ) — editorial / REC aesthetic */
+.trocha-categoria-card__inner {
+    counter-increment: trocha-cat;
+}
+.trocha-categorias-grid { counter-reset: trocha-cat; }
+.trocha-categoria-card__inner > .trocha-cat-index {
+    display: none; /* fallback if markup lacks it; we use ::before below */
+}
+.trocha-categoria-card .trocha-categoria-card__stamp::before {
+    content: '0' counter(trocha-cat) '  ';
+    color: var(--accent-glow);
+    opacity: 0.8;
+}
+
+/* Title: heavier presence + subtle glow on hover */
+.trocha-categoria-card__title {
+    font-size: 1.85rem;
+    letter-spacing: 0.06em;
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.35s ease;
+}
+.trocha-categoria-card:hover .trocha-categoria-card__title {
+    color: #fff;
+    text-shadow: 0 0 14px rgba(224,192,0,0.55), 0 0 32px rgba(196,160,0,0.35);
+    transform: scale(1.04);
+}
+
+/* Stamp pill: tighter, brighter on hover */
+.trocha-categoria-card__stamp {
+    background: rgba(196,160,0,0.06);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.trocha-categoria-card:hover .trocha-categoria-card__stamp {
+    background: rgba(196,160,0,0.14);
+    box-shadow: 0 0 10px rgba(196,160,0,0.25);
+}
+
+/* CTA: animated arrow that travels on hover */
+.trocha-cat-cta {
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    position: relative;
+    padding-bottom: 3px;
+}
+.trocha-cat-cta::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+}
+.trocha-categoria-card:hover .trocha-cat-cta { color: var(--accent-glow); }
+.trocha-categoria-card:hover .trocha-cat-cta::after { transform: scaleX(1); }
+
+/* Scanline sweep across the image on hover — the 'REC' signature */
+.trocha-categoria-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg,
+        transparent 0%,
+        rgba(224,192,0,0.0) 40%,
+        rgba(224,192,0,0.10) 50%,
+        rgba(224,192,0,0.0) 60%,
+        transparent 100%);
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+.trocha-categoria-card:hover::before {
+    transform: translateX(120%);
+}
+
+/* Section title polish: kicker tick + tighter subtitle */
+.trocha-page-title {
+    font-size: 2.4rem;
+    letter-spacing: 0.16em;
+}
+.trocha-page-subtitle {
+    letter-spacing: 0.22em;
+    opacity: 0.85;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .trocha-categoria-card,
+    .trocha-categoria-card::before,
+    .trocha-categoria-card__title { transition: none !important; }
+    .trocha-categoria-card:hover { transform: none; }
+}
+
+@media (max-width: 860px) {
+    .trocha-categorias-grid { grid-template-columns: 1fr; }
+    .trocha-categoria-card { min-height: 220px; }
+}
+
+/* ============================================================
+   SECCIÓN CAMINO PROPIO — brand story + product spotlight
+   (portado desde main.css que no carga)
+   ============================================================ */
+.trocha-section--brand-story {
+    position: relative;
+    overflow: hidden;
+}
+.trocha-section-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(6px) grayscale(0.7);
+    opacity: 0.07;
+    z-index: 0;
+    transform: scale(1.05);
+}
+.trocha-brand-story-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.trocha-brand-story__text {
+    padding: 2rem 0;
+}
+.trocha-product-spotlight {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 2rem 2rem;
+}
+.trocha-product-spotlight__light {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(ellipse at center, rgba(196,154,60,0.35) 0%, rgba(196,154,60,0.1) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+.trocha-product-spotlight__img-wrap {
+    position: relative;
+    z-index: 1;
+    width: 260px;
+    height: 320px;
+    overflow: hidden;
+    border: 1px solid rgba(196,154,60,0.2);
+    box-shadow: 0 0 40px rgba(196,154,60,0.15), 0 0 80px rgba(196,154,60,0.06), inset 0 0 30px rgba(0,0,0,0.7);
+}
+.trocha-product-spotlight__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.1) brightness(0.85);
+    transition: transform 0.5s ease;
+}
+.trocha-product-spotlight:hover .trocha-product-spotlight__img {
+    transform: scale(1.04);
+}
+.trocha-product-spotlight__label {
+    position: relative;
+    z-index: 1;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: #c49a3c;
+    border: 1px solid rgba(196,154,60,0.3);
+    padding: 0.25rem 0.75rem;
+    font-family: 'Courier New', monospace;
+}
+.trocha-product-spotlight__name {
+    position: relative;
+    z-index: 1;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    color: #d4cdc0;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(196,154,60,0.4);
+    line-height: 1.2;
+}
+.trocha-product-spotlight__name span {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: #8a7a6a;
+    font-family: 'Courier New', monospace;
+    margin-top: 0.25rem;
+    text-shadow: none;
+}
+@media (max-width: 900px) {
+    .trocha-brand-story-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .trocha-product-spotlight { max-width: 320px; margin: 0 auto; }
+}
+
+/* ============================================================
+   GALERÍA EMOCIONAL — ocultar modal y slides por defecto
+   ============================================================ */
+#trocha-gallery-modal,
+.trocha-gallery-modal {
+    display: none !important;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+}
+#trocha-gallery-modal.is-open,
+.trocha-gallery-modal.is-open {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+    align-items: center;
+    justify-content: center;
+}
+.trocha-gallery-slides {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.trocha-gallery-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+.trocha-gallery-slide.active { opacity: 1; }
+.trocha-gallery-slide__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+.trocha-gallery-slide__content { position: relative; z-index: 2; text-align: center; padding: 2rem; }
+.trocha-gallery-slide__label { font-family: Impact,'Arial Black',sans-serif; font-size: clamp(3rem,10vw,7rem); color: #fff; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; margin-bottom: 1rem; }
+.trocha-gallery-slide__sub { font-family: 'Courier New',monospace; font-size: 0.9rem; color: rgba(255,255,255,0.7); letter-spacing: 0.12em; }
+.trocha-gallery-slide__num { position: absolute; bottom: 1.5rem; right: 1.5rem; font-family: 'Courier New',monospace; font-size: 0.65rem; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; }
+.trocha-gallery-close { position: absolute; top: 1.5rem; right: 1.5rem; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 1.2rem; width: 2.5rem; height: 2.5rem; cursor: pointer; z-index: 100000; display: flex; align-items: center; justify-content: center; }
+.trocha-gallery-close:hover { border-color: var(--accent); color: var(--accent); }
+.trocha-gallery-slide__cta-title { font-family: Impact,'Arial Black',sans-serif; font-size: clamp(2rem,7vw,5rem); color: var(--accent); letter-spacing: 0.1em; margin-bottom: 1.5rem; }
+.trocha-gallery-product { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.trocha-gallery-product img { max-height: 120px; object-fit: contain; }
+.trocha-gallery-product__name { font-size: 0.85rem; color: #d0cabb; font-family: 'Courier New',monospace; }
+.trocha-gallery-product__price { color: var(--accent); font-family: 'Courier New',monospace; font-size: 0.9rem; margin-bottom: 0.5rem; }
+/* --- SECCIÓN MOOD: centrado --- */
+.trocha-mood-inner { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.trocha-mood-text { text-align: right; }
+.trocha-mood-phrases { justify-content: flex-end; }
+
+/* --- BOTÓN PLAY/STOP --- */
+.trocha-play-wrap { display: flex; justify-content: center; margin-top: 2.5rem; }
+.trocha-play-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    cursor: pointer;
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: border-color 0.4s, color 0.4s, background 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+.trocha-play-btn:hover { border-color: rgba(212,175,55,0.5); color: rgba(212,175,55,0.9); }
+.trocha-play-btn.is-playing { border-color: rgba(212,175,55,0.7); color: #D4AF37; background: rgba(212,175,55,0.05); }
+
+/* Iconos SVG — transición play↔stop */
+.trocha-play-btn__icon { width: 16px; height: 16px; position: relative; display: inline-flex; }
+.trocha-play-btn__icon svg { position: absolute; top: 0; left: 0; width: 16px; height: 16px; transition: opacity 0.4s, transform 0.4s; }
+.icon-play  { opacity: 1; transform: scale(1); }
+.icon-stop  { opacity: 0; transform: scale(0.6); }
+.trocha-play-btn.is-playing .icon-play  { opacity: 0; transform: scale(0.6); }
+.trocha-play-btn.is-playing .icon-stop  { opacity: 1; transform: scale(1); }
+
+/* Label */
+.trocha-play-btn__label { transition: opacity 0.3s; }
+
+/* =====================================================
+   MINI-PLAYER FLOTANTE
+   ===================================================== */
+.trocha-miniplayer {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    opacity: 0.25;
+    transition: opacity 0.4s, transform 0.4s;
+    transform: translateY(4px);
+}
+.trocha-miniplayer:hover,
+.trocha-miniplayer.is-playing {
+    opacity: 1;
+    transform: translateY(0);
+}
+.trocha-mini-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(10,10,10,0.85);
+    border: 1px solid rgba(212,175,55,0.3);
+    color: rgba(212,175,55,0.8);
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.trocha-mini-btn:hover {
+    border-color: rgba(212,175,55,0.7);
+    color: #D4AF37;
+}
+.trocha-miniplayer.is-playing .trocha-mini-btn {
+    border-color: #D4AF37;
+    color: #D4AF37;
+    background: rgba(212,175,55,0.08);
+}
+.trocha-mini-icon {
+    width: 14px;
+    height: 14px;
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+.trocha-mini-icon svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 14px; height: 14px;
+    transition: opacity 0.35s, transform 0.35s;
+}
+.trocha-mini-icon .icon-play  { opacity: 1; transform: scale(1); }
+.trocha-mini-icon .icon-stop  { opacity: 0; transform: scale(0.5); }
+.trocha-miniplayer.is-playing .trocha-mini-icon .icon-play  { opacity: 0; transform: scale(0.5); }
+.trocha-miniplayer.is-playing .trocha-mini-icon .icon-stop  { opacity: 1; transform: scale(1); }
+
+/* =====================================================
+   PÁGINA HISTORIA — texto alineado a la derecha
+   ===================================================== */
+.trocha-historia-content {
+    text-align: right;
+}
+.trocha-historia-eyebrow,
+.trocha-historia-title,
+.trocha-historia-subtitle,
+.trocha-historia-text,
+.trocha-historia-divider {
+    text-align: right;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/* =====================================================
+   TROCHA PAYMENTS — Apple Pay / Google Pay logos
+   ===================================================== */
+/* =====================================================
+   TROCHA PAYMENTS — Apple Pay / Google Pay logos
+   ===================================================== */
+/* =====================================================
+   TROCHA PAYMENTS — Apple Pay / Google Pay logos
+   ===================================================== */
+.trocha-digital-logos {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+}
+.trocha-dp-btn {
+    flex: 1;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.3s, transform 0.2s, opacity 0.3s;
+    opacity: 0.7;
+}
+.trocha-dp-btn:hover  { opacity: 1; transform: scale(1.03); }
+.trocha-dp-btn.active { opacity: 1; border-color: rgba(212,175,55,0.8); transform: scale(1.03); }
+
+/* Apple Pay — fondo negro */
+.trocha-dp-apple {
+    background: #000;
+}
+.trocha-dp-apple svg {
+    height: 44px;
+    width: auto;
+}
+
+/* Google Pay — fondo blanco */
+.trocha-dp-google {
+    background: #fff;
+}
+.trocha-dp-google svg {
+    height: 36px;
+    width: auto;
+}
+
+/* =====================================================
+   MODALES APPLE PAY / GOOGLE PAY
+   ===================================================== */
+/* ---- Overlay ---- */
+.trocha-pay-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    /* backdrop anima por separado */
+    background: transparent;
+    backdrop-filter: blur(0px);
+}
+.trocha-pay-modal.is-open {
+    display: flex;
+    animation: trochaOverlayIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.trocha-pay-modal.is-closing {
+    animation: trochaOverlayOut 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+@keyframes trochaOverlayIn {
+    0%   { background: rgba(0,0,0,0);    backdrop-filter: blur(0px); }
+    100% { background: rgba(0,0,0,0.78); backdrop-filter: blur(10px); }
+}
+@keyframes trochaOverlayOut {
+    0%   { background: rgba(0,0,0,0.78); backdrop-filter: blur(10px); }
+    100% { background: rgba(0,0,0,0);    backdrop-filter: blur(0px); }
+}
+
+/* ---- Box Apple — entra desde abajo con spring ---- */
+.trocha-pay-modal__box {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 18px;
+    padding: 2rem 1.75rem;
+    position: relative;
+    /* animación propia del box */
+    opacity: 0;
+    transform: translateY(40px) scale(0.94);
+}
+.trocha-pay-modal.is-open .trocha-pay-modal__box {
+    animation: trochaBoxSpring 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s forwards;
+}
+.trocha-pay-modal.is-closing .trocha-pay-modal__box {
+    animation: trochaBoxOut 0.28s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+/* Apple: entra desde abajo */
+.trocha-pay-modal__box--apple {
+    transform-origin: bottom center;
+}
+/* Google: entra desde arriba con ligero giro */
+.trocha-pay-modal__box--google {
+    transform-origin: top center;
+}
+.trocha-modal-google.is-open .trocha-pay-modal__box--google {
+    animation: trochaBoxGoogle 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) 0.05s forwards;
+}
+@keyframes trochaBoxSpring {
+    0%   { opacity: 0; transform: translateY(48px) scale(0.92); }
+    60%  { opacity: 1; transform: translateY(-6px) scale(1.01); }
+    80%  { transform: translateY(3px) scale(0.995); }
+    100% { opacity: 1; transform: translateY(0)  scale(1); }
+}
+@keyframes trochaBoxGoogle {
+    0%   { opacity: 0; transform: translateY(-40px) scale(0.93) rotate(-1.5deg); }
+    55%  { opacity: 1; transform: translateY(5px)   scale(1.01) rotate(0.4deg); }
+    80%  { transform: translateY(-2px) scale(0.998) rotate(0deg); }
+    100% { opacity: 1; transform: translateY(0)     scale(1)    rotate(0deg); }
+}
+@keyframes trochaBoxOut {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(32px) scale(0.93); }
+}
+.trocha-pay-modal__box.confirmed {
+    animation: trochaBoxConfirm 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) forwards !important;
+}
+@keyframes trochaBoxConfirm {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.04); box-shadow: 0 0 0 0 rgba(52,168,83,0.4); }
+    70%  { transform: scale(0.97); }
+    100% { transform: scale(1); }
+}
+
+/* Box Apple — negro con brillo */
+.trocha-pay-modal__box {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 18px;
+    padding: 2rem 1.75rem;
+    position: relative;
+    transition: transform 0.3s;
+}
+.trocha-pay-modal__box.confirmed {
+    transform: scale(0.97);
+}
+.trocha-pay-modal__box--apple {
+    background: #1c1c1e;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+}
+.trocha-pay-modal__box--google {
+    background: #fff;
+    color: #202124;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+}
+
+/* Cerrar */
+.trocha-pay-modal__close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    line-height: 1;
+    padding: 0.25rem;
+}
+.trocha-pay-modal__box--apple .trocha-pay-modal__close { color: #fff; }
+.trocha-pay-modal__box--google .trocha-pay-modal__close { color: #202124; }
+.trocha-pay-modal__close:hover { opacity: 1; }
+
+/* Header */
+.trocha-pay-modal__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+.trocha-pay-modal__logo {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+.trocha-pay-modal__brand {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: #fff;
+}
+.trocha-pay-modal__brand--google {
+    color: #202124;
+    font-family: 'Google Sans', sans-serif;
+}
+
+/* Biometría */
+.trocha-pay-modal__biometric {
+    margin-bottom: 1.25rem;
+}
+.trocha-pay-modal__fingerprint {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.trocha-pay-modal__fingerprint svg {
+    width: 22px; height: 22px;
+    flex-shrink: 0;
+}
+.trocha-pay-modal__fingerprint--google {
+    border-color: #dadce0;
+    background: #f8f9fa;
+    color: #202124;
+}
+.trocha-pay-modal__fingerprint:hover {
+    background: rgba(255,255,255,0.12);
+}
+.trocha-pay-modal__fingerprint--google:hover {
+    background: #f1f3f4;
+}
+.trocha-pay-modal__fingerprint.scanning svg {
+    animation: trochaFingerprintPulse 0.6s ease infinite alternate;
+    color: #4285F4;
+}
+.trocha-pay-modal__fingerprint.success svg { color: #34A853; }
+.trocha-pay-modal__fingerprint.success span { color: #34A853; }
+@keyframes trochaFingerprintPulse {
+    from { opacity: 0.4; transform: scale(0.9); }
+    to   { opacity: 1;   transform: scale(1.1); }
+}
+
+/* Divisor */
+.trocha-pay-modal__divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    font-size: 0.75rem;
+    opacity: 0.5;
+}
+.trocha-pay-modal__divider::before,
+.trocha-pay-modal__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.3;
+}
+
+/* Formulario */
+.trocha-pay-modal__form { display: flex; flex-direction: column; gap: 0.75rem; }
+.trocha-pay-modal__field { display: flex; flex-direction: column; gap: 0.3rem; }
+.trocha-pay-modal__field label {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+.trocha-pay-modal__field input {
+    padding: 0.65rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.trocha-pay-modal__box--apple .trocha-pay-modal__field input {
+    background: #2c2c2e;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+}
+.trocha-pay-modal__box--apple .trocha-pay-modal__field input:focus {
+    border-color: rgba(255,255,255,0.4);
+}
+.trocha-pay-modal__box--google .trocha-pay-modal__field input {
+    background: #f8f9fa;
+    border: 1px solid #dadce0;
+    color: #202124;
+}
+.trocha-pay-modal__box--google .trocha-pay-modal__field input:focus {
+    border-color: #4285F4;
+}
+.trocha-pay-modal__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+/* Botón confirmar */
+.trocha-pay-modal__confirm {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+}
+.trocha-pay-modal__confirm:hover { opacity: 0.88; transform: scale(0.99); }
+.trocha-pay-modal__confirm--apple {
+    background: #fff;
+    color: #000;
+}
+.trocha-pay-modal__confirm--google {
+    background: #4285F4;
+    color: #fff;
+}
+
+/* Nota seguridad */
+.trocha-pay-modal__secure {
+    text-align: center;
+    font-size: 0.7rem;
+    margin-top: 0.75rem;
+    opacity: 0.45;
+    margin-bottom: 0;
+}
+
+/* =====================================================
+   SINGLE PRODUCT — formulario nativo WooCommerce
+   ===================================================== */
+/* Asegurar que el form.cart sea visible y funcional */
+form.cart { display: block !important; }
+
+/* Botón añadir al carrito */
+form.cart .single_add_to_cart_button {
+    display: inline-block !important;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+form.cart .single_add_to_cart_button.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+form.cart .single_add_to_cart_button:not(.disabled) {
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* Selector de tallas nativo — hacerlo visible y estilizado */
+form.cart .variations select,
+form.cart .variations td.value select {
+    background: #111 !important;
+    color: #fff !important;
+    border: 1px solid rgba(212,175,55,0.4) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px !important;
+    font-family: inherit !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    min-width: 120px;
+}
+form.cart .variations select:focus {
+    border-color: #D4AF37 !important;
+    outline: none !important;
+}
+
+/* Mensaje "selecciona una opción" */
+form.cart .woocommerce-variation-add-to-cart {
+    margin-top: 1rem;
+}
+
+/* =====================================================
+   CHECKOUT — Campo teléfono con prefijo + bandera
+   ===================================================== */
+
+/* Agrupar los dos campos en una fila */
+.trocha-phone-prefix-field,
+.trocha-phone-number-field {
+    display: inline-block !important;
+    float: none !important;
+}
+.trocha-phone-prefix-field {
+    width: auto !important;
+    margin-bottom: 0 !important;
+}
+.trocha-phone-number-field {
+    flex: 1 !important;
+    min-width: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Contenedor flex para poner los dos campos en fila */
+#billing_phone_prefix_field,
+#billing_phone_field {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-bottom: 0;
+}
+/* Envolver ambos en un contenedor flex via JS */
+.trocha-phone-wrap {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Select del prefijo */
+#trocha-phone-prefix,
+#billing_phone_prefix {
+    height: 44px;
+    padding: 0 0.5rem;
+    background: #111;
+    border: 1px solid rgba(212,175,55,0.35);
+    border-right: none;
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px 0 0 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    min-width: 110px;
+    outline: none;
+    transition: border-color 0.2s;
+    /* Mostrar emoji de bandera correctamente */
+    font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+}
+#trocha-phone-prefix:focus,
+#billing_phone_prefix:focus {
+    border-color: #D4AF37;
+    z-index: 1;
+    position: relative;
+}
+
+/* Campo número de teléfono */
+#billing_phone {
+    border-radius: 0 4px 4px 0 !important;
+    border-left: none !important;
+    height: 44px !important;
+}
+#billing_phone:focus {
+    border-color: #D4AF37 !important;
+    outline: none !important;
+}
+
+/* Ocultar label del prefijo (es vacío) */
+#billing_phone_prefix_field label { display: none !important; }
+
+/* =====================================================
+   CAMPO TELÉFONO — Custom dropdown con banderas PNG
+   ===================================================== */
+
+/* Ocultar campo hidden del prefijo */
+#billing_phone_prefix_field {
+    display: none !important;
+}
+
+/* El woocommerce-input-wrapper del teléfono se convierte en flex row */
+#billing_phone_field .woocommerce-input-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 0 !important;
+    position: relative !important;
+}
+
+/* Input teléfono: conectado al trigger por la izquierda */
+#billing_phone_field #billing_phone,
+#billing_phone {
+    flex: 1 1 auto !important;
+    height: 42px !important;
+    width: 100% !important;
+    border-radius: 0 6px 6px 0 !important;
+    border-left: none !important;
+    padding-left: 14px !important;
+    font-size: 0.9rem !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    display: block !important;
+    order: 2 !important;
+}
+
+/* Botón trigger (selector de prefijo) */
+.trocha-phone-trigger {
+    flex: 0 0 auto !important;
+    order: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    height: 42px !important;
+    padding: 0 12px !important;
+    background: #111 !important;
+    border: 1px solid rgba(212,175,55,0.35) !important;
+    border-right: none !important;
+    border-radius: 6px 0 0 6px !important;
+    color: #fff !important;
+    font-size: 0.82rem !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: border-color 0.2s, background 0.2s !important;
+    min-width: 90px !important;
+    box-sizing: border-box !important;
+}
+.trocha-phone-trigger:hover {
+    border-color: rgba(212,175,55,0.7) !important;
+    background: #1a1a1a !important;
+}
+
+/* Bandera circular SVG */
+.trocha-phone-flag {
+    width: 21px !important;
+    height: 21px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+}
+
+/* Texto del prefijo */
+.trocha-phone-prefix-text {
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+}
+
+/* Flecha */
+.trocha-phone-arrow {
+    font-size: 0.65rem;
+    opacity: 0.55;
+    margin-left: 2px;
+}
+
+/* Dropdown lista — posicionado relativo al woocommerce-input-wrapper */
+.trocha-phone-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    z-index: 10000;
+    background: #111;
+    border: 1px solid rgba(212,175,55,0.35);
+    border-radius: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    min-width: 190px;
+    max-height: 260px;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    order: 3;
+}
+.trocha-phone-dropdown.is-open {
+    display: block;
+    animation: trochaDropIn 0.18s ease;
+}
+@keyframes trochaDropIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.trocha-phone-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: #ddd;
+    transition: background 0.15s;
+}
+.trocha-phone-dropdown li:hover {
+    background: rgba(212,175,55,0.1);
+    color: #fff;
+}
+.trocha-phone-dropdown li img {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    flex-shrink: 0;
+}
+
+/* Scrollbar del dropdown */
+.trocha-phone-dropdown::-webkit-scrollbar { width: 4px; }
+.trocha-phone-dropdown::-webkit-scrollbar-track { background: #111; }
+.trocha-phone-dropdown::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.3); border-radius: 2px; }
+
+/* Ocultar el campo hidden del prefijo (no debe verse) */
+#billing_phone_prefix_field {
+    display: none !important;
