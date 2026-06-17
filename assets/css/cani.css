@@ -533,7 +533,7 @@ a:hover { color: var(--accent-glow); }
    ============================================================ */
 .trocha-products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin: 1rem 0;
 }
@@ -1415,18 +1415,13 @@ div.wpforms-confirmation-container-full {
 html { scroll-behavior: smooth; }
 
 /* Page-load fade-in (only when JS is active; safe auto-reveal fallback) */
-html.js body {
-    opacity: 0;
-    animation: trocha-page-in 0.6s ease forwards;
-    animation-delay: 0.05s;
-}
-html.js body.trocha-loaded { opacity: 1; animation: none; }
-@keyframes trocha-page-in { to { opacity: 1; } }
+body { opacity: 1; }
+@keyframes trocha-page-in { from { opacity: 0.01; } to { opacity: 1; } }
 
 /* ---- Scroll reveal --------------------------------------- */
 .reveal {
-    opacity: 0;
-    transform: translateY(28px);
+    opacity: 1;
+    transform: none;
     transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
@@ -1872,26 +1867,24 @@ a { transition: color 0.15s ease; }
 
 /* CTA: animated arrow that travels on hover */
 .trocha-cat-cta {
-    font-family: 'Courier New', monospace;
-    font-size: 0.78rem;
+    display: inline-block;
+    margin-top: 1.2rem;
+    padding: 0.5rem 1.4rem;
+    font-family: var(--font-display, Bebas Neue, sans-serif);
+    font-size: 0.88rem;
     letter-spacing: 0.18em;
-    color: var(--accent);
+    color: var(--accent, #c4a000);
+    border: 1px solid var(--accent, #c4a000);
+    background: transparent;
+    transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
     position: relative;
-    padding-bottom: 3px;
 }
-.trocha-cat-cta::after {
-    content: '';
-    position: absolute;
-    left: 0; bottom: 0;
-    width: 100%; height: 1px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s ease;
+.trocha-cat-cta::after { display: none; }
+.trocha-categoria-card:hover .trocha-cat-cta {
+    background: var(--accent, #c4a000);
+    color: #000;
+    border-color: var(--accent, #c4a000);
 }
-.trocha-categoria-card:hover .trocha-cat-cta { color: var(--accent-glow); }
-.trocha-categoria-card:hover .trocha-cat-cta::after { transform: scaleX(1); }
-
 /* Scanline sweep across the image on hover — the 'REC' signature */
 .trocha-categoria-card::before {
     content: '';
@@ -2796,3 +2789,1344 @@ form.cart .woocommerce-variation-add-to-cart {
 /* Ocultar el campo hidden del prefijo (no debe verse) */
 #billing_phone_prefix_field {
     display: none !important;
+}
+
+/* =====================================================
+   TIENDA — Selector de ordenación estilo TROCHA
+   ===================================================== */
+.woocommerce-ordering {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+    margin-bottom: 1.5rem !important;
+}
+.woocommerce-ordering::before {
+    content: 'ORDENAR:';
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
+    font-family: 'Bebas Neue', sans-serif;
+}
+.woocommerce-ordering select {
+    background: #111 !important;
+    color: #fff !important;
+    border: 1px solid rgba(212,175,55,0.35) !important;
+    border-radius: 4px !important;
+    padding: 0.5rem 2.2rem 0.5rem 0.9rem !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.05em !important;
+    font-family: inherit !important;
+    cursor: pointer !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23D4AF37'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 9px !important;
+    transition: border-color 0.2s !important;
+    min-width: 200px !important;
+}
+/* =====================================================
+   CHECKOUT MÓVIL — Fix formulario de facturación
+   ===================================================== */
+
+/* Asegurar que el formulario completo es visible en móvil */
+.woocommerce-checkout .woocommerce-billing-fields,
+.woocommerce-checkout .woocommerce-billing-fields__field-wrapper,
+.woocommerce-checkout #customer_details,
+.woocommerce-checkout .col-1,
+.woocommerce-checkout .col-2 {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+    width: 100% !important;
+}
+
+/* Formulario ocupa ancho completo en móvil */
+@media (max-width: 768px) {
+    .woocommerce-checkout form.checkout {
+        display: block !important;
+    }
+    .woocommerce-checkout #customer_details {
+        float: none !important;
+        width: 100% !important;
+        margin: 0 0 2rem 0 !important;
+    }
+    .woocommerce-checkout #order_review_heading,
+    .woocommerce-checkout #order_review {
+        float: none !important;
+        width: 100% !important;
+    }
+    /* Campos de billing visibles */
+    .woocommerce-billing-fields p.form-row {
+        float: none !important;
+        width: 100% !important;
+        clear: both !important;
+    }
+    /* Inputs legibles */
+    .woocommerce-checkout .input-text,
+    .woocommerce-checkout input[type="text"],
+    .woocommerce-checkout input[type="email"],
+    .woocommerce-checkout input[type="tel"],
+    .woocommerce-checkout select {
+        width: 100% !important;
+        font-size: 16px !important; /* evita zoom en iOS */
+        padding: 0.75rem 1rem !important;
+        box-sizing: border-box !important;
+    }
+    /* País visible */
+    .woocommerce-checkout #billing_country_field,
+    .woocommerce-checkout #billing_country_field .select2-container {
+        display: block !important;
+        width: 100% !important;
+    }
+    /* Separar secciones */
+    .woocommerce-checkout h3 {
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+.woocommerce-ordering select:focus {
+    border-color: #D4AF37 !important;
+    outline: none !important;
+}
+.woocommerce-result-count {
+    font-size: 0.75rem !important;
+    letter-spacing: 0.08em !important;
+    color: rgba(255,255,255,0.35) !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* ============================================================
+   TROCHA SLIDER — ÚLTIMAS PRENDAS
+   ============================================================ */
+.trocha-section--slider { overflow: hidden; padding-left: 0; padding-right: 0; }
+.trocha-section--slider .trocha-page-title,
+.trocha-section--slider > p { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+/* Contenedor con overflow oculto y efecto fade lateral */
+.trs {
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.trs:active { cursor: grabbing; }
+.trs::before,
+.trs::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: clamp(40px, 8vw, 100px);
+    z-index: 2;
+    pointer-events: none;
+}
+.trs::before { left: 0;  background: linear-gradient(to right, var(--dark) 0%, transparent 100%); }
+.trs::after  { right: 0; background: linear-gradient(to left,  var(--dark) 0%, transparent 100%); }
+
+/* Track deslizable */
+.trs__track {
+    display: flex;
+    will-change: transform;
+    transition: transform 0.05s linear;
+}
+
+/* Cada ítem */
+.trs__item {
+    flex: 0 0 auto;
+    width: 68vw;
+    max-width: 320px;
+    padding: 0 0.55rem;
+    box-sizing: border-box;
+}
+@media (min-width: 600px) {
+    .trs__item { width: 42vw; max-width: 280px; }
+}
+@media (min-width: 1024px) {
+    .trs__item { width: 22vw; max-width: 300px; }
+}
+
+/* Tarjeta */
+.trs__card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: #111214;
+    border: none;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+}
+.trs__card:hover { box-shadow: 0 0 0 1px var(--accent); transform: translateY(-3px); }
+
+/* Imagen */
+.trs__img {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: #0d0d0f;
+}
+.trs__img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+.trs__card:hover .trs__img img { transform: scale(1.04); }
+.trs__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+/* Texto */
+.trs__body {
+    padding: 0.7rem 0.85rem 0.85rem;
+    border-top: none;
+}
+.trs__name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    color: #e8e4d9;
+    margin: 0 0 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.trs__price {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+}
+.trs__price del { color: rgba(255,255,255,0.25); margin-right: 0.3em; }
+
+/* Ocultar clones de screen readers */
+.trs__item--clone { pointer-events: none; }
+
+
+/* ===== FIX: Slider siempre visible — no depende del reveal ===== */
+.trocha-section--slider {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+/* Fallback: cualquier .reveal que no haya recibido reveal-in → aparece a los 0.8s */
+.reveal:not(.reveal-in) {
+    animation: trocha-fallback-reveal 0.6s cubic-bezier(0.16,1,0.3,1) 0.8s forwards;
+}
+@keyframes trocha-fallback-reveal {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   HERO — Imagen difuminada de fondo (fix: faltaba en cani.css)
+   ============================================================ */
+.trocha-hero--brand-bg {
+    position: relative;
+    padding: 5rem 1.5rem;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.trocha-hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px) grayscale(0.5);
+    opacity: 0.22;
+    z-index: -1;
+    transform: scale(1.05);
+}
+.trocha-hero--brand-bg .accent-bar,
+.trocha-hero--brand-bg h2,
+.trocha-hero--brand-bg p,
+.trocha-hero--brand-bg .hero-actions {
+    position: relative;
+    z-index: 1;
+}
+/* ============================================================
+   FIX CRÍTICO: El slider expande .trocha-main-content a 11000px.
+   overflow:hidden contiene el slider sin romper el layout.
+   ============================================================ */
+.trocha-main-content {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+}
+.trocha-body-grid {
+    overflow-x: hidden !important;
+}
+
+/* ============================================================
+   SLIDER ARROWS — solo desktop (1024px+)
+   ============================================================ */
+.trs-wrap {
+    position: relative;
+}
+.trs-arrow {
+    display: none; /* oculto por defecto (mobile) */
+}
+@media (min-width: 1024px) {
+    .trs-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        background: rgba(5,5,6,0.85);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        font-size: 1.2rem;
+        cursor: pointer;
+        z-index: 10;
+        transition: background 0.2s, box-shadow 0.2s;
+        user-select: none;
+        line-height: 1;
+    }
+    .trs-arrow:hover {
+        background: var(--accent);
+        color: #0b0b0d;
+        box-shadow: 0 0 16px rgba(196,160,0,0.4);
+    }
+    .trs-arrow--prev { left: 0.5rem; }
+    .trs-arrow--next { right: 0.5rem; }
+}
+
+/* Imágenes del slider por encima del scanline global (body::after z-index:999998) */
+.trs-wrap { position: relative; z-index: 999999; }
+.trs, .trs__item, .trs__card, .trs__img { position: relative; z-index: 999999; }
+
+/* ============================================================
+   FIX: Galería de producto — sin scanlines + imagen no estirada
+   ============================================================ */
+
+/* Poner la galería por encima del body::after scanline (z-index:999998) */
+.woocommerce-product-gallery,
+.woocommerce-product-gallery__wrapper,
+.woocommerce-product-gallery__image,
+.trocha-single-product__gallery,
+.trocha-single-product__gallery img,
+.woocommerce div.product div.images,
+.woocommerce div.product div.images img {
+    position: relative;
+    z-index: 999999;
+}
+
+/* Imagen no estirada — mantener proporciones */
+.woocommerce-product-gallery__image img,
+.woocommerce div.product div.images img,
+.trocha-single-product__gallery img,
+.wp-post-image {
+    object-fit: contain !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: 600px;
+}
+
+/* Remove WooCommerce zoom magnifying glass icon */
+.woocommerce-product-gallery__trigger,
+.woocommerce-product-gallery .zoomImg,
+a.woocommerce-product-gallery__trigger {
+    display: none !important;
+}
+
+/* ─── FILTER BAR TIENDA ─────────────────────────────── */
+.trocha-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.trocha-filter-btn {
+    display: inline-block;
+    padding: 0.45rem 1.1rem;
+    font-family: var(--font-display, 'Bebas Neue', sans-serif);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    color: var(--text-sub, #aaa);
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.trocha-filter-btn:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.05);
+}
+
+.trocha-filter-btn.active {
+    color: #000;
+    background: #fff;
+    border-color: #fff;
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+    .trocha-filter-bar {
+        gap: 0.4rem;
+    }
+    .trocha-filter-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+/* ─── OCULTAR BOTONES PAGO EXPRESS EN PRODUCTO ──────── */
+/* Solo visibles en checkout, no en página de producto */
+.single-product .wc-block-components-express-payment,
+.single-product .woocommerce-variation-add-to-cart ~ .wp-block-woocommerce-product-button,
+.single-product #payment,
+.single-product .stripe-express-checkout-element,
+.single-product .wc-stripe-express-checkout-element,
+.single-product #wc-stripe-express-checkout-wrapper,
+.single-product #wc-stripe-express-checkout-element,
+.single-product .wc_payment_methods,
+.single-product .apple-pay-button,
+.woocommerce div.product .wc-stripe-express-checkout-wrapper,
+.woocommerce div.product #wc-stripe-express-checkout-wrapper,
+.woocommerce div.product #wc-stripe-express-checkout-element {
+    display: none !important;
+}
+
+/* ─── QUANTITY INPUT ESTILIZADO ─────────────────────── */
+.woocommerce .quantity input.qty,
+.woocommerce .quantity input[type=number] {
+    background: #111 !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
+    border-radius: 0 !important;
+    padding: 0.5rem 0.8rem !important;
+    font-family: var(--font-display, 'Bebas Neue', sans-serif) !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.08em !important;
+    width: 70px !important;
+    text-align: center !important;
+    -moz-appearance: textfield !important;
+}
+.woocommerce .quantity input.qty::-webkit-inner-spin-button,
+.woocommerce .quantity input.qty::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.woocommerce .quantity input.qty:focus {
+    outline: none !important;
+    border-color: rgba(255,255,255,0.6) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   FIXES GLOBALES — bulk fix session
+   ═══════════════════════════════════════════════ */
+
+/* 3. Ocultar SKU / ID y categoría cruda en producto */
+.woocommerce div.product .product_meta .sku_wrapper,
+.woocommerce div.product .product_meta .posted_in,
+.woocommerce div.product .product_meta .tagged_as,
+.woocommerce div.product .woocommerce-product-details__short-description + .product_meta,
+.single-product .product_meta { display: none !important; }
+
+/* Ocultar "#336" tipo post-id expuesto */
+.woocommerce div.product p.product_id,
+.trocha-product-id { display: none !important; }
+
+/* 4. Estilizar "Sin existencias" */
+.woocommerce div.product .stock.out-of-stock {
+    display: inline-block !important;
+    padding: 0.35rem 0.9rem;
+    background: rgba(200,30,30,0.15);
+    border: 1px solid rgba(200,30,30,0.5);
+    color: #e05555 !important;
+    font-family: var(--font-display, "Bebas Neue", sans-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+}
+
+/* 5. Ocultar bullets "Previous / Next" de la galería */
+.woocommerce-product-gallery .flex-control-nav.flex-control-paging + ul,
+.woocommerce-product-gallery ul.flex-control-nav li a.flex-prev,
+.woocommerce-product-gallery ul.flex-control-nav li a.flex-next,
+.woocommerce-product-gallery__wrapper ~ ul { display: none !important; }
+
+.woocommerce div.product div.images ul.slides + ul,
+.woocommerce-product-gallery ~ ul,
+.woocommerce div.product .woocommerce-product-gallery ul:not(.flex-control-thumbs):not(.slides) {
+    display: none !important;
+}
+
+/* 6. Ghost price: ocultar <del> vacío antes del rango */
+.woocommerce del:empty,
+.woocommerce del span:empty,
+.woocommerce .price del { display: none !important; }
+
+/* 7. Paginación: estado activo visible */
+.woocommerce nav.woocommerce-pagination ul li span.current,
+.woocommerce nav.woocommerce-pagination ul li a:hover {
+    background: #fff !important;
+    color: #000 !important;
+    border-color: #fff !important;
+}
+.woocommerce nav.woocommerce-pagination ul li span.current {
+    font-weight: 700;
+}
+.woocommerce nav.woocommerce-pagination ul li a,
+.woocommerce nav.woocommerce-pagination ul li span {
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #aaa;
+    background: transparent;
+    transition: all 0.2s;
+}
+
+/* 8. Sort toolbar alineado */
+.woocommerce-ordering,
+.woocommerce-result-count {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 0.5rem;
+}
+.woocommerce .woocommerce-ordering select {
+    background: #111 !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    padding: 0.3rem 0.6rem !important;
+    font-family: var(--font-display, "Bebas Neue", sans-serif);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+}
+/* 9. Fix imagen FRÍO — forzar visibilidad */
+.trocha-cat-bg--frio {
+    background-image: url("../img/cat-frio.jpg") !important;
+    filter: brightness(1.6) saturate(1.3) contrast(1.05) !important;
+    opacity: 1 !important;
+}
+
+/* Bullets Previous/Next de galería WC — ocultar */
+.woocommerce-product-gallery .flex-control-nav,
+.woocommerce div.product div.images .flex-control-thumbs ~ ul,
+ul.flex-control-nav { list-style: none; }
+.woocommerce div.product div.images > ul:not(.flex-control-thumbs):not(.slides),
+.woocommerce-product-gallery > ul:last-child { display: none !important; }
+/* Ocultar "Sin categorizar #330" encima del título del producto */
+.woocommerce div.product .product_meta,
+.woocommerce div.product p.product_meta,
+.single-product .product_meta,
+.woocommerce-product-details__short-description + p,
+.woocommerce span.posted_in,
+.woocommerce span.sku_wrapper,
+.woocommerce .sku_wrapper,
+.woocommerce .posted_in,
+/* El texto crudo que aparece antes del h1 */
+.woocommerce div.product > div.summary > p:first-of-type:not(.price) { display: none !important; }
+/* Ocultar colección "Sin categorizar" y ref #ID en producto */
+.trocha-single-product__collection,
+.trocha-single-product__ref,
+.trocha-single-product__meta { display: none !important; }
+/* ═══════════════════════════════════════════════════════
+   MASTER FIX BLOCK — all issues
+   ═══════════════════════════════════════════════════════ */
+
+/* 1. HERO — más alto, imagen más visible */
+.trocha-hero--brand-bg {
+    min-height: 520px !important;
+    padding: 6rem 1.5rem !important;
+}
+.trocha-hero-bg-img {
+    opacity: 0.38 !important;
+    filter: blur(4px) grayscale(0.2) !important;
+}
+
+/* 2. CATEGORIES — overlay menos oscuro para ver imagen */
+.trocha-categoria-card .trocha-cat-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.58) 100%) !important;
+}
+
+/* 3. SELECT nativos — estilizar en toda la tienda/producto */
+.woocommerce div.product form.cart .variations select,
+.woocommerce div.product form.cart select,
+select.product-sorting,
+.woocommerce .quantity select,
+.variations_form select,
+.single-product select {
+    background: #0e0e0e !important;
+    color: #fff !important;
+    border: 1px solid rgba(212,175,55,0.4) !important;
+    border-radius: 0 !important;
+    padding: 0.6rem 2rem 0.6rem 0.9rem !important;
+    font-family: var(--font-display, "Bebas Neue", sans-serif) !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.08em !important;
+    cursor: pointer !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=http://www.w3.org/2000/svg width=10 height=6%3E%3Cpath d=M0 0l5 6 5-6z fill=%23D4AF37/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 9px !important;
+    min-width: 140px !important;
+    width: 100% !important;
+}
+
+/* 4. PRODUCT — Add to cart full width, mejor espaciado */
+.trocha-single-product .single_add_to_cart_button,
+.woocommerce div.product .cart button[type="submit"] {
+    width: 100% !important;
+    margin-top: 1rem !important;
+    padding: 0.85rem 1.5rem !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.15em !important;
+}
+
+/* 5. PRODUCT GRID — tarjetas igual altura */
+.trocha-products-grid {
+    align-items: start !important;
+}
+.trocha-product-card,
+.woocommerce ul.products li.product {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+.woocommerce ul.products li.product .button {
+    margin-top: auto !important;
+}
+
+/* 6. PRODUCT PAGE — galería sin borde raro, imagen contenida */
+.trocha-single-product__gallery {
+    border: none !important;
+    background: transparent !important;
+}
+.woocommerce div.product div.images img {
+    border: none !important;
+    background: #0e0e0e !important;
+}
+
+/* 7. PAGINATION — primer item vacío oculto */
+.woocommerce nav.woocommerce-pagination ul li:first-child:not(:has(a)):not(:has(span)) {
+    display: none !important;
+}
+.woocommerce nav.woocommerce-pagination {
+    margin-top: 2rem !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* 8. RELATED PRODUCTS — grid 4 col para evitar orphan */
+.woocommerce .related ul.products,
+.woocommerce-page .related ul.products {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1rem !important;
+}
+@media (max-width: 900px) {
+    .woocommerce .related ul.products,
+    .woocommerce-page .related ul.products {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+@media (max-width: 500px) {
+    .woocommerce .related ul.products,
+    .woocommerce-page .related ul.products {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* 9. VARIATIONS — label + select mejor alineados */
+.woocommerce div.product form.cart table.variations {
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+}
+.woocommerce div.product form.cart table.variations td,
+.woocommerce div.product form.cart table.variations th {
+    border: none !important;
+    padding: 0.4rem 0 !important;
+    background: transparent !important;
+    vertical-align: middle !important;
+}
+.woocommerce div.product form.cart table.variations label {
+    font-family: var(--font-display, "Bebas Neue", sans-serif) !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.12em !important;
+    color: #aaa !important;
+    white-space: nowrap !important;
+}
+
+/* 10. SORT BAR — resultado + orden en misma línea */
+.woocommerce-result-count {
+    float: none !important;
+    display: inline-block !important;
+    color: #888 !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.05em !important;
+    margin: 0 1rem 0.5rem 0 !important;
+    vertical-align: middle !important;
+}
+.woocommerce-ordering {
+    float: none !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-bottom: 0.5rem !important;
+}
+/* ─── SELECT VARIATIONS — force override browser native ── */
+body.single-product .variations select,
+body.single-product form.cart select,
+body.single-product .woocommerce-variation-add-to-cart select,
+body .woocommerce div.product form.cart .variations_form select,
+body .woocommerce div.product table.variations select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-color: #0e0e0e !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=http://www.w3.org/2000/svg width=10 height=6%3E%3Cpath d=M0 0l5 6 5-6z fill=%23D4AF37/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 9px !important;
+    color: #fff !important;
+    border: 1px solid rgba(212,175,55,0.5) !important;
+    border-radius: 0 !important;
+    padding: 0.65rem 2.2rem 0.65rem 0.9rem !important;
+    font-family: var(--font-display, "Bebas Neue", sans-serif) !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.1em !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    outline: none !important;
+}
+body.single-product .variations select:focus,
+body .woocommerce div.product table.variations select:focus {
+    border-color: #D4AF37 !important;
+    box-shadow: 0 0 6px rgba(212,175,55,0.25) !important;
+}
+/* Hero bg más visible */
+.trocha-hero-bg-img {
+    opacity: 0.45 !important;
+    filter: blur(3px) brightness(1.1) !important;
+}
+/* ─── SELECT TALLA — máxima especificidad ─────────────── */
+html body.single-product div.trocha-single-product__form form.cart table.variations td.value select,
+html body.woocommerce-page.single-product form.variations_form select,
+html body select#pa_talla,
+html body select#pa_clothing-sizes,
+html body select[name^="attribute_"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-color: #0e0e0e !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=http://www.w3.org/2000/svg width=10 height=6%3E%3Cpath d=M0 0l5 6 5-6z fill=%23D4AF37/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 9px !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(212,175,55,0.5) !important;
+    border-radius: 0 !important;
+    padding: 0.65rem 2.2rem 0.65rem 0.9rem !important;
+    font-family: var(--font-display, "Bebas Neue", sans-serif) !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.1em !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* ─── RELATED PRODUCTS — 4 columnas siempre ──────────── */
+.woocommerce .related ul.products.columns-4,
+.woocommerce .related ul.products.columns-3,
+.woocommerce .related ul.products {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1rem !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    width: 100% !important;
+}
+.woocommerce .related ul.products li.product {
+    width: auto !important;
+    float: none !important;
+    margin: 0 !important;
+}
+@media (max-width: 900px) {
+    .woocommerce .related ul.products.columns-4,
+    .woocommerce .related ul.products { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 480px) {
+    .woocommerce .related ul.products.columns-4,
+    .woocommerce .related ul.products { grid-template-columns: repeat(2, 1fr) !important; }
+}
+/* SELECT TALLA FINAL FIX */
+select#pa_talla,
+select[id^="pa_"],
+.woocommerce div.product form.cart .variations select,
+.woocommerce-variation-add-to-cart select {
+    background: #111 !important;
+    color: #fff !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 0 !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    padding: 0.6rem 2rem 0.6rem 0.8rem !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.08em !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=http://www.w3.org/2000/svg width=10 height=6%3E%3Cpath d=M0 0l5 6 5-6z fill=%23D4AF37/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 9px !important;
+}
+
+/* RELATED 4 cols hard override */
+ul.products.columns-4 {
+    display: grid !important;
+    grid-template-columns: repeat(4,1fr) !important;
+    gap: 1rem !important;
+    float: none !important;
+    clear: both !important;
+}
+ul.products.columns-4::before,
+ul.products.columns-4::after { display: none !important; }
+ul.products.columns-4 li.product {
+    width: auto !important;
+    float: none !important;
+    margin: 0 !important;
+}
+@media(max-width:768px){
+    ul.products.columns-4 { grid-template-columns: repeat(2,1fr) !important; }
+}
+
+/* SELECT2 + native select — product variations */
+.woocommerce div.product form.cart .select2-container,
+.woocommerce div.product .select2-container--default .select2-selection--single {
+    background: #111 !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 0 !important;
+    height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #fff !important;
+    font-family: var(--font-display,"Bebas Neue",sans-serif) !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.08em !important;
+    line-height: 42px !important;
+    padding-left: 0.9rem !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 42px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #D4AF37 transparent transparent transparent !important;
+}
+.select2-dropdown {
+    background: #111 !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 0 !important;
+}
+.select2-results__option {
+    color: #ccc !important;
+    font-family: var(--font-display,"Bebas Neue",sans-serif) !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.08em !important;
+}
+.select2-results__option--highlighted,
+.select2-results__option[aria-selected="true"] {
+    background: #D4AF37 !important;
+    color: #000 !important;
+}
+
+/* RELATED 4 cols — override WC float completely */
+.related.products { clear: both; overflow: hidden; }
+.related.products h2 { margin-bottom: 1.5rem; }
+.related.products ul.products {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    clear: both !important;
+    width: 100% !important;
+    list-style: none !important;
+}
+.related.products ul.products::before,
+.related.products ul.products::after { display: none !important; }
+.related.products ul.products li.product {
+    float: none !important;
+    width: auto !important;
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+}
+@media(max-width:768px){
+    .related.products ul.products { grid-template-columns: repeat(2,1fr) !important; }
+}
+
+/* Kill white Select2 box — style the span wrapper directly */
+.woocommerce div.product .select2-container--default .select2-selection--single {
+    background-color: #111 !important;
+    border: 1px solid #D4AF37 !important;
+    border-radius: 0 !important;
+    height: 44px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+}
+.woocommerce div.product .select2-container {
+    width: 100% !important;
+    min-width: 150px !important;
+}
+.woocommerce div.product .select2-selection__rendered {
+    color: #ffffff !important;
+    padding-left: 12px !important;
+    font-family: var(--font-display,"Bebas Neue",sans-serif) !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.1em !important;
+    line-height: 44px !important;
+}
+.woocommerce div.product .select2-selection__arrow {
+    height: 44px !important;
+    right: 8px !important;
+}
+.woocommerce div.product .select2-selection__arrow b {
+    border-top-color: #D4AF37 !important;
+    border-width: 6px 5px 0 5px !important;
+}
+.woocommerce div.product .select2-container--open .select2-selection__arrow b {
+    border-bottom-color: #D4AF37 !important;
+    border-top-color: transparent !important;
+}
+
+/* RELATED PRODUCTS — usar div.trocha-products-grid (loop custom) */
+.related.products .trocha-products-grid,
+.related .trocha-products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1rem !important;
+}
+@media(max-width: 900px) {
+    .related.products .trocha-products-grid,
+    .related .trocha-products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+/* HERO BG — imagen visible, menos blur */
+.trocha-hero-bg-img {
+    opacity: 0.72 !important;
+    filter: brightness(0.75) blur(1px) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HOMEPAGE REDESIGN — th-* components
+   ═══════════════════════════════════════════════════════ */
+
+/* HERO */
+.th-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: 0 6vw;
+}
+.th-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 30%;
+    z-index: 0;
+    opacity: 1;
+    filter: none;
+}
+.th-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(0,0,0,0.82) 45%, rgba(0,0,0,0.35) 100%);
+    z-index: 1;
+}
+.th-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+}
+.th-hero__tag {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    color: #D4AF37;
+    margin-bottom: 1.2rem;
+}
+.th-hero__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    line-height: 0.92;
+    letter-spacing: 0.03em;
+    color: #fff;
+    margin-bottom: 1.4rem;
+}
+.th-hero__sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.65);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.06em;
+    margin-bottom: 2.4rem;
+    max-width: 440px;
+    line-height: 1.6;
+}
+.th-hero__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+.th-hero__scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.3);
+    font-size: 1.4rem;
+    z-index: 2;
+    animation: th-bob 2s ease-in-out infinite;
+}
+@keyframes th-bob {
+    0%,100%{transform:translateX(-50%) translateY(0)}
+    50%{transform:translateX(-50%) translateY(8px)}
+}
+
+/* BUTTONS */
+.th-btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.18em;
+    text-decoration: none;
+    transition: all 0.22s ease;
+    cursor: pointer;
+    border: none;
+}
+.th-btn--primary { background: #D4AF37; color: #000; }
+.th-btn--primary:hover { background: #f0cc50; color: #000; }
+.th-btn--ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.45); }
+.th-btn--ghost:hover { border-color: #D4AF37; color: #D4AF37; }
+.th-btn--lg { padding: 1.1rem 3.5rem; font-size: 1.1rem; }
+
+/* DROPS */
+.th-drops { padding: 5rem 4vw 4rem; background: #080808; }
+.th-drops__head { display: flex; align-items: flex-end; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.th-drops__label { font-family: 'Courier New', monospace; font-size: 0.72rem; color: #D4AF37; letter-spacing: 0.2em; margin-bottom: 0.4rem; width: 100%; }
+.th-drops__title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 0.06em; color: #fff; margin: 0; flex: 1; }
+.th-drops__all { font-family: 'Courier New', monospace; font-size: 0.75rem; color: #D4AF37; letter-spacing: 0.15em; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid #D4AF37; white-space: nowrap; margin-bottom: 0.4rem; transition: opacity 0.2s; }
+.th-drops__all:hover { opacity: 0.7; }
+.th-drops__slider-wrap { position: relative; }
+
+/* PRODUCT CARD */
+.th-card { display: block; text-decoration: none; color: inherit; background: #0e0e0e; overflow: hidden; transition: transform 0.3s ease; }
+.th-card:hover { transform: translateY(-4px); }
+.th-card__img-wrap { position: relative; aspect-ratio: 4/5; overflow: hidden; background: #141414; }
+.th-card__img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.th-card:hover .th-card__img-wrap img { transform: scale(1.06); }
+.th-card__hover-cta {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: #D4AF37;
+    color: #000;
+    text-align: center;
+    padding: 0.75rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    transform: translateY(100%);
+    transition: transform 0.28s ease;
+}
+.th-card:hover .th-card__hover-cta { transform: translateY(0); }
+.th-card__badge { position: absolute; top: 0.7rem; left: 0.7rem; background: #D4AF37; color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; padding: 0.2rem 0.55rem; }
+.th-card__body { padding: 0.9rem 0.95rem 1rem; }
+.th-card__cat { display: block; font-family: 'Courier New', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: #D4AF37; margin-bottom: 0.3rem; }
+.th-card__name { font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.05em; color: #e8e4d9; margin: 0 0 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.th-card__price { font-size: 0.85rem; color: #c4a800; font-family: 'Courier New', monospace; margin-bottom: 0.5rem; }
+.th-card__cta { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; color: rgba(255,255,255,0.35); transition: color 0.2s; }
+.th-card:hover .th-card__cta { color: #D4AF37; }
+
+/* SLIDER ARROWS */
+.th-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.7); border: 1px solid #D4AF37; color: #D4AF37; width: 44px; height: 44px; font-size: 1.2rem; cursor: pointer; display: none; align-items: center; justify-content: center; transition: background 0.2s; }
+.th-arrow:hover { background: #D4AF37; color: #000; }
+.th-arrow--prev { left: -10px; }
+.th-arrow--next { right: -10px; }
+@media(min-width:1024px) { .th-arrow { display: flex; } }
+
+/* BRAND STRIP */
+.th-strip { display: flex; align-items: center; justify-content: center; background: #D4AF37; padding: 1rem 2rem; flex-wrap: wrap; }
+.th-strip__item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 2rem; }
+.th-strip__icon { font-size: 1rem; }
+.th-strip__text { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; letter-spacing: 0.18em; color: #000; white-space: nowrap; }
+.th-strip__divider { color: rgba(0,0,0,0.35); font-size: 0.8rem; letter-spacing: 0.1em; }
+@media(max-width:600px) { .th-strip { flex-direction: column; gap: 0.5rem; } .th-strip__divider { display: none; } }
+
+/* CATS */
+.th-cats { padding: 5rem 4vw; background: #050505; }
+.th-cats__head { text-align: center; margin-bottom: 2.5rem; }
+.th-cats__label { font-family: 'Courier New', monospace; font-size: 0.72rem; color: #D4AF37; letter-spacing: 0.22em; margin-bottom: 0.6rem; }
+.th-cats__title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); color: #fff; letter-spacing: 0.06em; margin: 0; }
+.th-cats__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #222; }
+@media(max-width:768px) { .th-cats__grid { grid-template-columns: 1fr; gap: 1rem; background: transparent; } }
+.th-cat-card { position: relative; display: flex; text-decoration: none; overflow: hidden; min-height: 480px; align-items: flex-end; }
+.th-cat-card__bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease; }
+.th-cat-card:hover .th-cat-card__bg { transform: scale(1.06); }
+.th-cat-card__overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.2) 60%); transition: background 0.4s; }
+.th-cat-card:hover .th-cat-card__overlay { background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%); }
+.th-cat-card__inner { position: relative; z-index: 2; padding: 2rem 1.8rem; width: 100%; }
+.th-cat-card--frio .th-cat-card__bg { background-image: url('../img/cat-frio.jpg'); filter: brightness(1.5) saturate(1.2); }
+.th-cat-card--calor .th-cat-card__bg { background-image: url('../img/cat-calor-v3.jpg'); filter: brightness(0.85); }
+.th-cat-card--estilo .th-cat-card__bg { background-image: url('../img/cat-estilo-v2.jpg'); filter: brightness(0.9); }
+.th-cat-card__stamp { display: inline-block; font-family: 'Courier New', monospace; font-size: 0.65rem; letter-spacing: 0.25em; color: #D4AF37; border: 1px solid #D4AF37; padding: 0.2rem 0.6rem; margin-bottom: 0.7rem; }
+.th-cat-card__title { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: #fff; letter-spacing: 0.05em; margin: 0 0 0.5rem; line-height: 1; }
+.th-cat-card__desc { font-family: 'Courier New', monospace; font-size: 0.75rem; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 1.2rem; }
+.th-cat-card__cta { display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; letter-spacing: 0.18em; color: #000; background: #D4AF37; padding: 0.5rem 1.4rem; transition: background 0.22s, color 0.22s; }
+.th-cat-card:hover .th-cat-card__cta { background: #fff; color: #000; }
+
+/* STORY */
+.th-story { position: relative; overflow: hidden; padding: 6rem 4vw; }
+.th-story__bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.08; }
+.th-story__overlay { position: absolute; inset: 0; background: #070707; opacity: 0.6; }
+.th-story__inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+@media(max-width:768px) { .th-story__inner { grid-template-columns: 1fr; gap: 2rem; } .th-story__img-wrap { order: -1; } }
+.th-story__label { font-family: 'Courier New', monospace; font-size: 0.72rem; letter-spacing: 0.22em; color: #D4AF37; margin-bottom: 1rem; }
+.th-story__title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; letter-spacing: 0.06em; margin: 0 0 1.5rem; }
+.th-story__quote { font-style: italic; font-size: 1.05rem; color: rgba(255,255,255,0.7); line-height: 1.6; border-left: 2px solid #D4AF37; padding-left: 1.2rem; margin-bottom: 1.2rem; }
+.th-story__body { font-family: 'Courier New', monospace; font-size: 0.82rem; color: #A4A098; line-height: 1.7; margin-bottom: 2rem; }
+.th-story__img { width: 100%; display: block; filter: grayscale(0.3) contrast(1.1); }
+.th-story__img-wrap { position: relative; }
+.th-story__img-label { position: absolute; bottom: 1.2rem; left: 1.2rem; background: rgba(0,0,0,0.82); border: 1px solid #D4AF37; padding: 0.6rem 1rem; display: flex; flex-direction: column; gap: 0.1rem; }
+.th-story__img-label span { font-family: 'Courier New', monospace; font-size: 0.6rem; color: #D4AF37; letter-spacing: 0.2em; }
+.th-story__img-label strong { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: #fff; letter-spacing: 0.1em; }
+
+/* BIG CTA */
+.th-cta-final { text-align: center; padding: 6rem 2rem; background: #080808; }
+.th-cta-final__tag { font-family: 'Courier New', monospace; font-size: 0.7rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.3); margin-bottom: 1.2rem; }
+.th-cta-final__title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 9vw, 6rem); color: #fff; letter-spacing: 0.06em; line-height: 0.95; margin-bottom: 2.5rem; }
+
+/* Ocultar SIN CATEGORIZAR en cards del slider homepage */
+.th-card__cat { text-transform: uppercase; }
+.th-card .th-card__cat:empty,
+.th-card .th-card__cat {
+    display: block;
+}
+
+/* Hero video background */
+.th-hero__bg--video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    background-size: unset;
+    background-image: none;
+    filter: brightness(0.75);
+}
+
+/* Hide Amazon Pay + Google Pay express buttons everywhere */
+.wc-stripe-amazon-pay-button-wrapper,
+.wc-stripe-express-checkout-element-container,
+.wc-stripe-express-payment-method-amazonpay,
+#wc-stripe-express-checkout-element,
+.wc-block-cart__payment-method-stripe-amazon-pay,
+[id*='amazon-pay'],
+[class*='amazon-pay'],
+[class*='amazon_pay'],
+[class*='googlepay'],
+[class*='google-pay'],
+.wc-stripe-googlepay-button-wrapper,
+.gpay-button-container,
+.stripe-express-checkout-element {
+    display: none !important;
+}
+
+/* ============================================================
+   MOCKUP GALLERY — Thumbnail strip + zoom
+   ============================================================ */
+
+/* ── Main gallery container ──────────────────────────── */
+.trocha-single-product__gallery {
+    position: relative;
+    overflow: hidden;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 4px;
+}
+
+/* ── THUMBNAIL STRIP (mockup selector) ───────────────── */
+/* Flex row, no gaps, scroll horizontal */
+.woocommerce-product-gallery .flex-control-thumbs,
+.woocommerce div.product div.images .flex-control-thumbs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 8px 0 4px 0 !important;
+    list-style: none !important;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--light2) transparent;
+    /* Hide scrollbar on WebKit but keep scroll functional */
+    mask-image: linear-gradient(to right, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 92%, transparent 100%);
+}
+
+/* Individual thumbnail */
+.woocommerce-product-gallery .flex-control-thumbs li,
+.woocommerce div.product div.images .flex-control-thumbs li {
+    flex: 0 0 auto !important;
+    width: 68px !important;
+    height: 68px !important;
+    margin: 0 4px 0 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    list-style: none !important;
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--dark);
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+.woocommerce-product-gallery .flex-control-thumbs li:last-child {
+    margin-right: 0 !important;
+}
+
+/* Thumbnail image fills the li */
+.woocommerce-product-gallery .flex-control-thumbs li img,
+.woocommerce div.product div.images .flex-control-thumbs li img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    opacity: 0.55;
+    transition: opacity 0.2s, transform 0.25s;
+    border-radius: 1px;
+    max-height: none !important;
+}
+
+/* Active thumbnail */
+.woocommerce-product-gallery .flex-control-thumbs li img.flex-active,
+.woocommerce div.product div.images .flex-control-thumbs li img.flex-active {
+    opacity: 1;
+    border: none;
+}
+.woocommerce-product-gallery .flex-control-thumbs li:has(img.flex-active) {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(196,160,0,0.25);
+}
+
+/* Hover on thumbnail */
+.woocommerce-product-gallery .flex-control-thumbs li:hover {
+    border-color: var(--accent-glow);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.woocommerce-product-gallery .flex-control-thumbs li:hover img {
+    opacity: 0.9;
+    transform: scale(1.06);
+}
+
+/* Scrollbar styling for thumbnail strip */
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar {
+    height: 3px;
+}
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar-track {
+    background: transparent;
+}
+.woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar-thumb {
+    background: var(--light2);
+    border-radius: 3px;
+}
+
+/* ── Fade transition between slides ──────────────────── */
+.woocommerce-product-gallery__wrapper .woocommerce-product-gallery__image {
+    transition: opacity 0.3s ease;
+}
+.flex-viewport .woocommerce-product-gallery__image {
+    animation: mockupFadeIn 0.35s ease;
+}
+@keyframes mockupFadeIn {
+    from { opacity: 0.6; transform: scale(0.98); }
+    to   { opacity: 1;   transform: scale(1); }
+}
+
+/* ── Remove flex-direction-nav (prev/next arrows) ────── */
+.woocommerce-product-gallery .flex-direction-nav,
+.woocommerce div.product div.images .flex-direction-nav {
+    display: none !important;
+}
+
+/* ── Product listing cards: smooth image zoom ────────── */
+.trocha-product-card__image {
+    overflow: hidden;
+    border-radius: 3px;
+}
+.trocha-product-card__image a {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+.trocha-product-card__image img {
+    transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), filter 0.4s !important;
+    object-fit: cover !important;
+}
+.trocha-product-card:hover .trocha-product-card__image img {
+    transform: scale(1.09) !important;
+    filter: brightness(1.1) contrast(1.06) !important;
+}
+
+/* ── Gallery layout: full width on mobile ────────────── */
+@media (max-width: 768px) {
+    .trocha-single-product {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    .woocommerce-product-gallery .flex-control-thumbs li {
+        width: 56px !important;
+        height: 56px !important;
+    }
+}
+
+
+/* ── LENS ZOOM — ONLY on main mockup (.flex-viewport), NOT thumbnails ──── */
+.flex-viewport {
+    overflow: hidden !important;
+    cursor: crosshair;
+}
+.flex-viewport .woocommerce-product-gallery__image {
+    overflow: hidden !important;
+}
+.flex-viewport .woocommerce-product-gallery__image img,
+.flex-viewport img.wp-post-image {
+    transition: transform 0.12s ease-out, transform-origin 0.08s ease-out !important;
+    transform-origin: center center;
+    will-change: transform, transform-origin;
+    display: block;
+}
+
+/* ── SPA page transition ──── */
+main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }

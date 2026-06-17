@@ -23,6 +23,34 @@
             <?php endif; ?>
         </div>
 
+        <!-- BARRA DE FILTROS -->
+        <?php
+        $filtros = [
+            'todos'      => ['label' => 'TODOS',      'slug' => ''],
+            'camisetas'  => ['label' => 'CAMISETAS',  'slug' => 'camisetas'],
+            'sudaderas'  => ['label' => 'SUDADERAS',  'slug' => 'sudaderas'],
+            'chaquetas'  => ['label' => 'CHAQUETAS',  'slug' => 'chaquetas'],
+            'pantalones' => ['label' => 'PANTALONES', 'slug' => 'pantalones'],
+            'shorts'     => ['label' => 'SHORTS',     'slug' => 'shorts'],
+            'accesorios' => ['label' => 'ACCESORIOS', 'slug' => 'accesorios'],
+        ];
+        $current_slug = ($term && isset($term->slug)) ? $term->slug : '';
+        ?>
+        <div class="trocha-filter-bar">
+            <?php foreach ($filtros as $key => $filtro) :
+                $url = $filtro['slug'] ? get_term_link($filtro['slug'], 'product_cat') : get_permalink(wc_get_page_id('shop'));
+                $is_active = ($filtro['slug'] === $current_slug) || ($filtro['slug'] === '' && !$cat_slug && !in_array($current_slug, array_column($filtros, 'slug')));
+                if (!$filtro['slug'] && $cat_slug) $is_active = false;
+                if (!$filtro['slug'] && !is_shop() && !is_product_category()) $is_active = true;
+                if (is_shop() && $filtro['slug'] === '') $is_active = true;
+            ?>
+                <a href="<?php echo esc_url(is_wp_error($url) ? get_permalink(wc_get_page_id('shop')) : $url); ?>"
+                   class="trocha-filter-btn <?php echo $is_active ? 'active' : ''; ?>">
+                    <?php echo esc_html($filtro['label']); ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
         <?php if (woocommerce_product_loop()) : ?>
 
             <?php do_action('woocommerce_before_shop_loop'); ?>

@@ -16,3 +16,5 @@ Thumbs.db
 # Build artifacts
 *.min.css.map
 *.min.js.map
+*.bak
+*.bak-*

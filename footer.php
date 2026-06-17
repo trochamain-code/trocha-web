@@ -49,11 +49,11 @@
 <?php wp_footer(); ?>
 
 <!-- =====================================================
-     MINI-PLAYER FLOTANTE — persiste entre páginas
+     MINI-PLAYER FLOTANTE — reproducción continua
      ===================================================== -->
 <audio id="trocha-persistent-audio"
        src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/mp3/caceria.mp3"
-       preload="none" loop></audio>
+       preload="auto" loop></audio>
 
 <div id="trocha-miniplayer" class="trocha-miniplayer" aria-label="Reproductor">
     <button id="trocha-mini-btn" class="trocha-mini-btn" aria-label="Play/Stop">
@@ -67,246 +67,171 @@
 
 <script>
 (function(){
-    var audio    = document.getElementById('trocha-persistent-audio');
-    var player   = document.getElementById('trocha-miniplayer');
-    var btn      = document.getElementById('trocha-mini-btn');
-    var SK       = 'trocha_audio_playing';
-    var SK_TIME  = 'trocha_audio_time';
+    var a = document.getElementById('trocha-persistent-audio');
+    var player = document.getElementById('trocha-miniplayer');
+    var btn = document.getElementById('trocha-mini-btn');
+    var K = 'ta_play', KT = 'ta_time';
     var isPlaying = false;
+    var vol = 0.6;
+    a.volume = vol;
 
-    function setPlaying(state) {
-        isPlaying = state;
-        btn.classList.toggle('is-playing', state);
-        player.classList.toggle('is-playing', state);
-        // Notificar al botón grande de la home
-        document.dispatchEvent(new CustomEvent('trocha:playstate', { detail: { playing: state } }));
+    function setPlaying(s) {
+        isPlaying = s;
+        btn.classList.toggle('is-playing', s);
+        player.classList.toggle('is-playing', s);
+        localStorage.setItem(K, s ? '1' : '0');
+        document.dispatchEvent(new CustomEvent('trocha:playstate', { detail: { playing: s } }));
     }
 
     function play() {
-        audio.volume = 0.75;
-        audio.play().then(function(){
-            setPlaying(true);
-            sessionStorage.setItem(SK, '1');
-        }).catch(function(){});
+        a.play().then(function(){ setPlaying(true); }).catch(function(){});
     }
 
     function pause() {
-        audio.pause();
+        a.pause();
         setPlaying(false);
-        sessionStorage.setItem(SK, '0');
     }
 
-    // Guardar tiempo actual justo antes de salir de la página
-    window.addEventListener('beforeunload', function(){
-        sessionStorage.setItem(SK_TIME, audio.currentTime);
-        sessionStorage.setItem(SK, isPlaying ? '1' : '0');
+    /* Save time continuously */
+    setInterval(function() {
+        if (isPlaying) localStorage.setItem(KT, a.currentTime);
+    }, 250);
+
+    /* Save on unload */
+    window.addEventListener('beforeunload', function() {
+        localStorage.setItem(KT, a.currentTime);
+        localStorage.setItem(K, isPlaying ? '1' : '0');
     });
 
-    // Al cargar: si estaba sonando, reanudar desde donde quedó
-    var wasPlaying = sessionStorage.getItem(SK) === '1';
-    var savedTime  = parseFloat(sessionStorage.getItem(SK_TIME) || '0');
+    /* Restore on load */
+    var wasPlaying = localStorage.getItem(K) === '1';
+    var t = parseFloat(localStorage.getItem(KT) || '0');
 
     if (wasPlaying) {
-        audio.addEventListener('canplay', function onCanPlay(){
-            audio.removeEventListener('canplay', onCanPlay);
-            audio.currentTime = savedTime || 0;
-            play();
-        }, { once: true });
-        audio.load();
+        a.currentTime = Math.max(0, t - 0.15);
+        a.play().then(function() {
+            setPlaying(true);
+            /* Fine-tune to exact position after playback starts */
+            a.currentTime = t;
+        }).catch(function() {
+            /* Browser blocked autoplay — show play button */
+            setPlaying(false);
+        });
     }
 
-    btn.addEventListener('click', function(){
-        if (isPlaying) { pause(); } else { play(); }
+    btn.addEventListener('click', function() {
+        isPlaying ? pause() : play();
     });
 
+    /* Resume if browser pauses us (background tab) */
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && isPlaying && a.paused) play();
+    });
 })();
-
 </script>
 
-<!-- =====================================================
-     PJAX — Navegación sin recarga para que el audio no se corte
-     ===================================================== -->
 <script>
+/* ── SPA NAVIGATION: audio nunca se para ──── */
 (function(){
-    var container = document.getElementById('trocha-pjax-container');
-    if (!container) return;
+    var MAIN = 'main';
+    var base = location.origin;
+    var fetching = false;
 
-    // No interceptar estos links
-    function shouldIgnore(href, el) {
-        if (!href) return true;
-        // Atributo explícito de exclusión
-        if (el && (el.hasAttribute('data-pjax-ignore') || el.closest('[data-pjax-ignore]'))) return true;
-        var url = new URL(href, location.href);
-        if (url.origin !== location.origin) return true;          // externo
-        if (url.pathname.match(/\.(pdf|jpg|png|zip|mp3|wav)$/i)) return true; // archivo
-        if (href.indexOf('#') === 0) return true;                 // ancla
-        if (url.pathname.indexOf('/wp-admin') === 0) return true; // admin
-        if (url.pathname.indexOf('/wp-login') === 0) return true;
-        // NUNCA interceptar carrito, checkout ni mi cuenta — WooCommerce necesita recarga completa
-        if (url.pathname.indexOf('/carrito') >= 0) return true;
-        if (url.pathname.indexOf('/finalizar-compra') >= 0) return true;
-        if (url.pathname.indexOf('/checkout') >= 0) return true;
-        if (url.pathname.indexOf('/cart') >= 0) return true;
-        if (url.pathname.indexOf('/mi-cuenta') >= 0) return true;
-        if (url.search.indexOf('add-to-cart') >= 0) return true;  // botón añadir al carrito
-        // No interceptar páginas de producto — WooCommerce necesita sus scripts de variación
-        if (url.pathname.indexOf('/producto/') >= 0) return true;
-        if (url.pathname.indexOf('/product/') >= 0) return true;
-        return false;
+    function swap(html, url) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var newMain = doc.querySelector(MAIN);
+        var oldMain = document.querySelector(MAIN);
+        if (!newMain || !oldMain) return false;
+
+        /* Update title */
+        var t = doc.querySelector('title');
+        if (t) document.title = t.textContent;
+
+        /* Swap content */
+        oldMain.innerHTML = '';
+        /* Move children one by one to preserve event listeners where possible */
+        while (newMain.firstChild) {
+            oldMain.appendChild(newMain.firstChild);
+        }
+
+        /* Re-run inline scripts from the new page */
+        var scripts = oldMain.querySelectorAll('script');
+        scripts.forEach(function(s) {
+            var ns = document.createElement('script');
+            Array.from(s.attributes).forEach(function(a) { ns.setAttribute(a.name, a.value); });
+            ns.textContent = s.textContent;
+            s.parentNode.replaceChild(ns, s);
+        });
+
+        /* Notify WooCommerce */
+        if (typeof jQuery !== 'undefined') {
+            jQuery(document.body).trigger('wc_fragment_refresh');
+            jQuery(document).trigger('page_loaded');
+            /* Re-init variation forms */
+            jQuery('.variations_form').each(function() { jQuery(this).wc_variation_form(); });
+        }
+
+        /* Dispatch DOM-like event for any listeners */
+        window.dispatchEvent(new Event('trocha:page_swapped'));
+
+        window.scrollTo(0, 0);
+        return true;
     }
 
-    var isLoading = false;
-
-    function navigate(url, push) {
-        if (isLoading) return;
-        isLoading = true;
-
-        // Fade out suave del contenido actual
-        container.style.transition = 'opacity 0.25s';
-        container.style.opacity = '0.3';
-
-        fetch(url, { headers: { 'X-PJAX': '1' } })
-            .then(function(r) { return r.text(); })
+    function navigate(href, push) {
+        if (fetching) return;
+        fetching = true;
+        fetch(href, { credentials: 'same-origin' })
+            .then(function(r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.text();
+            })
             .then(function(html) {
-                var parser = new DOMParser();
-                var doc = parser.parseFromString(html, 'text/html');
-
-                // Extraer nuevo <main id="trocha-pjax-container">
-                var newMain = doc.getElementById('trocha-pjax-container');
-                if (!newMain) {
-                    // Fallback: recarga normal
-                    location.href = url;
-                    return;
+                if (swap(html, href)) {
+                    if (push !== false) history.pushState({ url: href }, '', href);
+                } else {
+                    window.location.href = href;
                 }
-
-                // Actualizar título
-                var newTitle = doc.querySelector('title');
-                if (newTitle) document.title = newTitle.textContent;
-
-                // Actualizar body classes (para que WooCommerce/Elementor detecten la página)
-                var newBodyClass = doc.body.className;
-                if (newBodyClass) document.body.className = newBodyClass;
-
-                // Reemplazar contenido
-                container.innerHTML = newMain.innerHTML;
-                container.className = newMain.className;
-
-                // Fade in
-                container.style.opacity = '0.3';
-                requestAnimationFrame(function(){
-                    container.style.transition = 'opacity 0.3s';
-                    container.style.opacity = '1';
-                });
-
-                // Push state
-                if (push !== false) {
-                    history.pushState({ pjax: true, url: url }, document.title, url);
-                }
-
-                // Scroll al top
-                window.scrollTo(0, 0);
-
-                // Re-ejecutar scripts inline del nuevo contenido
-                var scripts = container.querySelectorAll('script');
-                scripts.forEach(function(oldScript) {
-                    var s = document.createElement('script');
-                    if (oldScript.src) {
-                        s.src = oldScript.src;
-                    } else {
-                        s.textContent = oldScript.textContent;
-                    }
-                    document.head.appendChild(s).parentNode.removeChild(s);
-                });
-
-                // Re-init botón play de la home si existe
-                var playBtn = document.getElementById('trocha-play-btn');
-                if (playBtn) {
-                    // Sincronizar estado con el mini-player
-                    var miniBtn = document.getElementById('trocha-mini-btn');
-                    var isNowPlaying = miniBtn && miniBtn.classList.contains('is-playing');
-                    playBtn.classList.toggle('is-playing', isNowPlaying);
-                    var lbl = document.getElementById('trocha-play-label');
-                    if (lbl) lbl.textContent = isNowPlaying ? 'STOP' : 'PRESS PLAY';
-
-                    playBtn.addEventListener('click', function() {
-                        var mb = document.getElementById('trocha-mini-btn');
-                        if (mb) mb.click();
-                    });
-                }
-
-                isLoading = false;
+                fetching = false;
             })
             .catch(function() {
-                // Si falla fetch, navegar normal
-                location.href = url;
-                isLoading = false;
+                window.location.href = href;
+                fetching = false;
             });
     }
 
-    // Interceptar clicks en links
     document.addEventListener('click', function(e) {
-        var link = e.target.closest('a[href]');
+        var link = e.target.closest('a');
         if (!link) return;
         var href = link.getAttribute('href');
-        if (shouldIgnore(href, link)) return;
-        // Ignorar links que abran en nueva pestaña
-        if (link.target && link.target !== '_self') return;
-        // Si la página actual tiene formularios WooCommerce, no interceptar
-        if (document.querySelector('form.cart, .woocommerce-checkout, .woocommerce-cart-form')) return;
-        // Si el link tiene clases WooCommerce, no interceptar
-        if (link.classList.contains('add_to_cart_button') ||
-            link.classList.contains('ajax_add_to_cart') ||
-            link.classList.contains('single_add_to_cart_button')) return;
+        if (!href || href === '#') return;
+        if (link.hostname !== location.hostname) return;
+        if (/^#/.test(link.getAttribute('href'))) return;
+        if (/wp-admin|wp-content\/uploads|wp-json|wp-login|\.xml|\.pdf/.test(href)) return;
+        if (/^(tel|mailto|javascript):/.test(href)) return;
+        if (link.target || link.hasAttribute('download')) return;
+        /* Don't intercept WooCommerce AJAX buttons */
+        if (link.classList.contains('add_to_cart_button') || link.classList.contains('ajax_add_to_cart')) return;
+        /* Don't intercept variation reset */
+        if (link.classList.contains('reset_variations')) return;
 
         e.preventDefault();
-        navigate(link.href, true);
+        navigate(href, true);
     });
 
-    // Botón atrás/adelante del navegador
+    /* Back/forward */
     window.addEventListener('popstate', function(e) {
-        if (e.state && e.state.pjax) {
-            navigate(location.href, false);
+        if (e.state && e.state.url) {
+            navigate(e.state.url, false);
         }
     });
-
 })();
 </script>
-
-<script>
-(function(){
-    var burger  = document.getElementById('trocha-burger');
-    var drawer  = document.getElementById('trocha-drawer');
-    var overlay = document.getElementById('trocha-drawer-overlay');
-    var closeBtn = document.getElementById('trocha-drawer-close');
-    if (!burger || !drawer || !overlay) return;
-
-    function openDrawer(){
-        drawer.classList.add('is-open');
-        overlay.classList.add('is-open');
-        burger.classList.add('is-active');
-        burger.setAttribute('aria-expanded','true');
-        drawer.setAttribute('aria-hidden','false');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeDrawer(){
-        drawer.classList.remove('is-open');
-        overlay.classList.remove('is-open');
-        burger.classList.remove('is-active');
-        burger.setAttribute('aria-expanded','false');
-        drawer.setAttribute('aria-hidden','true');
-        document.body.style.overflow = '';
-    }
-
-    burger.addEventListener('click', function(){
-        drawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
-    });
-    overlay.addEventListener('click', closeDrawer);
-    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-    document.addEventListener('keydown', function(e){
-        if (e.key === 'Escape') closeDrawer();
-    });
-})();
-</script>
-
 </body>
 </html>
+
+
+
+
+
+

@@ -559,9 +559,43 @@ add_action('wp_footer', function() {
 });
 
 
-
-
-
-
-
+// Style Select2 variation dropdowns via JS (CSS alone cant override Select2 inline styles)
+add_action("wp_footer", function() {
+    if (!is_product()) return;
+    echo "<script>
+(function(){
+    function styleS2(){
+        // Target the Select2 rendered span containers
+        document.querySelectorAll(\".select2-container--default .select2-selection--single\").forEach(function(el){
+            el.style.setProperty(\"background\",\"#111\",\"important\");
+            el.style.setProperty(\"border\",\"1px solid #D4AF37\",\"important\");
+            el.style.setProperty(\"border-radius\",\"0\",\"important\");
+            el.style.setProperty(\"height\",\"44px\",\"important\");
+            el.style.setProperty(\"display\",\"flex\",\"important\");
+            el.style.setProperty(\"align-items\",\"center\",\"important\");
+        });
+        document.querySelectorAll(\".select2-selection__rendered\").forEach(function(el){
+            el.style.setProperty(\"color\",\"#fff\",\"important\");
+            el.style.setProperty(\"font-family\",\"Bebas Neue,sans-serif\",\"important\");
+            el.style.setProperty(\"font-size\",\"0.95rem\",\"important\");
+            el.style.setProperty(\"letter-spacing\",\"0.1em\",\"important\");
+            el.style.setProperty(\"line-height\",\"44px\",\"important\");
+            el.style.setProperty(\"padding-left\",\"12px\",\"important\");
+        });
+        document.querySelectorAll(\".select2-selection__arrow b\").forEach(function(el){
+            el.style.setProperty(\"border-top-color\",\"#D4AF37\",\"important\");
+        });
+    }
+    document.addEventListener(\"DOMContentLoaded\", function(){ setTimeout(styleS2,100); setTimeout(styleS2,600); setTimeout(styleS2,1500); });
+    // Re-run after WC updates variation
+    jQuery(document).on(\"woocommerce_variation_select_change found_variation reset_data\", function(){ setTimeout(styleS2,100); });
+})();
+</script>";
+}, 20);
+// Force 4 related products in 4 columns — no orphan
+add_filter("woocommerce_output_related_products_args", function($args) {
+    $args["posts_per_page"] = 4;
+    $args["columns"] = 4;
+    return $args;
+});
 

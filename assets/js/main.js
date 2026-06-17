@@ -55,27 +55,32 @@
         }
 
         // Stagger items that share a parent grid.
-        els.forEach(function (el) {
-            el.classList.add('reveal');
-        });
+        // reveal class removed: opacity controlled via CSS only
+
+        // Helper reveal
+        function revealEl(el) {
+            if (el.classList.contains('reveal-in')) return;
+            var parent = el.parentElement;
+            if (parent && parent.classList.contains('trocha-products-grid')) {
+                var idx = Array.prototype.indexOf.call(parent.children, el);
+                el.style.transitionDelay = (Math.min(idx, 8) * 70) + 'ms';
+            }
+            el.classList.add('reveal-in');
+        }
 
         var io = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
-                    var el = entry.target;
-                    // stagger within product grids
-                    var parent = el.parentElement;
-                    if (parent && parent.classList.contains('trocha-products-grid')) {
-                        var idx = Array.prototype.indexOf.call(parent.children, el);
-                        el.style.transitionDelay = (Math.min(idx, 8) * 70) + 'ms';
-                    }
-                    el.classList.add('reveal-in');
-                    io.unobserve(el);
+                    revealEl(entry.target);
+                    io.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
 
         els.forEach(function (el) { io.observe(el); });
+
+        // SAFETY NET: tras 1.2s revelar todo lo que siga oculto
+        setTimeout(function () { els.forEach(revealEl); }, 1200);
     }
 
     /* ---- Smooth anchor scrolling ---------------------------- */
@@ -261,3 +266,207 @@
     });
 
 })();
+
+/* ── MOCKUP THUMBNAIL STRIP — horizontal scroll + auto-center active ──── */
+(function() {
+    function setupMockupThumbs() {
+        var thumbs = document.querySelector('.woocommerce-product-gallery .flex-control-thumbs');
+        if (!thumbs) return;
+
+        /* Mousewheel horizontal scroll */
+        thumbs.addEventListener('wheel', function(e) {
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                e.preventDefault();
+                thumbs.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+
+        /* Auto-scroll active thumbnail into view */
+        var observer = new MutationObserver(function() {
+            var activeImg = thumbs.querySelector('img.flex-active');
+            if (activeImg) {
+                var li = activeImg.closest('li');
+                if (li) {
+                    li.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }
+        });
+        observer.observe(thumbs, { attributes: true, subtree: true, attributeFilter: ['class', 'src'] });
+
+        /* Touch/drag scroll */
+        var isDown = false, startX, scrollStart;
+        thumbs.addEventListener('mousedown', function(e) {
+            isDown = true;
+            startX = e.pageX - thumbs.offsetLeft;
+            scrollStart = thumbs.scrollLeft;
+            thumbs.style.cursor = 'grabbing';
+        });
+        thumbs.addEventListener('mouseleave', function() { isDown = false; thumbs.style.cursor = ''; });
+        thumbs.addEventListener('mouseup', function() { isDown = false; thumbs.style.cursor = ''; });
+        thumbs.addEventListener('mousemove', function(e) {
+            if (!isDown) return;
+            e.preventDefault();
+            var x = e.pageX - thumbs.offsetLeft;
+            var walk = (x - startX) * 2;
+            thumbs.scrollLeft = scrollStart - walk;
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupMockupThumbs);
+    } else {
+        setupMockupThumbs();
+    }
+
+    /* Re-run after WooCommerce variation changes (gallery reloads) */
+    jQuery && jQuery(document).on('found_variation', function() {
+        setTimeout(setupMockupThumbs, 100);
+    });
+})();
+
+
+
+/* ── PRODUCT IMAGE ZOOM: cursor-follow, any selected mockup ──── */
+(function() {
+    var ZOOM = 2.8;
+    var viewport = null;
+    var currentImg = null;
+    var zoomedIn = false;
+
+    function getImg() {
+        /* Always target the currently visible/active mockup, not the first in DOM */
+        var img = document.querySelector('.flex-viewport .flex-active-slide img');
+        if (!img) img = document.querySelector('.woocommerce-product-gallery__image.flex-active-slide img');
+        if (!img) img = document.querySelector('.flex-viewport .woocommerce-product-gallery__wrapper .flex-active-slide img');
+        /* Fallback: any visible (non-clone) image */
+        if (!img) img = document.querySelector('.flex-viewport .woocommerce-product-gallery__image:not(.clone) img');
+        return img;
+    }
+
+    function onEnter() {
+        currentImg = getImg();
+        if (!currentImg) return;
+        currentImg.style.transition = 'transform 0.12s ease-out, transform-origin 0.08s ease-out';
+        currentImg.style.transform = 'scale(' + ZOOM + ')';
+        currentImg.style.maxHeight = 'none';
+        currentImg.style.maxWidth = 'none';
+        zoomedIn = true;
+    }
+
+    function onMove(e) {
+        if (!zoomedIn) {
+            currentImg = getImg();
+            if (!currentImg) return;
+            currentImg.style.transition = 'transform 0.12s ease-out, transform-origin 0.08s ease-out';
+            currentImg.style.transform = 'scale(' + ZOOM + ')';
+            currentImg.style.maxHeight = 'none';
+            currentImg.style.maxWidth = 'none';
+            zoomedIn = true;
+        }
+        var r = viewport.getBoundingClientRect();
+        var xPct = ((e.clientX - r.left) / r.width) * 100;
+        var yPct = ((e.clientY - r.top) / r.height) * 100;
+        /* Always operate on the live image so mockup switches work */
+        var img = getImg();
+        if (img) img.style.transformOrigin = xPct + '% ' + yPct + '%';
+    }
+
+    function onLeave() {
+        var img = getImg();
+        if (img) {
+            img.style.transform = 'scale(1)';
+            img.style.transformOrigin = 'center center';
+            img.style.maxHeight = '620px';
+            img.style.maxWidth = '100%';
+        }
+        zoomedIn = false;
+        currentImg = null;
+    }
+
+    function init() {
+        viewport = document.querySelector('.flex-viewport');
+        if (!viewport) return;
+        viewport.style.overflow = 'hidden';
+        viewport.style.cursor = 'crosshair';
+
+        viewport.addEventListener('mouseenter', onEnter);
+        viewport.addEventListener('mousemove', onMove);
+        viewport.addEventListener('mouseleave', onLeave);
+
+        /* Touch: drag to pan */
+        viewport.addEventListener('touchmove', function(e) {
+            if (e.touches.length !== 1) return;
+            e.preventDefault();
+            var t = e.touches[0];
+            var r = viewport.getBoundingClientRect();
+            var xPct = ((t.clientX - r.left) / r.width) * 100;
+            var yPct = ((t.clientY - r.top) / r.height) * 100;
+            var img = getImg();
+            if (!img) return;
+            if (!zoomedIn) {
+                img.style.transform = 'scale(' + ZOOM + ')';
+                img.style.maxHeight = 'none';
+                img.style.maxWidth = 'none';
+                zoomedIn = true;
+            }
+            img.style.transformOrigin = xPct + '% ' + yPct + '%';
+        }, { passive: false });
+
+        viewport.addEventListener('touchend', function() {
+            var img = getImg();
+            if (img) {
+                img.style.transform = 'scale(1)';
+                img.style.transformOrigin = 'center center';
+                img.style.maxHeight = '620px';
+                img.style.maxWidth = '100%';
+            }
+            zoomedIn = false;
+        });
+
+        /* Re-init on WooCommerce events (variation change / gallery reset) */
+        jQuery && jQuery(document).on('found_variation reset_data', function() {
+            zoomedIn = false;
+            currentImg = null;
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() { setTimeout(init, 500); });
+    } else {
+        setTimeout(init, 500);
+    }
+    /* Extra retry for flexslider delay */
+    setTimeout(init, 1200);
+})();
+
+
+/* ── Re-init after SPA page swap ──── */
+window.addEventListener('trocha:page_swapped', function() {
+    /* Re-init zoom on the new main image */
+    var viewport = document.querySelector('.flex-viewport');
+    if (viewport) {
+        viewport.style.overflow = 'hidden';
+        viewport.style.cursor = 'crosshair';
+    }
+    /* Re-init mockup thumbnails */
+    setTimeout(function() {
+        var thumbs = document.querySelector('.woocommerce-product-gallery .flex-control-thumbs');
+        if (thumbs && !thumbs.dataset.spaReady) {
+            thumbs.dataset.spaReady = '1';
+            thumbs.addEventListener('wheel', function(e) {
+                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                    e.preventDefault();
+                    thumbs.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+        }
+    }, 100);
+    /* Re-attach zoom events */
+    setTimeout(function() {
+        var vp = document.querySelector('.flex-viewport');
+        if (vp && vp.dataset.zoomReady) delete vp.dataset.zoomReady;
+        /* The zoom IIFE's init() will re-run via its own MutationObserver */
+    }, 200);
+    /* Re-init play button */
+    if (typeof initPlayButton === 'function') initPlayButton();
+});

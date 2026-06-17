@@ -240,8 +240,12 @@ add_filter('woocommerce_checkout_posted_data', function ($data) {
  * the base country option is a clean code so nothing downstream mis-parses it.
  */
 add_filter('option_woocommerce_default_country', function ($value) {
-    if (is_string($value) && strpos($value, 'España') !== false) {
-        return 'ES:SE';
+    if (!is_string($value)) return $value;
+    // Convertir ES:* a ES
+    if (preg_match('/^ES(:.*)?$/', $value)) return 'ES';
+    // Convertir nombre a código
+    foreach (['España','Espana','Spain'] as $n) {
+        if (stripos($value, $n) !== false) return 'ES';
     }
     return $value;
 });
@@ -253,3 +257,19 @@ add_filter('option_woocommerce_default_country', function ($value) {
 add_filter('option_woocommerce_coming_soon', function () { return 'no'; });
 add_filter('option_woocommerce_store_pages_only', function () { return 'no'; });
 add_filter('woocommerce_coming_soon_exclude', '__return_true');
+
+
+/**
+ * TROCHA — SMTP via PHPMailer (Gmail + App Password)
+ */
+add_action('phpmailer_init', function($phpmailer) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host       = 'smtp.gmail.com';
+    $phpmailer->SMTPAuth   = true;
+    $phpmailer->Port       = 587;
+    $phpmailer->SMTPSecure = 'tls';
+    $phpmailer->Username   = 'trochamain@gmail.com';
+    $phpmailer->Password   = 'mqusyyaswhtgpsic';
+    $phpmailer->From       = 'trochamain@gmail.com';
+    $phpmailer->FromName   = 'TROCHA';
+});
