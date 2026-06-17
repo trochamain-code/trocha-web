@@ -1011,7 +1011,7 @@ a:hover { color: var(--accent-glow); }
    ============================================================ */
 @keyframes trocha-scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(-16.666%); }
 }
 @keyframes manhunt-equalizer {
     0%, 100% { width: 25%; }
@@ -1972,7 +1972,7 @@ a { transition: color 0.15s ease; }
     position: absolute;
     top: -20px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-100%);
     width: 200px;
     height: 200px;
     background: radial-gradient(ellipse at center, rgba(196,154,60,0.35) 0%, rgba(196,154,60,0.1) 40%, transparent 70%);
@@ -3770,7 +3770,7 @@ ul.products.columns-4 li.product {
     position: absolute;
     bottom: 2rem;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-100%);
     color: rgba(255,255,255,0.3);
     font-size: 1.4rem;
     z-index: 2;
