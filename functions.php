@@ -256,7 +256,6 @@ function trocha_cart_js() {
                     e.preventDefault();
                     select.focus();
                     select.style.borderColor = '#C4A000';
-                    return;
                 }
                 var btn = this.querySelector('button[type="submit"]');
                 if (btn) {
@@ -599,3 +598,37 @@ add_filter("woocommerce_output_related_products_args", function($args) {
     return $args;
 });
 
+
+
+add_filter('woocommerce_product_tabs', function($tabs) {
+    unset($tabs['additional_information']);
+    unset($tabs['reviews']);
+    return $tabs;
+}, 98);
+
+/* ── Force no-cache headers for WooCommerce pages (Hostinger CDN compatible) ── */
+add_action('send_headers', function() {
+    if (is_cart() || is_checkout() || is_account_page() || is_wc_endpoint_url()) {
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, private');
+        header('Pragma: no-cache');
+        header('X-Accel-Expires: 0');
+    }
+    // Also prevent CDN caching of product pages so session cookies can be set
+    if (is_product()) {
+        header('Cache-Control: private, no-cache, max-age=0, must-revalidate');
+    }
+});
+
+/* ── Force no-cache for AJAX and all frontend pages ── */
+add_action('send_headers', function() {
+    // Already covered: is_cart, is_checkout, is_account_page, is_wc_endpoint_url, is_product
+    // Add: AJAX, shop, front page, all other pages
+    if (wp_doing_ajax() || is_shop() || is_front_page() || is_home() || is_product_category() || is_product_tag()) {
+        if (!headers_sent()) {
+            header('Cache-Control: private, no-cache, no-store, must-revalidate, max-age=0');
+        }
+    }
+}, 5);
+
+/* ── Eliminar dropdown ORDENAR de la tienda ── */
+remove_action('woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30);

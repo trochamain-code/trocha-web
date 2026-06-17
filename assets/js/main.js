@@ -461,11 +461,21 @@ window.addEventListener('trocha:page_swapped', function() {
     }
     /* Re-init miniplayer button */
     if (typeof initPlayButton === 'function') initPlayButton();
+    /* Re-init product carousel slider */
+    if (typeof window.trochaSliderInit === 'function') {
+        setTimeout(window.trochaSliderInit, 200);
+    }
 });
 
 
 /* ── PRODUCT CAROUSEL: cursor-follow + drag + snap ── */
-(function(){
+window.trochaSliderInit = function() {
+    // Clean up previous instance
+    if (window._trochaSliderCleanup) {
+        window._trochaSliderCleanup();
+        window._trochaSliderCleanup = null;
+    }
+
     var wrap = document.getElementById("trochaSlider");
     var track = document.getElementById("trochaTrack");
     if (!wrap || !track) return;
@@ -477,16 +487,19 @@ window.addEventListener('trocha:page_swapped', function() {
     function iw() { return allItems[0] ? allItems[0].getBoundingClientRect().width : 0; }
 
     var offset = 0, itemW = 0, baseW = 0;
+    var initTimeout;
     function init() {
         var w = iw();
-        if (w === 0) { setTimeout(init, 100); return; }
+        if (w === 0) { initTimeout = setTimeout(init, 100); return; }
         itemW = w; baseW = w * total;
         offset = baseW;
         track.style.transition = "none";
         track.style.transform = "translateX(-" + offset + "px)";
     }
     init();
-    window.addEventListener("resize", function() { setTimeout(init, 50); });
+
+    var onResize = function() { setTimeout(init, 50); };
+    window.addEventListener("resize", onResize);
 
     /* Cursor-follow */
     var targetOffset = offset;
@@ -550,12 +563,30 @@ window.addEventListener('trocha:page_swapped', function() {
     function pMove(x) { if (!drag) return; var d = x - sx; if (Math.abs(d) > 3) moved = true; offset = so - d; targetOffset = offset; track.style.transform = "translateX(-" + offset + "px)"; }
     function pEnd() { if (!drag) return; drag = false; snap(); }
     wrap.addEventListener("mousedown", function(e) { if (e.button !== 0) return; pStart(e.clientX); });
-    window.addEventListener("mousemove", function(e) { if (drag) pMove(e.clientX); });
-    window.addEventListener("mouseup", function() { if (drag) pEnd(); });
+    var onWinMouseMove = function(e) { if (drag) pMove(e.clientX); };
+    var onWinMouseUp = function() { if (drag) pEnd(); };
+    window.addEventListener("mousemove", onWinMouseMove);
+    window.addEventListener("mouseup", onWinMouseUp);
     wrap.addEventListener("touchstart", function(e) { pStart(e.touches[0].clientX); }, { passive: true });
     wrap.addEventListener("touchmove", function(e) { pMove(e.touches[0].clientX); }, { passive: true });
     wrap.addEventListener("touchend", function() { pEnd(); });
     wrap.addEventListener("click", function(e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
 
     /* Arrow buttons removed — slider uses cursor-follow + drag */
-})();
+
+    // Store cleanup for re-init
+    window._trochaSliderCleanup = function() {
+        if (initTimeout) clearTimeout(initTimeout);
+        if (raf) cancelAnimationFrame(raf);
+        window.removeEventListener("resize", onResize);
+        window.removeEventListener("mousemove", onWinMouseMove);
+        window.removeEventListener("mouseup", onWinMouseUp);
+    };
+};
+
+// Run on initial load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.trochaSliderInit);
+} else {
+    window.trochaSliderInit();
+}
