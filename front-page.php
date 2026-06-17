@@ -44,8 +44,6 @@
 
     <!-- SLIDER MOBILE / GRID DESKTOP -->
     <div class="th-drops__slider-wrap">
-        <button class="th-arrow th-arrow--prev" id="trsArrowPrev" aria-label="Anterior">&#8592;</button>
-        <button class="th-arrow th-arrow--next" id="trsArrowNext" aria-label="Siguiente">&#8594;</button>
         <div class="trs" id="trochaSlider">
             <div class="trs__track" id="trochaTrack">
                 <?php for ($si = 0; $si < 3; $si++) : foreach ($trocha_prods as $p) :
