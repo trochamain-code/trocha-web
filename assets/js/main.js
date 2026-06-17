@@ -238,6 +238,7 @@
     window.trochaToast = showToast;
 
     /* ---- Botón Play / Stop — delega en el mini-player persistente --- */
+window.trochaScrollRevealInit = initScrollReveal;
     function initPlayButton() {
         var btn   = document.getElementById('trocha-play-btn');
         var label = document.getElementById('trocha-play-label');
@@ -322,6 +323,7 @@
     jQuery && jQuery(document).on('found_variation', function() {
         setTimeout(setupMockupThumbs, 100);
     });
+window.trochaMockupThumbsInit = function() { setupMockupThumbs(); };
 })();
 
 
@@ -424,7 +426,7 @@
         });
 
         /* Re-init on WooCommerce events (variation change / gallery reset) */
-        jQuery && jQuery(document).on('found_variation reset_data', function() {
+        jQuery && jQuery(document).off('found_variation.zoom reset_data.zoom').on('found_variation reset_data', function() {
             zoomedIn = false;
             currentImg = null;
         });
@@ -437,36 +439,154 @@
     }
     /* Extra retry for flexslider delay */
     setTimeout(init, 1200);
+window.trochaZoomInit = function() { init(); };
 })();
 
 
 /* ── Re-init after SPA page swap ──── */
 window.addEventListener('trocha:page_swapped', function() {
-    /* Re-init zoom on the new main image */
-    var viewport = document.querySelector('.flex-viewport');
-    if (viewport) {
-        viewport.style.overflow = 'hidden';
-        viewport.style.cursor = 'crosshair';
+    /* Re-init zoom — needs delay for flexslider to rebuild DOM */
+    if (typeof window.trochaZoomInit === 'function') {
+        setTimeout(window.trochaZoomInit, 400);
+        setTimeout(window.trochaZoomInit, 1200);
     }
     /* Re-init mockup thumbnails */
-    setTimeout(function() {
-        var thumbs = document.querySelector('.woocommerce-product-gallery .flex-control-thumbs');
-        if (thumbs && !thumbs.dataset.spaReady) {
-            thumbs.dataset.spaReady = '1';
-            thumbs.addEventListener('wheel', function(e) {
-                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                    e.preventDefault();
-                    thumbs.scrollLeft += e.deltaY;
-                }
-            }, { passive: false });
-        }
-    }, 100);
-    /* Re-attach zoom events */
-    setTimeout(function() {
-        var vp = document.querySelector('.flex-viewport');
-        if (vp && vp.dataset.zoomReady) delete vp.dataset.zoomReady;
-        /* The zoom IIFE's init() will re-run via its own MutationObserver */
-    }, 200);
-    /* Re-init play button */
+    if (typeof window.trochaMockupThumbsInit === 'function') {
+        setTimeout(window.trochaMockupThumbsInit, 200);
+        setTimeout(window.trochaMockupThumbsInit, 800);
+    }
+    /* Re-init scroll reveal for new elements */
+    if (typeof window.trochaScrollRevealInit === 'function') {
+        setTimeout(window.trochaScrollRevealInit, 100);
+    }
+    /* Re-init miniplayer button */
     if (typeof initPlayButton === 'function') initPlayButton();
+    /* Re-init product carousel slider */
+    if (typeof window.trochaSliderInit === 'function') {
+        setTimeout(window.trochaSliderInit, 200);
+    }
 });
+
+
+/* ── PRODUCT CAROUSEL: cursor-follow + drag + snap ── */
+window.trochaSliderInit = function() {
+    // Clean up previous instance
+    if (window._trochaSliderCleanup) {
+        window._trochaSliderCleanup();
+        window._trochaSliderCleanup = null;
+    }
+
+    var wrap = document.getElementById("trochaSlider");
+    var track = document.getElementById("trochaTrack");
+    if (!wrap || !track) return;
+    var allItems = track.querySelectorAll(".trs__item");
+    var realItems = track.querySelectorAll(".trs__item:not(.trs__item--clone)");
+    var total = realItems.length;
+    if (!total) return;
+
+    function iw() { return allItems[0] ? allItems[0].getBoundingClientRect().width : 0; }
+
+    var offset = 0, itemW = 0, baseW = 0;
+    var initTimeout;
+    function init() {
+        var w = iw();
+        if (w === 0) { initTimeout = setTimeout(init, 100); return; }
+        itemW = w; baseW = w * total;
+        offset = baseW;
+        track.style.transition = "none";
+        track.style.transform = "translateX(-" + offset + "px)";
+    }
+    init();
+
+    var onResize = function() { setTimeout(init, 50); };
+    window.addEventListener("resize", onResize);
+
+    /* Cursor-follow */
+    var targetOffset = offset;
+    var hovering = false;
+    var raf = null;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function smoothScroll() {
+        offset = lerp(offset, targetOffset, 0.08);
+        track.style.transform = "translateX(-" + offset + "px)";
+        var w = itemW || iw();
+        if (w === 0) { raf = requestAnimationFrame(smoothScroll); return; }
+        if (offset < w / 2) { offset += baseW; targetOffset += baseW; track.style.transform = "translateX(-" + offset + "px)"; }
+        else if (offset > baseW * 2 - w / 2) { offset -= baseW; targetOffset -= baseW; track.style.transform = "translateX(-" + offset + "px)"; }
+        raf = requestAnimationFrame(smoothScroll);
+    }
+
+    wrap.addEventListener("mouseenter", function() {
+        hovering = true;
+        if (!raf) raf = requestAnimationFrame(smoothScroll);
+    });
+
+    wrap.addEventListener("mousemove", function(e) {
+        if (!hovering) return;
+        var rect = wrap.getBoundingClientRect();
+        var pct = (e.clientX - rect.left) / rect.width;
+        pct = Math.max(0, Math.min(1, pct));
+        var w = iw();
+        if (w === 0) return;
+        var totalScroll = baseW - w;
+        targetOffset = baseW - w / 2 + pct * totalScroll;
+    });
+
+    wrap.addEventListener("mouseleave", function() {
+        hovering = false;
+        snap();
+    });
+
+    function snap() {
+        var w = iw();
+        if (w === 0) return;
+        var idx = Math.round(offset / w);
+        targetOffset = idx * w;
+        function snapLoop() {
+            offset = lerp(offset, targetOffset, 0.15);
+            track.style.transform = "translateX(-" + offset + "px)";
+            if (Math.abs(offset - targetOffset) < 0.5) {
+                offset = targetOffset;
+                track.style.transform = "translateX(-" + offset + "px)";
+                return;
+            }
+            requestAnimationFrame(snapLoop);
+        }
+        requestAnimationFrame(snapLoop);
+    }
+
+    /* Drag (touch + mouse fallback) */
+    var sx = 0, so = 0, drag = false, moved = false;
+    function pStart(x) { drag = true; moved = false; sx = x; so = offset; targetOffset = offset; track.style.transition = "none"; }
+    function pMove(x) { if (!drag) return; var d = x - sx; if (Math.abs(d) > 3) moved = true; offset = so - d; targetOffset = offset; track.style.transform = "translateX(-" + offset + "px)"; }
+    function pEnd() { if (!drag) return; drag = false; snap(); }
+    wrap.addEventListener("mousedown", function(e) { if (e.button !== 0) return; pStart(e.clientX); });
+    var onWinMouseMove = function(e) { if (drag) pMove(e.clientX); };
+    var onWinMouseUp = function() { if (drag) pEnd(); };
+    window.addEventListener("mousemove", onWinMouseMove);
+    window.addEventListener("mouseup", onWinMouseUp);
+    wrap.addEventListener("touchstart", function(e) { pStart(e.touches[0].clientX); }, { passive: true });
+    wrap.addEventListener("touchmove", function(e) { pMove(e.touches[0].clientX); }, { passive: true });
+    wrap.addEventListener("touchend", function() { pEnd(); });
+    wrap.addEventListener("click", function(e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+    /* Arrow buttons removed — slider uses cursor-follow + drag */
+
+    // Store cleanup for re-init
+    window._trochaSliderCleanup = function() {
+        if (initTimeout) clearTimeout(initTimeout);
+        if (raf) cancelAnimationFrame(raf);
+        window.removeEventListener("resize", onResize);
+        window.removeEventListener("mousemove", onWinMouseMove);
+        window.removeEventListener("mouseup", onWinMouseUp);
+    };
+};
+
+// Run on initial load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.trochaSliderInit);
+} else {
+    window.trochaSliderInit();
+}

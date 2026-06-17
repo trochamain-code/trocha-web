@@ -169,6 +169,8 @@
             jQuery(document).trigger('page_loaded');
             /* Re-init variation forms */
             jQuery('.variations_form').each(function() { jQuery(this).wc_variation_form(); });
+            /* Re-init product gallery */
+            jQuery('.woocommerce-product-gallery').each(function() { jQuery(this).wc_product_gallery(); });
         }
 
         /* Dispatch DOM-like event for any listeners */
