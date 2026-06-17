@@ -182,16 +182,9 @@ function trocha_site_header() {
     </nav>
 
     <div class="trocha-top-banner">
-        <span class="trocha-rec">REC</span>
-        <div class="trocha-brand">
-            <img class="trocha-brand__logo"
-                 src="<?php echo esc_url($logo_url); ?>"
-                 alt="" aria-hidden="true">
-            <span class="trocha-brand__name">La Trocha</span>
-        </div>
-        <h1>TROCHA</h1>
-        <div class="sub">No es ropa. Es camino.</div>
-        <div class="accent-line"></div>
+        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/trocha-header-nuevo.jpg"
+             alt="TROCHA — No es ropa. Es camino."
+             class="trocha-header-img">
     </div>
 
     <div class="trocha-marquee">

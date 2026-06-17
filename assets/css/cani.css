@@ -5,7 +5,7 @@
    ============================================================ */
 
 :root {
-    --dark: #0B0B0D;
+    --dark: #000000;
     --dark2: #111114;
     --light: #1A1A1E;
     --light2: #222228;
@@ -98,27 +98,33 @@ a:hover { color: var(--accent-glow); }
    BANNER — SURVEILLANCE HEADER
    ============================================================ */
 .trocha-top-banner {
-    background: var(--dark);
-    border-bottom: 2px solid var(--accent);
+    background: transparent;
     text-align: center;
-    padding: 1rem 1rem 1.1rem;
+    padding: 0.3rem 1rem;
     position: relative;
     overflow: hidden;
 }
-.trocha-top-banner::before {
-    content: '';
+.trocha-top-banner::after {
+    content: "";
     position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 3px,
-        rgba(196,160,0,0.04) 3px,
-        rgba(196,160,0,0.04) 4px
-    );
-    pointer-events: none;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--accent);
+    animation: trocha-glow-line 6s ease-in-out infinite;
 }
-/* Brand: "La Trocha" name (60% opacity) with logo behind it */
+@keyframes trocha-glow-line {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 0.7; }
+}
+.trocha-header-img {
+    max-width: 180px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 .trocha-brand {
     position: relative;
     display: inline-flex;
