@@ -4109,3 +4109,207 @@ ul.products.columns-4 li.product {
 
 /* ── SPA page transition ──── */
 main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
+
+/* ═══════════════════════════════════════════════
+   COLECCIONES — FRÍO / CALOR / ESTILO
+   ═══════════════════════════════════════════════ */
+.trocha-coleccion-page {
+    padding: 0 1.5rem 4rem;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* ── Hero ── */
+.trocha-coleccion-hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    border-bottom: 1px solid var(--colec-color, #c25a1e);
+    margin-bottom: 2rem;
+}
+.trocha-coleccion-hero__stamp {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--colec-color, #c25a1e);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+}
+.trocha-coleccion-hero__title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 0.05em;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    line-height: 1;
+}
+.trocha-coleccion-hero__desc {
+    font-family: "Space Mono", monospace;
+    font-size: 0.85rem;
+    color: #999;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* ── Toolbar (count + sort) ── */
+.trocha-coleccion-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.trocha-coleccion-toolbar__count {
+    font-family: "Space Mono", monospace;
+    font-size: 0.8rem;
+    color: #666;
+    letter-spacing: 0.05em;
+}
+.trocha-sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.trocha-sort-label {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: #888;
+}
+.trocha-sort-select-wrap {
+    position: relative;
+}
+.trocha-sort-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: #111;
+    border: 1px solid #333;
+    color: #ccc;
+    font-family: "Space Mono", monospace;
+    font-size: 0.8rem;
+    padding: 0.55rem 2.5rem 0.55rem 1rem;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: border-color 0.25s, color 0.25s;
+    min-width: 220px;
+}
+.trocha-sort-select:hover,
+.trocha-sort-select:focus {
+    border-color: var(--colec-color, #c25a1e);
+    color: #fff;
+    outline: none;
+}
+.trocha-sort-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--colec-color, #c25a1e);
+    pointer-events: none;
+    font-size: 0.7rem;
+}
+
+/* ── Product Grid ── */
+.trocha-coleccion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+.trocha-coleccion-card {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    transition: border-color 0.3s, transform 0.3s;
+}
+.trocha-coleccion-card:hover {
+    border-color: var(--colec-color, #c25a1e);
+    transform: translateY(-3px);
+}
+.trocha-coleccion-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.trocha-coleccion-card__image-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #0d0d0d;
+}
+.trocha-coleccion-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+.trocha-coleccion-card:hover .trocha-coleccion-card__img {
+    transform: scale(1.06);
+}
+.trocha-coleccion-card__img--placeholder {
+    background: #111;
+    width: 100%;
+    height: 100%;
+}
+.trocha-coleccion-card__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--colec-color, #c25a1e);
+    color: #000;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    padding: 0.25rem 0.6rem;
+}
+.trocha-coleccion-card__body {
+    padding: 1rem;
+}
+.trocha-coleccion-card__title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: #fff;
+    margin: 0 0 0.4rem;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.trocha-coleccion-card__price {
+    font-family: "Space Mono", monospace;
+    font-size: 0.8rem;
+    color: #aaa;
+}
+.trocha-coleccion-card__price del {
+    color: #555;
+    margin-right: 0.4rem;
+}
+.trocha-coleccion-card__price ins {
+    text-decoration: none;
+    color: var(--colec-color, #c25a1e);
+}
+
+.trocha-coleccion-empty {
+    font-family: "Space Mono", monospace;
+    color: #555;
+    text-align: center;
+    padding: 3rem;
+    grid-column: 1 / -1;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .trocha-coleccion-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .trocha-coleccion-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    .trocha-sort-select {
+        min-width: 180px;
+        font-size: 0.75rem;
+    }
+}
