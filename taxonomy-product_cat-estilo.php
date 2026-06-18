@@ -1,0 +1,1 @@
+taxonomy-product_cat-frio.php
