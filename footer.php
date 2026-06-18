@@ -222,6 +222,8 @@
         if (link.classList.contains('add_to_cart_button') || link.classList.contains('ajax_add_to_cart')) return;
         /* Don't intercept variation reset */
         if (link.classList.contains('reset_variations')) return;
+        /* Don't intercept cart/checkout/account — full page load needed */
+        if (/\/carrito|\/checkout|\/finalizar-compra|\/mi-cuenta|\/pedido/.test(href)) return;
 
         e.preventDefault();
         navigate(href, true);
