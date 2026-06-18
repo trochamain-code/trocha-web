@@ -19,6 +19,9 @@ function trocha_enqueue() {
 
     $js_ver = file_exists($dir . '/assets/js/main.js') ? filemtime($dir . '/assets/js/main.js') : '1.0.0';
     wp_enqueue_script('trocha-main', $uri . '/assets/js/main.js', [], $js_ver, true);
+    wp_localize_script('trocha-main', 'trochaData', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+    ]);
 
     // Slider de últimas prendas — inline, sin dependencias
     if (is_front_page() || is_home()) {

@@ -183,6 +183,10 @@
     function navigate(href, push) {
         if (fetching) return;
         fetching = true;
+        var navTimeout = setTimeout(function() {
+            fetching = false;
+            window.location.href = href;
+        }, 8000);
         fetch(href, { credentials: 'same-origin' })
             .then(function(r) {
                 if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -194,11 +198,13 @@
                 } else {
                     window.location.href = href;
                 }
+                clearTimeout(navTimeout);
                 fetching = false;
             })
             .catch(function() {
-                window.location.href = href;
+                clearTimeout(navTimeout);
                 fetching = false;
+                window.location.href = href;
             });
     }
 

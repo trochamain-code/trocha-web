@@ -98,7 +98,7 @@ a:hover { color: var(--accent-glow); }
    BANNER — SURVEILLANCE HEADER
    ============================================================ */
 .trocha-top-banner {
-    background: transparent;
+    background: #030102;
     text-align: center;
     padding: 0.3rem 1rem;
     position: relative;
@@ -119,10 +119,17 @@ a:hover { color: var(--accent-glow); }
     50%      { opacity: 0.7; }
 }
 .trocha-header-img {
-    max-width: 180px;
+    max-width: 90vw;
     height: auto;
     display: block;
     margin: 0 auto;
+    transform: scaleX(1.04);
+}
+@media (min-width: 768px) {
+    .trocha-header-img {
+        max-width: 540px;
+        transform: scaleX(1.08);
+    }
 }
 
 .trocha-brand {
@@ -510,7 +517,7 @@ a:hover { color: var(--accent-glow); }
     text-transform: uppercase;
     cursor: pointer;
     text-decoration: none;
-    background: transparent;
+    background: #030102;
     color: var(--text);
     border: 1px solid var(--light2);
     transition: all 0.15s;
@@ -527,7 +534,7 @@ a:hover { color: var(--accent-glow); }
     color: var(--dark);
 }
 .trocha-btn--primary:hover {
-    background: transparent;
+    background: #030102;
     color: var(--accent);
 }
 .trocha-btn--small { font-size: 0.7rem; padding: 0.4rem 1rem; }
@@ -673,7 +680,7 @@ a:hover { color: var(--accent-glow); }
     transition: all 0.15s;
 }
 .trocha-single-product .single_add_to_cart_button:hover {
-    background: transparent;
+    background: #030102;
     color: var(--accent);
 }
 .trocha-single-product__tabs {
@@ -838,7 +845,7 @@ a:hover { color: var(--accent-glow); }
     transition: all 0.15s;
 }
 .trocha-order-review #place_order:hover {
-    background: transparent;
+    background: #030102;
     color: var(--accent);
 }
 
@@ -1070,7 +1077,7 @@ a:hover { color: var(--accent-glow); }
     width: 30px;
     height: 26px;
     padding: 4px;
-    background: transparent;
+    background: #030102;
     border: 1px solid var(--accent);
     border-radius: 3px;
     cursor: pointer;
@@ -1129,7 +1136,7 @@ a:hover { color: var(--accent-glow); }
     color: var(--text);
 }
 .trocha-drawer__close {
-    background: transparent;
+    background: #030102;
     border: 0;
     color: var(--accent);
     font-size: 1.8rem;
@@ -1171,7 +1178,7 @@ a:hover { color: var(--accent-glow); }
     border-radius: 3px;
     text-decoration: none;
 }
-.trocha-drawer__cart:hover { background: transparent; color: var(--accent); }
+.trocha-drawer__cart:hover { background: #030102; color: var(--accent); }
 
 /* ============================================================
    RESPONSIVE
@@ -1881,7 +1888,7 @@ a { transition: color 0.15s ease; }
     letter-spacing: 0.18em;
     color: var(--accent, #c4a000);
     border: 1px solid var(--accent, #c4a000);
-    background: transparent;
+    background: #030102;
     transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
     position: relative;
 }
@@ -2082,7 +2089,7 @@ a { transition: color 0.15s ease; }
 .trocha-gallery-slide__label { font-family: Impact,'Arial Black',sans-serif; font-size: clamp(3rem,10vw,7rem); color: #fff; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; margin-bottom: 1rem; }
 .trocha-gallery-slide__sub { font-family: 'Courier New',monospace; font-size: 0.9rem; color: rgba(255,255,255,0.7); letter-spacing: 0.12em; }
 .trocha-gallery-slide__num { position: absolute; bottom: 1.5rem; right: 1.5rem; font-family: 'Courier New',monospace; font-size: 0.65rem; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; }
-.trocha-gallery-close { position: absolute; top: 1.5rem; right: 1.5rem; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 1.2rem; width: 2.5rem; height: 2.5rem; cursor: pointer; z-index: 100000; display: flex; align-items: center; justify-content: center; }
+.trocha-gallery-close { position: absolute; top: 1.5rem; right: 1.5rem; background: #030102; border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 1.2rem; width: 2.5rem; height: 2.5rem; cursor: pointer; z-index: 100000; display: flex; align-items: center; justify-content: center; }
 .trocha-gallery-close:hover { border-color: var(--accent); color: var(--accent); }
 .trocha-gallery-slide__cta-title { font-family: Impact,'Arial Black',sans-serif; font-size: clamp(2rem,7vw,5rem); color: var(--accent); letter-spacing: 0.1em; margin-bottom: 1.5rem; }
 .trocha-gallery-product { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
@@ -2097,7 +2104,7 @@ a { transition: color 0.15s ease; }
 /* --- BOTÓN PLAY/STOP --- */
 .trocha-play-wrap { display: flex; justify-content: center; margin-top: 2.5rem; }
 .trocha-play-btn {
-    background: transparent;
+    background: #030102;
     border: 1px solid rgba(255,255,255,0.15);
     color: rgba(255,255,255,0.6);
     font-family: 'Courier New', monospace;
@@ -2262,7 +2269,7 @@ a { transition: color 0.15s ease; }
     justify-content: center;
     padding: 1rem;
     /* backdrop anima por separado */
-    background: transparent;
+    background: #030102;
     backdrop-filter: blur(0px);
 }
 .trocha-pay-modal.is-open {
@@ -3138,7 +3145,7 @@ a.woocommerce-product-gallery__trigger {
     letter-spacing: 0.12em;
     color: var(--text-sub, #aaa);
     border: 1px solid rgba(255,255,255,0.15);
-    background: transparent;
+    background: #030102;
     text-decoration: none;
     transition: all 0.2s ease;
 }
@@ -3267,7 +3274,7 @@ a.woocommerce-product-gallery__trigger {
 .woocommerce nav.woocommerce-pagination ul li span {
     border: 1px solid rgba(255,255,255,0.2);
     color: #aaa;
-    background: transparent;
+    background: #030102;
     transition: all 0.2s;
 }
 
@@ -3727,7 +3734,7 @@ ul.products.columns-4 li.product {
     overflow: hidden;
     padding: 0 6vw;
 }
-.th-hero__bg {
+.th-hero__bg { pointer-events: none; 
     position: absolute;
     inset: 0;
     background-size: cover;
@@ -3736,7 +3743,7 @@ ul.products.columns-4 li.product {
     opacity: 1;
     filter: none;
 }
-.th-hero__overlay {
+.th-hero__overlay { pointer-events: none; 
     position: absolute;
     inset: 0;
     background: linear-gradient(105deg, rgba(0,0,0,0.82) 45%, rgba(0,0,0,0.35) 100%);
@@ -3772,7 +3779,7 @@ ul.products.columns-4 li.product {
     line-height: 1.6;
 }
 .th-hero__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-.th-hero__scroll {
+.th-hero__scroll { pointer-events: none; 
     position: absolute;
     bottom: 2rem;
     left: 50%;
@@ -3788,7 +3795,7 @@ ul.products.columns-4 li.product {
 }
 
 /* BUTTONS */
-.th-btn {
+.th-btn { position: relative; z-index: 10; min-height: 44px; min-width: 44px; touch-action: manipulation;
     display: inline-block;
     padding: 0.8rem 2rem;
     font-family: 'Bebas Neue', sans-serif;
@@ -3801,7 +3808,7 @@ ul.products.columns-4 li.product {
 }
 .th-btn--primary { background: #D4AF37; color: #000; }
 .th-btn--primary:hover { background: #f0cc50; color: #000; }
-.th-btn--ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.45); }
+.th-btn--ghost { background: #030102; color: #fff; border: 1px solid rgba(255,255,255,0.45); }
 .th-btn--ghost:hover { border-color: #D4AF37; color: #D4AF37; }
 .th-btn--lg { padding: 1.1rem 3.5rem; font-size: 1.1rem; }
 
@@ -3859,7 +3866,7 @@ ul.products.columns-4 li.product {
 .th-cats__label { font-family: 'Courier New', monospace; font-size: 0.72rem; color: #D4AF37; letter-spacing: 0.22em; margin-bottom: 0.6rem; }
 .th-cats__title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); color: #fff; letter-spacing: 0.06em; margin: 0; }
 .th-cats__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #222; }
-@media(max-width:768px) { .th-cats__grid { grid-template-columns: 1fr; gap: 1rem; background: transparent; } }
+@media(max-width:768px) { .th-cats__grid { grid-template-columns: 1fr; gap: 1rem; background: #030102; } }
 .th-cat-card { position: relative; display: flex; text-decoration: none; overflow: hidden; min-height: 480px; align-items: flex-end; }
 .th-cat-card__bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease; }
 .th-cat-card:hover .th-cat-card__bg { transform: scale(1.06); }
@@ -4026,7 +4033,7 @@ ul.products.columns-4 li.product {
     height: 3px;
 }
 .woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar-track {
-    background: transparent;
+    background: #030102;
 }
 .woocommerce-product-gallery .flex-control-thumbs::-webkit-scrollbar-thumb {
     background: var(--light2);

@@ -182,7 +182,7 @@ function trocha_site_header() {
     </nav>
 
     <div class="trocha-top-banner">
-        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/trocha-header-nuevo.jpg"
+        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/trocha-header-nuevo.jpg?v=1781745397"
              alt="TROCHA — No es ropa. Es camino."
              class="trocha-header-img">
     </div>
@@ -198,7 +198,19 @@ function trocha_site_header() {
     <main class="trocha-main-content" id="trocha-pjax-container">
     <?php
 }
-add_action('wp_body_open', 'trocha_site_header', 5);   // outputs the full header incl. cart
+add_action('wp_body_open', 'trocha_site_header', 5);
+
+// AJAX: get cart count for mobile SPA updates
+function trocha_get_cart_count() {
+    $count = 0;
+    if (class_exists('WooCommerce') && WC()->cart) {
+        $count = WC()->cart->get_cart_contents_count();
+    }
+    wp_send_json(['count' => $count]);
+}
+add_action('wp_ajax_trocha_get_cart_count', 'trocha_get_cart_count');
+add_action('wp_ajax_nopriv_trocha_get_cart_count', 'trocha_get_cart_count');
+   // outputs the full header incl. cart
 
 function trocha_cart_js() {
     if (!class_exists('WooCommerce')) return;

@@ -205,17 +205,31 @@
         update();
     }
 
-    /* ---- Add-to-cart feedback (pulse + toast) --------------- */
+    /* ---- Add-to-cart feedback (pulse + toast + count update) --------------- */
+    function updateCartCounts() {
+        fetch(trochaData.ajaxUrl + '?action=trocha_get_cart_count')
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                if (data && data.count !== undefined) {
+                    var els = document.querySelectorAll('#trocha-cart-count, #trocha-drawer-cart-count');
+                    els.forEach(function(el){ el.textContent = data.count; });
+                }
+            })
+            .catch(function(){});
+    }
     function initCartFeedback() {
         document.body.addEventListener('added_to_cart', function () {
             var cart = document.getElementById('trocha-cart');
             if (cart) {
                 cart.classList.remove('cart-bump');
-                // force reflow to restart animation
                 void cart.offsetWidth;
                 cart.classList.add('cart-bump');
             }
             showToast('Añadido al carrito');
+            updateCartCounts();
+        });
+        document.body.addEventListener('removed_from_cart', function () {
+            updateCartCounts();
         });
     }
 
@@ -442,6 +456,61 @@ window.trochaMockupThumbsInit = function() { setupMockupThumbs(); };
 window.trochaZoomInit = function() { init(); };
 })();
 
+/* ── DRAWER MENU TOGGLE ── */
+window.trochaDrawerInit = function() {
+    var burger = document.getElementById('trocha-burger');
+    var drawer = document.getElementById('trocha-drawer');
+    var overlay = document.getElementById('trocha-drawer-overlay');
+    var closeBtn = document.getElementById('trocha-drawer-close');
+    
+    if (!burger || !drawer || !overlay || !closeBtn) return;
+    
+    function open() {
+        burger.classList.add('is-active');
+        burger.setAttribute('aria-expanded', 'true');
+        drawer.classList.add('is-open');
+        drawer.setAttribute('aria-hidden', 'false');
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+        burger.classList.remove('is-active');
+        burger.setAttribute('aria-expanded', 'false');
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+    
+    // Replace with clone to remove old listeners
+    var newBurger = burger.cloneNode(true);
+    var newClose = closeBtn.cloneNode(true);
+    var newOverlay = overlay.cloneNode(true);
+    burger.parentNode.replaceChild(newBurger, burger);
+    closeBtn.parentNode.replaceChild(newClose, closeBtn);
+    overlay.parentNode.replaceChild(newOverlay, overlay);
+    
+    newBurger.addEventListener('click', function() {
+        var d = document.getElementById('trocha-drawer');
+        if (d && d.classList.contains('is-open')) { closeDrawer(); }
+        else { open(); }
+    });
+    newClose.addEventListener('click', closeDrawer);
+    newOverlay.addEventListener('click', closeDrawer);
+    
+    // ESC to close
+    document.addEventListener('keydown', function(e) {
+        var d = document.getElementById('trocha-drawer');
+        if (e.key === 'Escape' && d && d.classList.contains('is-open')) closeDrawer();
+    });
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.trochaDrawerInit);
+} else {
+    window.trochaDrawerInit();
+}
+
 
 /* ── Re-init after SPA page swap ──── */
 window.addEventListener('trocha:page_swapped', function() {
@@ -464,6 +533,10 @@ window.addEventListener('trocha:page_swapped', function() {
     /* Re-init product carousel slider */
     if (typeof window.trochaSliderInit === 'function') {
         setTimeout(window.trochaSliderInit, 200);
+    }
+    /* Re-init drawer menu */
+    if (typeof window.trochaDrawerInit === 'function') {
+        window.trochaDrawerInit();
     }
 });
 
