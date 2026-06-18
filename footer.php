@@ -187,7 +187,7 @@
             fetching = false;
             window.location.href = href;
         }, 8000);
-        fetch(href, { credentials: 'same-origin' })
+        fetch(href, { credentials: 'same-origin', cache: 'no-store' })
             .then(function(r) {
                 if (!r.ok) throw new Error('HTTP ' + r.status);
                 return r.text();
