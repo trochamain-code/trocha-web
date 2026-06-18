@@ -644,3 +644,7 @@ add_action('wp_enqueue_scripts', function() {
         wp.apiFetch.use(wp.apiFetch.createRootURLMiddleware("' . esc_url_raw(rest_url()) . '"));
     ', 'after');
 }, 1);
+
+/* ── Eliminar botones de pago exprés del carrito (Stripe Google Pay/Apple Pay, PayPal) ── */
+add_filter('wc_stripe_show_payment_request_on_cart', '__return_false');
+add_filter('woocommerce_paypal_payments_cart_button_enabled', '__return_false');
