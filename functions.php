@@ -648,3 +648,11 @@ add_action('wp_enqueue_scripts', function() {
 /* ── Eliminar botones de pago exprés del carrito (Stripe Google Pay/Apple Pay, PayPal) ── */
 add_filter('wc_stripe_show_payment_request_on_cart', '__return_false');
 add_filter('woocommerce_paypal_payments_cart_button_enabled', '__return_false');
+
+/* ── Favicon ── */
+add_action("wp_head", function() {
+    $svg = get_template_directory_uri() . "/assets/img/favicon.svg";
+    echo "<link rel=\"icon\" type=\"image/svg+xml\" href=\"" . esc_url($svg) . "\">" . "\n";
+    echo "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"" . esc_url(home_url("/favicon-32x32.png")) . "\">" . "\n";
+    echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"" . esc_url(home_url("/apple-touch-icon.png")) . "\">" . "\n";
+}, 1);
