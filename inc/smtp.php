@@ -25,9 +25,9 @@ function trocha_smtp_settings() {
         'host'       => defined('TROCHA_SMTP_HOST') ? TROCHA_SMTP_HOST : 'smtp.hostinger.com',
         'port'       => defined('TROCHA_SMTP_PORT') ? TROCHA_SMTP_PORT : 465,
         'encryption' => defined('TROCHA_SMTP_ENC')  ? TROCHA_SMTP_ENC  : 'ssl', // 'ssl' (465) or 'tls' (587)
-        'username'   => defined('TROCHA_SMTP_USER') ? TROCHA_SMTP_USER : 'alvarocontacto@trocha.shop',
+        'username'   => defined('TROCHA_SMTP_USER') ? TROCHA_SMTP_USER : 'trochamain@gmail.com',
         'password'   => defined('TROCHA_SMTP_PASS') ? TROCHA_SMTP_PASS : '',
-        'from_email' => defined('TROCHA_SMTP_FROM') ? TROCHA_SMTP_FROM : 'alvarocontacto@trocha.shop',
+        'from_email' => defined('TROCHA_SMTP_FROM') ? TROCHA_SMTP_FROM : 'trochamain@gmail.com',
         'from_name'  => defined('TROCHA_SMTP_NAME') ? TROCHA_SMTP_NAME : 'TROCHA',
     ];
 }

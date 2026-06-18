@@ -223,7 +223,7 @@
         /* Don't intercept variation reset */
         if (link.classList.contains('reset_variations')) return;
         /* Don't intercept cart/checkout/account — full page load needed */
-        if (/\/carrito|\/checkout|\/finalizar-compra|\/mi-cuenta|\/pedido/.test(href)) return;
+        if (/\/carrito|\/checkout|\/finalizar-compra|\/mi-cuenta|\/pedido|\/contacto/.test(href)) return;
 
         e.preventDefault();
         navigate(href, true);

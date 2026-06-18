@@ -7,7 +7,7 @@
  */
 defined('ABSPATH') || exit;
 
-define('TROCHA_CONTACT_VERSION', '2');
+define('TROCHA_CONTACT_VERSION', '3');
 
 /**
  * Build the WPForms form definition (fields + settings) as a PHP array.
@@ -64,7 +64,7 @@ function trocha_contact_form_data($form_id = 0) {
             'notifications'              => [
                 1 => [
                     'notification_name' => 'Notificación predeterminada',
-                    'email'             => 'alvarocontacto@trocha.shop',
+                    'email'             => 'trochamain@gmail.com',
                     'subject'           => 'Nuevo mensaje de contacto — TROCHA',
                     'sender_name'       => 'TROCHA',
                     'sender_address'    => '{admin_email}',

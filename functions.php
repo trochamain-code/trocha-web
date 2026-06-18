@@ -611,7 +611,7 @@ add_filter('woocommerce_product_tabs', function($tabs) {
 
 /* ── Force no-cache headers for WooCommerce pages (Hostinger CDN compatible) ── */
 add_action('send_headers', function() {
-    if (is_cart() || is_checkout() || is_account_page() || is_wc_endpoint_url()) {
+    if (is_cart() || is_checkout() || is_account_page() || is_wc_endpoint_url() || is_page("contacto")) {
         header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, private');
         header('Pragma: no-cache');
         header('X-Accel-Expires: 0');
