@@ -630,3 +630,12 @@ add_action('send_headers', function() {
 
 /* ── Eliminar dropdown ORDENAR de la tienda ── */
 remove_action('woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30);
+
+/* ── Fix: inject wp-api-fetch nonce on checkout so shipping recalculates on country change ── */
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_script('wp-api-fetch');
+    wp_add_inline_script('wp-api-fetch', '
+        wp.apiFetch.use(wp.apiFetch.createNonceMiddleware("' . wp_create_nonce('wp_rest') . '"));
+        wp.apiFetch.use(wp.apiFetch.createRootURLMiddleware("' . esc_url_raw(rest_url()) . '"));
+    ', 'after');
+}, 1);
