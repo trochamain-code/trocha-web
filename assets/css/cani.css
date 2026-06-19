@@ -100,7 +100,7 @@ a:hover { color: var(--accent-glow); }
 .trocha-top-banner {
     background: #030102;
     text-align: center;
-    padding: 0.3rem 1rem;
+    padding: 0.5rem 1rem; width: 100%;
     position: relative;
     overflow: hidden;
 }
@@ -123,12 +123,12 @@ a:hover { color: var(--accent-glow); }
     height: auto;
     display: block;
     margin: 0 auto;
-    transform: scaleX(1.04);
+    
 }
 @media (min-width: 768px) {
     .trocha-header-img {
         max-width: 540px;
-        transform: scaleX(1.08);
+        
     }
 }
 
@@ -3853,7 +3853,7 @@ ul.products.columns-4 li.product {
 
 
 /* BRAND STRIP */
-.th-strip { display: flex; align-items: center; justify-content: center; background: #D4AF37; padding: 1rem 2rem; flex-wrap: wrap; }
+.th-strip { display: flex; align-items: center; justify-content: center; background: #D4AF37; padding: 1rem 1rem; flex-wrap: wrap; }
 .th-strip__item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 2rem; }
 .th-strip__icon { font-size: 1rem; }
 .th-strip__text { font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; letter-spacing: 0.18em; color: #000; white-space: nowrap; }
@@ -4326,7 +4326,7 @@ main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
     font-size: 1.1rem;
     font-weight: normal;
     letter-spacing: 0.15em;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     text-transform: uppercase;
     text-shadow: 0 0 20px rgba(212, 175, 55, 0.9), 0 0 40px rgba(212, 175, 55, 0.5), 0 0 8px rgba(255, 215, 0, 0.4);
     border-bottom: 1px solid var(--border);
