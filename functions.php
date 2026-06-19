@@ -659,8 +659,9 @@ add_filter("get_site_icon_url", "__return_empty_string", 999);
 
 /* ── Favicon ── */
 add_action("wp_head", function() {
-    $svg = get_template_directory_uri() . "/assets/img/favicon-tr-v2.svg?v=1781900953";
-    echo "<link rel=\"icon\" type=\"image/svg+xml\" href=\"" . esc_url($svg) . "\">" . "\n";
-    echo "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"" . esc_url(home_url("/favicon-tr-v2-32.png?v=1781900953")) . "\">" . "\n";
-    echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"" . esc_url(home_url("/apple-touch-icon-tr-v2.png?v=1781900953")) . "\">" . "\n";
+    $v = "?v=3.16";
+    echo "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"" . esc_url(home_url("/favicon.png" . $v)) . "\">" . "\n";
+    echo "<link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"" . esc_url(get_template_directory_uri() . "/trocha-favicon-16.png" . $v) . "\">" . "\n";
+    echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"" . esc_url(home_url("/apple-touch-icon.png" . $v)) . "\">" . "\n";
+    echo "<link rel=\"shortcut icon\" href=\"" . esc_url(home_url("/favicon.ico" . $v)) . "\">" . "\n";
 }, 1);
