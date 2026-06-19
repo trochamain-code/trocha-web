@@ -189,8 +189,8 @@ function trocha_site_header() {
 
     <div class="trocha-marquee">
         <span>
-            MUCHAS PALABRAS HEMOS REPRESENTADO, UNA ACTITUD NOS REPRESENTA. BUSCAVIDAS &mdash; MUCHAS PALABRAS HEMOS REPRESENTADO, UNA ACTITUD NOS REPRESENTA. BUSCAVIDAS &mdash; MUCHAS PALABRAS HEMOS REPRESENTADO, UNA ACTITUD NOS REPRESENTA. BUSCAVIDAS &mdash;
-            MUCHAS PALABRAS HEMOS REPRESENTADO, UNA ACTITUD NOS REPRESENTA. BUSCAVIDAS &mdash; MUCHAS PALABRAS HEMOS REPRESENTADO, UNA ACTITUD NOS REPRESENTA. BUSCAVIDAS &mdash; MUCHAS PALABRAS HEMOS REPRESENTADO, UNA ACTITUD NOS REPRESENTA. BUSCAVIDAS &mdash;
+            LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash;
+            LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash;
     </div>
 
     <div class="trocha-body-grid trocha-body-grid--no-sidebar">
