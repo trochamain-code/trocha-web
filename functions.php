@@ -187,6 +187,8 @@ function trocha_site_header() {
              class="trocha-header-img">
     </div>
 
+    <div class="trocha-tagline">ASUME RIESGOS, CONFIA EN TI</div>
+
     <div class="trocha-marquee">
         <span>
             LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash;

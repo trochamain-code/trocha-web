@@ -4313,3 +4313,21 @@ main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
         font-size: 0.75rem;
     }
 }
+
+/* ============================================================
+   TAGLINE
+   ============================================================ */
+.trocha-tagline {
+    grid-column: 1 / -1;
+    background: #050506;
+    color: #ffffff;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(212, 175, 55, 0.6), 0 0 4px rgba(212, 175, 55, 0.3);
+    border-bottom: 1px solid var(--border);
+}
