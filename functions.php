@@ -659,8 +659,8 @@ add_filter("get_site_icon_url", "__return_empty_string", 999);
 
 /* ── Favicon ── */
 add_action("wp_head", function() {
-    $svg = get_template_directory_uri() . "/assets/img/favicon-1781900578.svg";
+    $svg = get_template_directory_uri() . "/assets/img/favicon-tr-v2.svg";
     echo "<link rel=\"icon\" type=\"image/svg+xml\" href=\"" . esc_url($svg) . "\">" . "\n";
-    echo "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"" . esc_url(home_url("/favicon-32x32-1781900578.png")) . "\">" . "\n";
-    echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"" . esc_url(home_url("/apple-touch-icon-1781900578.png")) . "\">" . "\n";
+    echo "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"" . esc_url(home_url("/favicon-tr-v2-32.png")) . "\">" . "\n";
+    echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"" . esc_url(home_url("/apple-touch-icon-tr-v2.png")) . "\">" . "\n";
 }, 1);
