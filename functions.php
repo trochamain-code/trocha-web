@@ -187,7 +187,7 @@ function trocha_site_header() {
              class="trocha-header-img">
     </div>
 
-    <div class="trocha-tagline">ASUME RIESGOS, CONFIA EN TI</div>
+    <div class="trocha-tagline">ASUME RIESGOS, CONFIA EN TI.</div>
 
     <div class="trocha-marquee">
         <span>
