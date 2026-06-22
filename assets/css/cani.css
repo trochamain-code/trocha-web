@@ -3757,6 +3757,13 @@ ul.products.columns-4 li.product {
 }
 
 /* Hero product overlays */
+.th-hero__product-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    cursor: pointer;
+}
 .th-hero__product {
     position: absolute;
     inset: 0;
@@ -3764,11 +3771,11 @@ ul.products.columns-4 li.product {
     height: 100%;
     object-fit: cover;
     z-index: 1;
-    pointer-events: auto;
+    pointer-events: none;
     transition: filter 0.35s ease;
     border: none;
 }
-.th-hero__product:hover {
+.th-hero__product-link:hover .th-hero__product {
     filter: drop-shadow(0 0 8px #D4AF37) drop-shadow(0 0 16px #D4AF37) drop-shadow(0 0 24px rgba(212,175,55,0.5));
 }
 .th-hero__overlay { pointer-events: none; 

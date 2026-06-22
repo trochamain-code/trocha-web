@@ -8,10 +8,14 @@
 <section class="th-hero">
     <div class="th-hero__slides">
         <div class="th-hero__slide th-hero__slide--1" style="background-image:url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-slide-1.png');">
-            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-product-1.png" alt="" class="th-hero__product">
+            <a href="<?php echo esc_url(home_url('/producto/embroidered-work-jacket-cornerstone-duck-cloth-hooded-zip-up')); ?>" class="th-hero__product-link">
+                <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-product-1.png" alt="" class="th-hero__product">
+            </a>
         </div>
         <div class="th-hero__slide th-hero__slide--2" style="background-image:url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-slide-2.png');">
-            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-product-2.png" alt="" class="th-hero__product">
+            <a href="<?php echo esc_url(home_url('/producto/embroidered-work-jacket-cornerstone-duck-cloth-hooded-zip-up')); ?>" class="th-hero__product-link">
+                <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-product-2.png" alt="" class="th-hero__product">
+            </a>
         </div>
     </div>
     <div class="th-hero__overlay"></div>
