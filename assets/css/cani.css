@@ -3765,12 +3765,11 @@ ul.products.columns-4 li.product {
     object-fit: cover;
     z-index: 1;
     pointer-events: auto;
-    transition: filter 0.35s ease, border 0.35s ease;
-    border: 2px solid transparent;
+    transition: filter 0.35s ease;
+    border: none;
 }
 .th-hero__product:hover {
-    border-color: #D4AF37;
-    filter: drop-shadow(0 0 12px rgba(212,175,55,0.4));
+    filter: drop-shadow(0 0 8px #D4AF37) drop-shadow(0 0 16px #D4AF37) drop-shadow(0 0 24px rgba(212,175,55,0.5));
 }
 .th-hero__overlay { pointer-events: none; 
     position: absolute;
