@@ -3734,14 +3734,26 @@ ul.products.columns-4 li.product {
     overflow: hidden;
     padding: 0 6vw;
 }
-.th-hero__bg { pointer-events: none; 
+/* HERO IMAGE SLIDER */
+.th-hero__slides {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.th-hero__slide {
     position: absolute;
     inset: 0;
     background-size: cover;
     background-position: center 30%;
-    z-index: 0;
-    opacity: 1;
-    filter: none;
+    opacity: 0;
+    animation: th-slide 8s ease-in-out infinite;
+}
+.th-hero__slide--1 { animation-delay: 0s; }
+.th-hero__slide--2 { animation-delay: 4s; }
+@keyframes th-slide {
+    0%, 40%   { opacity: 1; }
+    50%, 90%  { opacity: 0; }
+    100%      { opacity: 0; }
 }
 .th-hero__overlay { pointer-events: none; 
     position: absolute;
@@ -3908,18 +3920,6 @@ ul.products.columns-4 li.product {
 .th-card .th-card__cat:empty,
 .th-card .th-card__cat {
     display: block;
-}
-
-/* Hero video background */
-.th-hero__bg--video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    background-size: unset;
-    background-image: none;
-    filter: brightness(0.75);
 }
 
 /* Hide Amazon Pay + Google Pay express buttons everywhere */

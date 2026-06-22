@@ -1,3 +1,6 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
 <?php get_header(); ?>
 
 <style id="trocha-reveal-fix">
@@ -41,6 +44,8 @@
 
     <!-- SLIDER MOBILE / GRID DESKTOP -->
     <div class="th-drops__slider-wrap">
+        <button class="th-arrow th-arrow--prev" id="trsArrowPrev" aria-label="Anterior">&#8592;</button>
+        <button class="th-arrow th-arrow--next" id="trsArrowNext" aria-label="Siguiente">&#8594;</button>
         <div class="trs" id="trochaSlider">
             <div class="trs__track" id="trochaTrack">
                 <?php for ($si = 0; $si < 3; $si++) : foreach ($trocha_prods as $p) :
