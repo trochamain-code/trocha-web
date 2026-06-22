@@ -3759,19 +3759,14 @@ ul.products.columns-4 li.product {
 /* Hero product overlays */
 .th-hero__product {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 100vh;
-    max-height: 100vh;
-    width: auto;
-    max-width: 55vw;
-    object-fit: contain;
-    object-position: right bottom;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: 1;
     pointer-events: auto;
     transition: filter 0.35s ease, border 0.35s ease;
     border: 2px solid transparent;
-    border-radius: 4px;
 }
 .th-hero__product:hover {
     border-color: #D4AF37;
