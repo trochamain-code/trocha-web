@@ -3759,13 +3759,14 @@ ul.products.columns-4 li.product {
 /* Hero product overlays */
 .th-hero__product {
     position: absolute;
-    right: 2vw;
+    right: 0;
     bottom: 0;
-    max-height: 90vh;
-    max-width: 50vw;
-    height: auto;
+    height: 100vh;
+    max-height: 100vh;
     width: auto;
+    max-width: 55vw;
     object-fit: contain;
+    object-position: right bottom;
     z-index: 1;
     pointer-events: auto;
     transition: filter 0.35s ease, border 0.35s ease;
