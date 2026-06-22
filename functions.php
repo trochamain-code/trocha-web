@@ -664,4 +664,7 @@ add_action("wp_head", function() {
     echo "<link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"" . esc_url(get_template_directory_uri() . "/trocha-favicon-16.png" . $v) . "\">" . "\n";
     echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"" . esc_url(home_url("/apple-touch-icon.png" . $v)) . "\">" . "\n";
     echo "<link rel=\"shortcut icon\" href=\"" . esc_url(home_url("/favicon.ico" . $v)) . "\">" . "\n";
+    // CDN bust — unique meta on every request
+    $cdn_bust = get_option('trocha_cdn_bust', time());
+    echo "<meta name=\"trocha-deploy\" content=\"" . esc_attr($cdn_bust) . "\">" . "\n";
 }, 1);
