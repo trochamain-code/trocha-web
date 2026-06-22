@@ -1,6 +1,3 @@
-** WARNING: connection is not using a post-quantum key exchange algorithm.
-** This session may be vulnerable to "store now, decrypt later" attacks.
-** The server may need to be upgraded. See https://openssh.com/pq.html
 <?php get_header(); ?>
 
 <style id="trocha-reveal-fix">
@@ -8,13 +5,11 @@
 .trocha-section,.trs{opacity:1!important;transform:none!important;visibility:visible!important}
 </style>
 
-<!-- ═══════════════════════════════════════════════
-     HERO — Full viewport, imagen visible
-     ═══════════════════════════════════════════════ -->
 <section class="th-hero">
-    <video class="th-hero__bg th-hero__bg--video" autoplay muted loop playsinline>
-        <source src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-shoes.mp4" type="video/mp4">
-    </video>
+    <div class="th-hero__slides">
+        <div class="th-hero__slide th-hero__slide--1" style="background-image:url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-slide-1.png');"></div>
+        <div class="th-hero__slide th-hero__slide--2" style="background-image:url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-slide-2.png');"></div>
+    </div>
     <div class="th-hero__overlay"></div>
     <div class="th-hero__content">
         <div class="th-hero__tag">// NUEVA COLECCIÓN</div>
@@ -28,9 +23,6 @@
     <div class="th-hero__scroll">↓</div>
 </section>
 
-<!-- ═══════════════════════════════════════════════
-     DROPS — Grid de productos destacados
-     ═══════════════════════════════════════════════ -->
 <?php if (class_exists('WooCommerce')) :
     $trocha_prods = wc_get_products(['limit' => 6, 'orderby' => 'date', 'order' => 'DESC', 'status' => 'publish']);
     if ($trocha_prods) : ?>
@@ -41,11 +33,7 @@
         <h2 class="th-drops__title">NUEVAS PRENDAS</h2>
         <a href="<?php echo esc_url(home_url('/tienda')); ?>" class="th-drops__all">VER TODO →</a>
     </div>
-
-    <!-- SLIDER MOBILE / GRID DESKTOP -->
     <div class="th-drops__slider-wrap">
-        <button class="th-arrow th-arrow--prev" id="trsArrowPrev" aria-label="Anterior">&#8592;</button>
-        <button class="th-arrow th-arrow--next" id="trsArrowNext" aria-label="Siguiente">&#8594;</button>
         <div class="trs" id="trochaSlider">
             <div class="trs__track" id="trochaTrack">
                 <?php for ($si = 0; $si < 3; $si++) : foreach ($trocha_prods as $p) :
@@ -79,9 +67,6 @@
 </section>
 <?php endif; endif; ?>
 
-<!-- ═══════════════════════════════════════════════
-     BRAND STRIP — 3 valores
-     ═══════════════════════════════════════════════ -->
 <section class="th-strip">
     <div class="th-strip__item">
         <span class="th-strip__icon">🚚</span>
@@ -99,9 +84,6 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════
-     CATEGORÍAS — 3 tarjetas visuales
-     ═══════════════════════════════════════════════ -->
 <section class="th-cats">
     <div class="th-cats__head">
         <div class="th-cats__label">// EXPLORA</div>
@@ -141,9 +123,6 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════
-     BRAND STORY — Historia + foto
-     ═══════════════════════════════════════════════ -->
 <section class="th-story">
     <div class="th-story__bg" style="background-image:url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/dogs-fight-bw.jpg');"></div>
     <div class="th-story__overlay"></div>
@@ -165,18 +144,12 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════
-     BIG CTA — Ver todo el catálogo
-     ═══════════════════════════════════════════════ -->
 <section class="th-cta-final">
     <div class="th-cta-final__tag">/// TODO EL CATÁLOGO ///</div>
     <h2 class="th-cta-final__title">VER TODAS<br>LAS PRENDAS</h2>
     <a href="<?php echo esc_url(home_url('/tienda')); ?>" class="th-btn th-btn--primary th-btn--lg">ENTRAR A LA TIENDA</a>
 </section>
 
-<!-- ═══════════════════════════════════════════════
-     MOOD — Sección emocional + audio
-     ═══════════════════════════════════════════════ -->
 <section class="trocha-section trocha-section--mood" id="trocha-mood-section">
     <div class="trocha-mood-inner">
         <div class="trocha-mood-text">
