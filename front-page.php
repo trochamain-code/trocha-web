@@ -8,6 +8,7 @@
 <section class="th-hero">
     <div class="th-hero__slides">
         <div class="th-hero__slide th-hero__slide--1" style="background-image:url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-slide-1.png');">
+            <a href="<?php echo esc_url(home_url('/producto/dios-es-un-nio')); ?>" class="th-hero__slide-link"></a>
             <a href="<?php echo esc_url(home_url('/producto/embroidered-work-jacket-cornerstone-duck-cloth-hooded-zip-up')); ?>" class="th-hero__product-link">
                 <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/hero-product-1.png" alt="" class="th-hero__product">
             </a>

@@ -3756,11 +3756,17 @@ ul.products.columns-4 li.product {
     100%      { opacity: 0; }
 }
 
-/* Hero product overlays */
+/* Hero slide full-size clickable link */
+.th-hero__slide-link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    cursor: pointer;
+}
 .th-hero__product-link {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: 3;
     display: block;
     cursor: pointer;
 }
