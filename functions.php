@@ -146,10 +146,10 @@ function trocha_site_header() {
             <?php endif; ?>
         </div>
         <div class="trocha-toolbar__nav">
-            <a href="<?php echo esc_url( home_url('/') ); ?>" class="trocha-toolbar__home">&#8962; HOME</a>
-            <a href="<?php echo esc_url( home_url('/tienda') ); ?>">TIENDA</a>
-            <a href="<?php echo esc_url( home_url('/categorias-pies') ); ?>">COLECCIONES</a>
-            <a href="<?php echo esc_url( home_url('/carrito') ); ?>">PEDIDO</a>
+            <a href="<?php echo esc_url( home_url('/') ); ?>" class="trocha-toolbar__home">&#8249; INICIO</a>
+            <a href="<?php echo esc_url( home_url('/tienda') ); ?>" class="trocha-toolbar__nav-link">TIENDA</a>
+            <a href="<?php echo esc_url( home_url('/categorias-pies') ); ?>" class="trocha-toolbar__nav-link">COLECCIONES</a>
+            <a href="<?php echo esc_url( home_url('/carrito') ); ?>" class="trocha-toolbar__nav-link">PEDIDO</a>
         </div>
         <div class="trocha-toolbar__cart">
             <a href="<?php echo esc_url($cart_url); ?>" class="trocha-cart__link" id="trocha-cart">
