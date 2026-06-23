@@ -10,8 +10,10 @@
     <div class="trocha-footer__inner">
 
         <div class="trocha-footer__section">
-            <a href="<?php echo esc_url(home_url('/')); ?>" class="trocha-footer__logo">TROCHA</a>
-            <p class="trocha-footer__text">No es ropa. Es camino.</p>
+            <a href="<?php echo esc_url(home_url('/')); ?>" class="trocha-footer__logo">
+                <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/footer-logo.png?v=1" alt="TROCHA Streetwear" class="trocha-footer__logo-img">
+            </a>
+            <p class="trocha-footer__text">ASUME RIESGOS, CONFIA EN TI.</p>
         </div>
 
         <div class="trocha-footer__section">
@@ -19,7 +21,7 @@
             <ul class="trocha-footer__list">
                 <li><a href="<?php echo esc_url(home_url('/')); ?>">INICIO</a></li>
                 <li><a href="<?php echo esc_url(home_url('/tienda')); ?>">TIENDA</a></li>
-                <li><a href="<?php echo esc_url(home_url('/categorias-pies')); ?>">COLECCIONES</a></li>
+                <li><a href="<?php echo esc_url(home_url('/categorias-pies')); ?>">DROPS</a></li>
                 <li><a href="<?php echo esc_url(home_url('/carrito')); ?>">PEDIDO</a></li>
                 <li><a href="<?php echo esc_url(home_url('/historia')); ?>">ORIGEN</a></li>
             </ul>
@@ -38,7 +40,7 @@
     </div>
 
     <div class="trocha-footer__micro">
-        Hecho a mano desde el asfalto. &copy; <?php echo date('Y'); ?> TROCHA
+        Saltando vallas desde el &rsquo;97. &copy; <?php echo date('Y'); ?> TROCHA
     </div>
 </footer>
 
@@ -144,6 +146,14 @@
         /* Update title */
         var t = doc.querySelector('title');
         if (t) document.title = t.textContent;
+
+        /* Sincronizar clase del body y del header con la página nueva.
+           Evita que el header-overlay del home se quede pegado en otras
+           páginas (y que el overlay se active al volver al home). */
+        if (doc.body) document.body.className = doc.body.className;
+        var nHead = doc.querySelector('.trocha-header-bars');
+        var oHead = document.querySelector('.trocha-header-bars');
+        if (nHead && oHead) oHead.className = nHead.className;
 
         /* Swap content */
         oldMain.innerHTML = '';

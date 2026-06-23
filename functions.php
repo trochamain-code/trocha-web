@@ -5,6 +5,7 @@ require_once get_template_directory() . '/inc/setup.php';
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/smtp.php';
 require_once get_template_directory() . '/inc/contact-form.php';
+require_once get_template_directory() . '/inc/hero-settings.php';
 
 if (class_exists('WooCommerce')) {
     require_once get_template_directory() . '/inc/woocommerce-setup.php';
@@ -136,6 +137,8 @@ function trocha_site_header() {
     $cart_count = $wcon && isset(WC()->cart) ? WC()->cart->get_cart_contents_count() : 0;
     ?>
 
+    <div class="trocha-header-bars<?php echo $is_home ? ' trocha-header-bars--overlay' : ''; ?>">
+
     <div class="trocha-toolbar trocha-toolbar--top">
         <div class="trocha-toolbar__left">
             <button type="button" class="trocha-burger" id="trocha-burger" aria-label="Menú" aria-expanded="false" aria-controls="trocha-drawer">
@@ -148,7 +151,7 @@ function trocha_site_header() {
         <div class="trocha-toolbar__nav">
             <a href="<?php echo esc_url( home_url('/') ); ?>" class="trocha-toolbar__home">&#8249; INICIO</a>
             <a href="<?php echo esc_url( home_url('/tienda') ); ?>" class="trocha-toolbar__nav-link">TIENDA</a>
-            <a href="<?php echo esc_url( home_url('/categorias-pies') ); ?>" class="trocha-toolbar__nav-link">COLECCIONES</a>
+            <a href="<?php echo esc_url( home_url('/categorias-pies') ); ?>" class="trocha-toolbar__nav-link">DROPS</a>
             <a href="<?php echo esc_url( home_url('/carrito') ); ?>" class="trocha-toolbar__nav-link">PEDIDO</a>
         </div>
         <div class="trocha-toolbar__cart">
@@ -170,7 +173,7 @@ function trocha_site_header() {
         <ul class="trocha-drawer__list">
             <li><a href="<?php echo esc_url( home_url('/') ); ?>">INICIO</a></li>
             <li><a href="<?php echo esc_url( home_url('/tienda') ); ?>">TIENDA</a></li>
-            <li><a href="<?php echo esc_url( home_url('/categorias-pies') ); ?>">COLECCIONES</a></li>
+            <li><a href="<?php echo esc_url( home_url('/categorias-pies') ); ?>">DROPS</a></li>
             <li><a href="<?php echo esc_url( home_url('/carrito') ); ?>">PEDIDO</a></li>
             <li><a href="<?php echo esc_url( home_url('/historia') ); ?>">CAMINO PROPIO</a></li>
             <li><a href="<?php echo esc_url( home_url('/contacto') ); ?>">CONTACTO</a></li>
@@ -182,9 +185,10 @@ function trocha_site_header() {
     </nav>
 
     <div class="trocha-top-banner">
-        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/trocha-header-nuevo.jpg?v=1781745397"
-             alt="TROCHA — No es ropa. Es camino."
-             class="trocha-header-img">
+        <a href="<?php echo esc_url( home_url('/') ); ?>" class="trocha-wordmark" aria-label="TROCHA Streetwear">
+            <span class="trocha-wordmark__name">TROCHA</span>
+            <span class="trocha-wordmark__sub">STREETWEAR</span>
+        </a>
     </div>
 
     <div class="trocha-tagline">ASUME RIESGOS, CONFIA EN TI.</div>
@@ -194,6 +198,8 @@ function trocha_site_header() {
             LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash;
             LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash; LA TROCHA es el camino que haces cuando el que imponen no te sirve, LA TROCHA es el &uacute;nico camino hacia tu objetivo &mdash;
     </div>
+
+    </div><!-- /.trocha-header-bars -->
 
     <div class="trocha-body-grid trocha-body-grid--no-sidebar">
 

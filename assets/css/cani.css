@@ -17,6 +17,31 @@
     --border: #1A1A1E;
 }
 
+/* --- Fuentes propias: Horizon (wordmark TROCHA) + Garet (STREETWEAR) --- */
+@font-face {
+    font-family: 'Horizon';
+    src: url('../fonts/horizon.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Garet';
+    src: url('../fonts/Garet-Book.woff2') format('woff2'),
+         url('../fonts/Garet-Book.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Garet';
+    src: url('../fonts/Garet-Heavy.woff2') format('woff2'),
+         url('../fonts/Garet-Heavy.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* --- SCANLINES (body overlay) ------------------------------- */
 body::after {
     content: '';
@@ -1112,8 +1137,6 @@ a:hover { color: var(--accent-glow); }
     max-width: 320px;
     height: 100%;
     background: #08080A;
-    border-right: 2px solid var(--accent);
-    box-shadow: 4px 0 30px rgba(0,0,0,0.6);
     transform: translateX(-100%);
     transition: transform 0.28s ease;
     z-index: 100101;
@@ -1121,7 +1144,12 @@ a:hover { color: var(--accent-glow); }
     flex-direction: column;
     overflow-y: auto;
 }
-.trocha-drawer.is-open { transform: translateX(0); }
+/* Borde dorado y sombra solo con el menú abierto (si no, el borde asoma en el lateral izquierdo) */
+.trocha-drawer.is-open {
+    transform: translateX(0);
+    border-right: 2px solid var(--accent);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.6);
+}
 .trocha-drawer__head {
     display: flex;
     align-items: center;
@@ -4361,4 +4389,323 @@ main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
     text-transform: uppercase;
     text-shadow: 0 0 20px rgba(212, 175, 55, 0.9), 0 0 40px rgba(212, 175, 55, 0.5), 0 0 8px rgba(255, 215, 0, 0.4);
     border-bottom: 1px solid var(--border);
+}
+
+/* ═══════════════════════════════════════════════════════
+   HERO SLIDER — rediseño 4 slides (últimos productos)
+   ═══════════════════════════════════════════════════════ */
+.th-hero--slider {
+    display: block;
+    padding: 0;
+    min-height: 100vh;
+    height: 100vh;
+}
+.th-hero__track {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    transition: transform 0.7s cubic-bezier(0.7, 0, 0.2, 1);
+    will-change: transform;
+}
+.th-hslide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: transparent;
+}
+.th-hslide__photo-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    cursor: pointer;
+}
+.th-hslide__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 28%;
+    display: block;
+    filter: contrast(1.04) saturate(1);
+    transform: scale(1.01);
+    transition: transform 7s ease, filter 0.4s ease;
+}
+.th-hslide.is-active .th-hslide__photo { transform: scale(1.09); }
+.th-hslide__photo-link:hover .th-hslide__photo { filter: contrast(1.06) saturate(1.05); }
+/* Sombra suave solo bajo el texto (izquierda) para legibilidad — la imagen domina */
+.th-hslide__photo-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(95deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.18) 26%, rgba(0,0,0,0) 50%);
+    pointer-events: none;
+}
+.th-hslide__content {
+    position: absolute;
+    left: 6vw;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 560px;
+    z-index: 2;
+    pointer-events: none;
+}
+.th-hslide__eyebrow {
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    color: #D4AF37;
+    margin-bottom: 1.1rem;
+}
+.th-hslide__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6.8rem);
+    line-height: 0.88;
+    letter-spacing: 0.03em;
+    color: #fff;
+    margin: 0 0 1.8rem;
+    text-transform: uppercase;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.6);
+}
+.th-hslide__cta {
+    pointer-events: auto;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* Flechas */
+.th-hero__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 6;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.th-hero__arrow:hover { background: #D4AF37; color: #000; border-color: #D4AF37; }
+.th-hero__arrow--prev { left: 1rem; }
+.th-hero__arrow--next { right: 1rem; }
+/* Puntos */
+.th-hero__dots {
+    position: absolute;
+    bottom: 2.2rem;
+    left: 6vw;
+    display: flex;
+    gap: 0.6rem;
+    z-index: 6;
+}
+.th-hero__dot {
+    width: 30px;
+    height: 3px;
+    padding: 0;
+    background: rgba(255,255,255,0.32);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, width 0.3s ease;
+}
+.th-hero__dot.is-active { background: #D4AF37; width: 50px; }
+@media (max-width: 600px) {
+    .th-hero__arrow { width: 42px; height: 42px; font-size: 1.5rem; }
+    .th-hero__dots { left: 6vw; bottom: 1.4rem; }
+    .th-hslide__content { left: 6vw; right: 6vw; max-width: none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOOD — fondo imagen de ojos a todo el ancho (70% opacidad)
+   ═══════════════════════════════════════════════════════ */
+.trocha-section--mood { position: relative; overflow: hidden; }
+.trocha-section--mood::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('../img/mood-eyes.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    z-index: 0;
+    pointer-events: none;
+}
+.trocha-section--mood .trocha-mood-inner { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════════════════
+   HEADER BARS — marquee encima del nav + overlay sobre el hero (home)
+   ═══════════════════════════════════════════════════════ */
+.trocha-header-bars { display: flex; flex-direction: column; }
+/* El botón "VOLVER" nunca debe verse en el home */
+.home .trocha-toolbar__back { display: none !important; }
+.trocha-header-bars .trocha-marquee     { order: 1; }
+.trocha-header-bars .trocha-toolbar--top { order: 2; }
+.trocha-header-bars .trocha-top-banner   { order: 3; }
+.trocha-header-bars .trocha-tagline      { order: 4; }
+
+/* Home: header superpuesto sobre las imágenes del slider */
+.home .trocha-header-bars--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    pointer-events: none;
+}
+/* Sombreado negro de fondo para legibilidad (texto + menú) */
+.home .trocha-header-bars--overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0.35) 85%, rgba(0,0,0,0) 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+.home .trocha-header-bars--overlay a,
+.home .trocha-header-bars--overlay button {
+    pointer-events: auto;
+}
+.home .trocha-header-bars--overlay .trocha-toolbar,
+.home .trocha-header-bars--overlay .trocha-toolbar--top,
+.home .trocha-header-bars--overlay .trocha-marquee,
+.home .trocha-header-bars--overlay .trocha-top-banner,
+.home .trocha-header-bars--overlay .trocha-tagline {
+    background: transparent;
+    border-color: transparent;
+}
+/* El wordmark TROCHA (jpg negro) pierde el fondo negro al fundirse sobre la imagen */
+.home .trocha-header-bars--overlay .trocha-header-img {
+    mix-blend-mode: screen;
+}
+/* Legibilidad del texto sobre las fotos */
+.home .trocha-header-bars--overlay .trocha-toolbar a,
+.home .trocha-header-bars--overlay .trocha-marquee span,
+.home .trocha-header-bars--overlay .trocha-tagline {
+    text-shadow: 0 1px 6px rgba(0,0,0,0.92), 0 0 2px rgba(0,0,0,0.85);
+}
+/* Marquee y menú: blancos y más gruesos para que resalten */
+.home .trocha-header-bars--overlay .trocha-marquee span,
+.home .trocha-header-bars--overlay .trocha-toolbar a,
+.home .trocha-header-bars--overlay .trocha-cart__label,
+.home .trocha-header-bars--overlay .trocha-cart__count {
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+/* Home: contenedores a todo el ancho (full-bleed, sin huecos laterales) y hero pegado arriba */
+.home .trocha-body-grid,
+.home .trocha-main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Footer logo (imagen) — el negro del logo se funde con el footer oscuro */
+.trocha-footer__logo-img {
+    display: block;
+    width: 160px;
+    max-width: 70%;
+    height: auto;
+    margin: 0 auto 0.4rem;
+    mix-blend-mode: screen;
+}
+/* Frase del footer en fuente de máquina de escribir */
+.trocha-footer__text {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    letter-spacing: 0.04em;
+}
+
+/* ═══════════════════════════════════════════════════════
+   WORDMARK TROCHA (texto real, sin recuadro negro)
+   ═══════════════════════════════════════════════════════ */
+.trocha-top-banner { background: transparent !important; }
+.trocha-top-banner::after { display: none !important; }
+.trocha-wordmark {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1;
+}
+.trocha-wordmark__name {
+    display: block;
+    font-family: 'Horizon', 'Bebas Neue', sans-serif;
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    letter-spacing: 0.04em;
+    text-indent: 0.04em;
+    background: linear-gradient(180deg, #ffffff 0%, #d6d6d8 48%, #9a9a9d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #d6d6d8;
+}
+.trocha-wordmark__sub {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7em;
+    margin-top: 0.45em;
+    font-family: 'Garet', sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.62rem, 1.7vw, 1rem);
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+    color: #e6e6e8;
+    text-transform: uppercase;
+}
+.trocha-wordmark__sub::before,
+.trocha-wordmark__sub::after {
+    content: "";
+    width: 1.6em;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.85;
+}
+
+/* El menú lateral debe ir por encima de TODO — la galería de producto usa z-index 999999 */
+.trocha-drawer-overlay { z-index: 1000000 !important; }
+.trocha-drawer { z-index: 1000001 !important; }
+
+/* Fix: el texto de "ESTADO MENTAL" se cortaba por la derecha (alineado a la derecha + sección full-bleed) */
+.trocha-section--mood .trocha-mood-inner {
+    width: 100%;
+    max-width: 760px;
+    box-sizing: border-box;
+    padding-left: clamp(1.25rem, 5vw, 2.5rem);
+    padding-right: clamp(1.25rem, 5vw, 2.5rem);
+}
+.trocha-section--mood .trocha-mood-text { max-width: 100%; min-width: 0; }
+.trocha-section--mood .trocha-mood-eyebrow { white-space: normal; overflow-wrap: anywhere; }
+.trocha-section--mood .trocha-mood-title { overflow-wrap: anywhere; }
+.trocha-section--mood .trocha-mood-phrases { max-width: 100%; }
+
+/* Desvanecido inferior del hero hacia la siguiente sección (evita el corte brusco) */
+.th-hero--slider::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 22%;
+    background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, #050505 100%);
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* Móvil: tarjetas FRÍO/CALOR/ESTILO más bajas, agrupadas y a todo el ancho */
+@media (max-width: 768px) {
+    .th-cats { padding: 2.5rem 0; }
+    .th-cats__grid { grid-template-columns: 1fr; gap: 3px; background: #030102; }
+    .th-cat-card { min-height: 210px; }
+    .th-cat-card__inner { padding: 1.2rem 1.4rem; }
+    .th-cat-card__title { font-size: 2.6rem; }
+    .th-cat-card__desc { margin-bottom: 0.8rem; }
 }

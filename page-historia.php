@@ -111,7 +111,7 @@ get_header();
     </p>
     <div style="display:flex;justify-content:center;">
         <a href="<?php echo esc_url(home_url('/categorias-pies')); ?>" class="trocha-btn trocha-btn--primary" data-pjax-ignore style="background:#C4A000;border-color:#C4A000;color:#0B0B0D;width:50%;text-align:center;padding:1.2rem 2rem;font-size:1.2rem;">
-            VER COLECCIONES
+            VER DROPS
         </a>
     </div>
 </div>
