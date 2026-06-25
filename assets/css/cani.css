@@ -4526,18 +4526,21 @@ main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
 /* ═══════════════════════════════════════════════════════
    MOOD — fondo imagen de ojos a todo el ancho (70% opacidad)
    ═══════════════════════════════════════════════════════ */
-.trocha-section--mood { position: relative; overflow: hidden; }
+.trocha-section--mood { position: relative; overflow: hidden; background: transparent; }
 .trocha-section--mood::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url('../img/mood-eyes.jpg');
+    background-image: url('../img/mood-eyes-v2.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center 62%;
     background-repeat: no-repeat;
     opacity: 0.7;
     z-index: 0;
     pointer-events: none;
+    /* Fade out: arriba 20%, abajo muy intenso (desde 48%) */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 20%, #000 48%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 20%, #000 48%, transparent 100%);
 }
 .trocha-section--mood .trocha-mood-inner { position: relative; z-index: 1; }
 
@@ -4607,6 +4610,7 @@ main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
     padding: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
+    background: #050505 !important;
 }
 
 /* Footer logo (imagen) — el negro del logo se funde con el footer oscuro */
@@ -4677,10 +4681,12 @@ main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
 /* Fix: el texto de "ESTADO MENTAL" se cortaba por la derecha (alineado a la derecha + sección full-bleed) */
 .trocha-section--mood .trocha-mood-inner {
     width: 100%;
-    max-width: 760px;
+    max-width: 720px;
     box-sizing: border-box;
+    margin-left: auto;
+    margin-right: 0;
     padding-left: clamp(1.25rem, 5vw, 2.5rem);
-    padding-right: clamp(1.25rem, 5vw, 2.5rem);
+    padding-right: clamp(1.5rem, 6vw, 5rem);
 }
 .trocha-section--mood .trocha-mood-text { max-width: 100%; min-width: 0; }
 .trocha-section--mood .trocha-mood-eyebrow { white-space: normal; overflow-wrap: anywhere; }
@@ -4698,6 +4704,30 @@ main.trocha-swapping { opacity: 0.4; transition: opacity 0.15s; }
     background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, #050505 100%);
     z-index: 4;
     pointer-events: none;
+}
+
+/* Móvil: sección ESTADO MENTAL — los 2 ojos + texto y botón compactos, todo superpuesto dentro de la imagen */
+@media (max-width: 768px) {
+    .trocha-section--mood { padding: 0.4rem 0; }
+    .trocha-section--mood::before {
+        background-size: 165% auto;   /* ambos ojos, banda más alta */
+        background-position: center;
+        opacity: 0.9;
+    }
+    .trocha-section--mood .trocha-mood-inner {
+        margin: 0 auto;
+        align-items: center;
+        text-align: center;
+        gap: 0.45rem;
+        max-width: 100%;
+        padding: 0.6rem 1rem;
+    }
+    .trocha-section--mood .trocha-mood-text { text-align: center; }
+    .trocha-section--mood .trocha-mood-eyebrow { font-size: 0.5rem; letter-spacing: 0.2em; margin: 0; }
+    .trocha-section--mood .trocha-mood-title { font-size: 1.15rem; line-height: 1.05; margin: 0.25rem 0; }
+    .trocha-section--mood .trocha-mood-phrases { font-size: 0.52rem; letter-spacing: 0.08em; gap: 0.15rem 0.35rem; justify-content: center; }
+    .trocha-section--mood .trocha-play-btn { padding: 0.35rem 0.9rem; font-size: 0.65rem; }
+    .trocha-section--mood .trocha-play-btn__label { font-size: 0.65rem; letter-spacing: 0.2em; }
 }
 
 /* Móvil: tarjetas FRÍO/CALOR/ESTILO más bajas, agrupadas y a todo el ancho */
